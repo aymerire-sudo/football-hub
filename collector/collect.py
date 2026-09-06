@@ -14,16 +14,28 @@ from typing import Any
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
+
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "config.json"
 EXAMPLE = ROOT / "config.example.json"
 OUTPUT = ROOT / "data" / "videos.json"
 
-ATOM = "http://www.w3.org/2005/Atom"
-YT = "http://www.youtube.com/xml/schemas/2015"
-NS = {"atom": ATOM, "yt": YT}
+ATOM_NS = "http://www.w3.org/2005/Atom"
+YT_NS = "http://www.youtube.com/xml/schemas/2015"
 
-USER_AGENT = "FootballHub/3.0 (+https://github.com/)"
+NS = {
+    "atom": ATOM_NS,
+    "yt": YT_NS,
+}
+
+USER_AGENT = (
+    "FootballHub/4.0 "
+    "(+https://github.com/aymerire-sudo/football-hub)"
+)
+
+# ---------------------------------------------------------------------------
+# Detection vocabulary
+# ---------------------------------------------------------------------------
 
 SUMMARY_FALLBACK = {
     "highlights",
@@ -75,16 +87,124 @@ EXCLUDE_FALLBACK = {
     "emission",
     "mercato",
     "inside",
+    "inside the",
+    "reveals",
+    "reveal",
+    "talks about",
+    "speaks about",
+    "exclusive",
+    "best of",
+    "top goals",
+    "top buts",
+}
+
+# Titres dans lesquels le nom d'une équipe est généralement contextuel.
+CONTEXT_PATTERNS = {
+    "classement",
+    "points",
+    "course au titre",
+    "course à la ligue",
+    "leader",
+    "leaders",
+    "devance",
+    "devant",
+    "dépasse",
+    "double le",
+    "double la",
+    "double les",
+    "prend la tête",
+    "en tête",
+    "au classement",
+}
+
+# Mots qui ne doivent jamais être considérés comme le nom
+# d'un adversaire extrait automatiquement.
+GENERIC_NON_TEAM_WORDS = {
+    "ligue",
+    "league",
+    "football",
+    "match",
+    "matches",
+    "game",
+    "games",
+    "highlights",
+    "highlight",
+    "résumé",
+    "resume",
+    "recap",
+    "buts",
+    "but",
+    "goals",
+    "goal",
+    "all",
+    "the",
+    "and",
+    "avec",
+    "pour",
+    "sur",
+    "face",
+    "contre",
+    "vs",
+    "v",
+    "live",
+    "direct",
+    "official",
+    "officiel",
+    "video",
+    "vidéo",
+    "season",
+    "saison",
+    "journee",
+    "journée",
+    "round",
+    "week",
+    "manita",
+    "heroique",
+    "héroïque",
+    "héroïques",
+    "folle",
+    "folles",
+    "énorme",
+    "enorme",
+    "incroyable",
+    "impressionnant",
+    "impressionnante",
+    "solide",
+    "dominant",
+    "dominant",
+    "humilie",
+    "humilier",
+    "écrase",
+    "ecrase",
+    "frappe",
+    "tombe",
+    "gagne",
+    "bat",
+    "perd",
+    "perdu",
+    "s'impose",
+    "s impose",
+    "s'incline",
+    "s incline",
+    "révèle",
+    "reveals",
+    "reveal",
+    "goals",
+    "torres",
+    "barcola",
+    "mbappe",
+    "mbappé",
+    "champion",
+    "champions",
 }
 
 COMPETITIONS = (
-    "champions league",
     "uefa champions league",
+    "champions league",
     "europa league",
     "conference league",
     "premier league",
     "la liga",
-    "liga",
     "bundesliga",
     "ligue 1",
     "ligue 2",
@@ -98,211 +218,321 @@ COMPETITIONS = (
     "dfb pokal",
     "copa del rey",
     "supercopa",
-    "coupe du monde",
-    "world cup",
-    "euro",
-    "euros",
     "club world cup",
     "mondial des clubs",
+    "world cup",
+    "coupe du monde",
+    "euro",
+    "euros",
 )
 
-NOISE_WORDS = {
-    "resume",
-    "résumé",
-    "highlights",
-    "highlight",
-    "extended",
-    "full",
-    "match",
-    "recap",
-    "buts",
-    "but",
-    "goals",
-    "goal",
-    "all",
-    "the",
-    "le",
-    "la",
-    "les",
-    "un",
-    "une",
-    "des",
-    "du",
-    "de",
-    "a",
-    "au",
-    "aux",
-    "avec",
-    "pour",
-    "dans",
-    "et",
-    "qui",
-    "se",
-    "sur",
-    "contre",
-    "face",
-    "héroique",
-    "heroique",
-    "héroïque",
-    "brillant",
-    "brillante",
-    "énorme",
-    "enorme",
-    "solide",
-    "incroyable",
-    "impressionnant",
-    "impressionnante",
-    "dominant",
-    "domine",
-    "humilie",
-    "écrase",
-    "ecrase",
-    "frappe",
-    "tombe",
-    "perd",
-    "gagne",
-    "bat",
-    "s",
-    "impose",
-    "incline",
-    "s'impose",
-    "s'incline",
-    "manita",
-    "folle",
-    "chaud",
-    "heroique",
-}
+SCORE_RE = re.compile(
+    r"(?<!\d)(\d{1,2})\s*[-–—:]\s*(\d{1,2})(?!\d)"
+)
 
-SCORE_RE = re.compile(r"(?<!\d)(\d{1,2})\s*[-–—:]\s*(\d{1,2})(?!\d)")
-DATE_RE = re.compile(r"\b(20\d{2})[-/.](\d{1,2})[-/.](\d{1,2})\b")
+DATE_RE = re.compile(
+    r"\b(20\d{2})[-/.](\d{1,2})[-/.](\d{1,2})\b"
+)
 
-PAIR_RE = re.compile(
-    r"\s+(?:vs\.?|v\.?|contre|/|@)\s+",
+# Exemples :
+# Arsenal vs Chelsea
+# Arsenal v Chelsea
+# Arsenal / Chelsea
+# Arsenal contre Chelsea
+# Arsenal @ Chelsea
+EXPLICIT_SEPARATOR_RE = re.compile(
+    r"\s+(?:vs\.?|v\.?|contre|@)\s+|\s*/\s*",
     re.IGNORECASE,
 )
 
-HYPHEN_PAIR_RE = re.compile(r"\s+[-–—]\s+")
-
-NATURAL_RELATION_RE = re.compile(
+# Exemple de formulation journalistique :
+# Le Bayern se casse les dents sur Schalke héroïque
+# Arsenal s'impose face à Chelsea
+# Le PSG perd contre Monaco
+RELATION_RE = re.compile(
     r"\b(?:sur|contre|face\s+a|face\s+à)\b",
     re.IGNORECASE,
 )
 
+# Verbes qui montrent qu'il s'agit probablement d'un vrai match.
+MATCH_VERBS = (
+    "bat",
+    "battu",
+    "batte",
+    "domine",
+    "dominé",
+    "gagne",
+    "gagné",
+    "perd",
+    "perdu",
+    "tombe",
+    "tombé",
+    "s'impose",
+    "s impose",
+    "s'incline",
+    "s incline",
+    "frappe",
+    "frappé",
+    "écrase",
+    "ecrase",
+    "humilie",
+    "humilié",
+    "neutralise",
+    "accroche",
+    "accroché",
+    "tenu en échec",
+)
 
-def load_json(path: Path, fallback: Path | None = None) -> dict[str, Any]:
+# ---------------------------------------------------------------------------
+# Generic helpers
+# ---------------------------------------------------------------------------
+
+
+def empty_output() -> dict[str, Any]:
+    return {
+        "generated_at": None,
+        "teams": [],
+        "source_status": [],
+        "videos": [],
+        "matches": [],
+        "stats": {
+            "videos": 0,
+            "matches": 0,
+            "teams": 0,
+            "sources": 0,
+        },
+    }
+
+
+def load_json(
+    path: Path,
+    fallback: Path | None = None,
+) -> dict[str, Any]:
     target = path if path.exists() else fallback
 
     if target is None or not target.exists():
-        raise FileNotFoundError(f"Config not found: {path}")
+        raise FileNotFoundError(
+            f"Impossible de trouver : {path}"
+        )
 
-    with target.open("r", encoding="utf-8") as fh:
+    with target.open(
+        "r",
+        encoding="utf-8",
+    ) as fh:
         return json.load(fh)
 
 
-def normalize(value: str) -> str:
-    value = html.unescape(value or "")
-    value = unicodedata.normalize("NFKD", value)
-    value = "".join(ch for ch in value if not unicodedata.combining(ch))
-    value = value.lower().replace("&", " and ")
-    value = re.sub(r"[^a-z0-9]+", " ", value)
-    return re.sub(r"\s+", " ", value).strip()
+def normalize(value: str | None) -> str:
+    value = html.unescape(
+        value or ""
+    )
+
+    value = unicodedata.normalize(
+        "NFKD",
+        value,
+    )
+
+    value = "".join(
+        char
+        for char in value
+        if not unicodedata.combining(char)
+    )
+
+    value = value.lower()
+    value = value.replace("&", " and ")
+    value = re.sub(
+        r"[^a-z0-9]+",
+        " ",
+        value,
+    )
+
+    return re.sub(
+        r"\s+",
+        " ",
+        value,
+    ).strip()
 
 
-def slug(value: str) -> str:
-    return re.sub(r"[^a-z0-9]+", "-", normalize(value)).strip("-")
+def slug(value: str | None) -> str:
+    return re.sub(
+        r"[^a-z0-9]+",
+        "-",
+        normalize(value),
+    ).strip("-")
 
 
-def contains_term(text: str, term: str) -> bool:
-    t = normalize(term)
-    n = normalize(text)
+def compact(value: str | None) -> str:
+    return re.sub(
+        r"[^a-z0-9]",
+        "",
+        normalize(value),
+    )
 
-    if not t:
+
+def contains_term(
+    text: str | None,
+    term: str | None,
+) -> bool:
+    haystack = normalize(text)
+    needle = normalize(term)
+
+    if not needle:
         return False
 
     return (
         re.search(
-            r"(?<![a-z0-9])" + re.escape(t) + r"(?![a-z0-9])",
-            n,
+            r"(?<![a-z0-9])"
+            + re.escape(needle)
+            + r"(?![a-z0-9])",
+            haystack,
         )
         is not None
     )
 
 
-def parse_date(value: str | int | float | None) -> str | None:
-    if value is None or value == "":
+def parse_date(
+    value: Any,
+) -> str | None:
+    if value is None:
         return None
 
     value = str(value).strip()
 
+    if not value:
+        return None
+
     try:
-        if re.fullmatch(r"\d{8}", value):
-            dt = datetime.strptime(value, "%Y%m%d").replace(
+        # yt-dlp upload_date
+        if re.fullmatch(
+            r"\d{8}",
+            value,
+        ):
+            dt = datetime.strptime(
+                value,
+                "%Y%m%d",
+            ).replace(
                 tzinfo=timezone.utc
             )
             return dt.isoformat()
 
-        if re.fullmatch(r"\d+(?:\.\d+)?", value):
+        # Unix timestamp
+        if re.fullmatch(
+            r"\d+(?:\.\d+)?",
+            value,
+        ):
             timestamp = float(value)
 
-            if timestamp > 1_000_000_000:
+            if timestamp >= 1_000_000_000:
                 return datetime.fromtimestamp(
                     timestamp,
                     timezone.utc,
                 ).isoformat()
 
-        dt = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        dt = datetime.fromisoformat(
+            value.replace(
+                "Z",
+                "+00:00",
+            )
+        )
 
         if dt.tzinfo is None:
-            dt = dt.replace(tzinfo=timezone.utc)
+            dt = dt.replace(
+                tzinfo=timezone.utc
+            )
 
-        return dt.astimezone(timezone.utc).isoformat()
+        return dt.astimezone(
+            timezone.utc
+        ).isoformat()
 
     except ValueError:
         return None
 
 
-def fetch(url: str, timeout: int = 30) -> bytes:
-    req = Request(
+def fetch(
+    url: str,
+    timeout: int = 30,
+) -> bytes:
+    request = Request(
         url,
         headers={
             "User-Agent": USER_AGENT,
-            "Accept": "application/atom+xml,application/xml,text/xml,*/*",
+            "Accept": (
+                "application/atom+xml,"
+                "application/xml,text/xml,*/*"
+            ),
         },
     )
 
-    with urlopen(req, timeout=timeout) as response:
+    with urlopen(
+        request,
+        timeout=timeout,
+    ) as response:
         return response.read()
 
 
-def get_text(parent: ET.Element, path: str) -> str:
-    node = parent.find(path, NS)
+def get_text(
+    parent: ET.Element,
+    path: str,
+) -> str:
+    node = parent.find(
+        path,
+        NS,
+    )
 
-    if node is not None and node.text:
-        return node.text.strip()
+    if node is None:
+        return ""
 
-    return ""
+    return (
+        (node.text or "").strip()
+    )
 
 
 def get_attr(
     parent: ET.Element,
     path: str,
-    attr: str,
+    attribute: str,
 ) -> str:
-    node = parent.find(path, NS)
+    node = parent.find(
+        path,
+        NS,
+    )
 
-    if node is not None:
-        return (node.attrib.get(attr) or "").strip()
+    if node is None:
+        return ""
 
-    return ""
+    return (
+        node.attrib
+        .get(attribute, "")
+        .strip()
+    )
 
 
-def resolve_channel_id(source: dict[str, Any]) -> str:
-    direct = (source.get("youtube_channel_id") or "").strip()
+# ---------------------------------------------------------------------------
+# YouTube channel / feed handling
+# ---------------------------------------------------------------------------
+
+
+def resolve_channel_id(
+    source: dict[str, Any],
+) -> str:
+    direct = str(
+        source.get(
+            "youtube_channel_id",
+            "",
+        )
+        or ""
+    ).strip()
 
     if direct.startswith("UC"):
         return direct
 
-    url = (source.get("youtube_url") or "").strip()
+    url = str(
+        source.get(
+            "youtube_url",
+            "",
+        )
+        or ""
+    ).strip()
 
     if not url:
         return ""
@@ -316,7 +546,10 @@ def resolve_channel_id(source: dict[str, Any]) -> str:
         return match.group(1)
 
     try:
-        body = fetch(url, timeout=20).decode(
+        body = fetch(
+            url,
+            timeout=20,
+        ).decode(
             "utf-8",
             errors="ignore",
         )
@@ -324,11 +557,24 @@ def resolve_channel_id(source: dict[str, Any]) -> str:
         patterns = [
             r'"channelId":"(UC[0-9A-Za-z_-]{20,})"',
             r'"externalId":"(UC[0-9A-Za-z_-]{20,})"',
-            r'<meta[^>]+itemprop=["\']channelId["\'][^>]+content=["\'](UC[0-9A-Za-z_-]{20,})',
+            (
+                r'<meta[^>]+itemprop=["\']channelId'
+                r'["\'][^>]+content=["\']'
+                r'(UC[0-9A-Za-z_-]{20,})'
+            ),
+            (
+                r'<link[^>]+itemprop=["\']url["\']'
+                r'[^>]+href=["\']https?://www\.youtube\.com/'
+                r'channel/(UC[0-9A-Za-z_-]{20,})'
+            ),
         ]
 
         for pattern in patterns:
-            found = re.search(pattern, body, re.I)
+            found = re.search(
+                pattern,
+                body,
+                flags=re.IGNORECASE,
+            )
 
             if found:
                 return found.group(1)
@@ -339,36 +585,67 @@ def resolve_channel_id(source: dict[str, Any]) -> str:
     return ""
 
 
-def parse_feed(
+def parse_atom_feed(
     xml_bytes: bytes,
     source: dict[str, Any],
+    channel_id: str,
     limit: int,
-    channel_id: str = "",
 ) -> list[dict[str, Any]]:
-    root = ET.fromstring(xml_bytes)
+    root = ET.fromstring(
+        xml_bytes
+    )
 
-    videos: list[dict[str, Any]] = []
+    videos: list[
+        dict[str, Any]
+    ] = []
 
-    for entry in root.findall("atom:entry", NS)[:limit]:
-        video_id = get_text(entry, "yt:videoId")
-        link_id = get_text(entry, "atom:id")
+    entries = root.findall(
+        "atom:entry",
+        NS,
+    )
 
-        if not video_id and link_id.startswith("yt:video:"):
-            video_id = link_id.rsplit(":", 1)[-1]
+    for entry in entries[:limit]:
+        video_id = get_text(
+            entry,
+            "yt:videoId",
+        )
+
+        if not video_id:
+            atom_id = get_text(
+                entry,
+                "atom:id",
+            )
+
+            if atom_id.startswith(
+                "yt:video:"
+            ):
+                video_id = atom_id.rsplit(
+                    ":",
+                    1,
+                )[-1]
 
         if not video_id:
             continue
 
         title = html.unescape(
-            get_text(entry, "atom:title")
+            get_text(
+                entry,
+                "atom:title",
+            )
         )
 
-        published = parse_date(
-            get_text(entry, "atom:published")
+        published_at = parse_date(
+            get_text(
+                entry,
+                "atom:published",
+            )
         )
 
-        updated = parse_date(
-            get_text(entry, "atom:updated")
+        updated_at = parse_date(
+            get_text(
+                entry,
+                "atom:updated",
+            )
         )
 
         url = (
@@ -377,12 +654,11 @@ def parse_feed(
                 "atom:link[@rel='alternate']",
                 "href",
             )
-            or f"https://www.youtube.com/watch?v={video_id}"
-        )
-
-        author = (
-            get_text(entry, "atom:author/atom:name")
-            or source.get("name", "YouTube")
+            or (
+                "https://www.youtube.com/"
+                "watch?v="
+                f"{video_id}"
+            )
         )
 
         videos.append(
@@ -390,16 +666,16 @@ def parse_feed(
                 "id": video_id,
                 "title": title,
                 "url": url,
-                "published_at": published,
-                "updated_at": updated,
+                "published_at": published_at,
+                "updated_at": updated_at,
                 "thumbnail": (
-                    f"https://i.ytimg.com/vi/"
+                    "https://i.ytimg.com/vi/"
                     f"{video_id}/hqdefault.jpg"
                 ),
                 "source_id": source["id"],
                 "source_name": source.get(
                     "name",
-                    author,
+                    source["id"],
                 ),
                 "source_channel_id": channel_id,
                 "description": "",
@@ -409,244 +685,155 @@ def parse_feed(
     return videos
 
 
-def source_videos_url(source: dict[str, Any]) -> str:
-    url = (source.get("youtube_url") or "").strip()
+def channel_videos_url(
+    source: dict[str, Any],
+) -> str:
+    url = str(
+        source.get(
+            "youtube_url",
+            "",
+        )
+        or ""
+    ).strip()
 
     if not url:
         return ""
 
-    clean = url.rstrip("/")
+    url = url.rstrip("/")
 
-    if not clean.endswith("/videos"):
-        clean += "/videos"
+    if not url.endswith("/videos"):
+        url += "/videos"
 
-    return clean
+    return url
 
 
-def parse_ytdlp_json_lines(
+def parse_ytdlp_playlist(
     stdout: str,
     source: dict[str, Any],
 ) -> list[dict[str, Any]]:
-    out: list[dict[str, Any]] = []
+    if not stdout.strip():
+        return []
 
-    for line in stdout.splitlines():
-        line = line.strip()
+    try:
+        payload = json.loads(
+            stdout
+        )
+    except json.JSONDecodeError:
+        return []
 
-        if not line or not line.startswith("{"):
+    entries = (
+        payload.get("entries")
+        or []
+    )
+
+    videos: list[
+        dict[str, Any]
+    ] = []
+
+    for item in entries:
+        if not item:
             continue
 
-        try:
-            item = json.loads(line)
-        except json.JSONDecodeError:
-            continue
-
-        vid = item.get("id")
-
-        if not vid:
-            continue
-
-        timestamp = (
-            item.get("release_timestamp")
-            or item.get("timestamp")
+        video_id = item.get(
+            "id"
         )
 
-        published = parse_date(
-            timestamp
-            if timestamp is not None
-            else item.get("upload_date")
+        if not video_id:
+            continue
+
+        published_at = (
+            parse_date(
+                item.get(
+                    "release_timestamp"
+                )
+            )
+            or parse_date(
+                item.get(
+                    "timestamp"
+                )
+            )
+            or parse_date(
+                item.get(
+                    "upload_date"
+                )
+            )
         )
 
-        out.append(
+        videos.append(
             {
-                "id": vid,
+                "id": video_id,
                 "title": html.unescape(
-                    item.get("title") or ""
+                    item.get(
+                        "title",
+                        "",
+                    )
+                    or ""
                 ),
                 "url": (
-                    item.get("webpage_url")
-                    or item.get("original_url")
-                    or f"https://www.youtube.com/watch?v={vid}"
+                    item.get(
+                        "webpage_url"
+                    )
+                    or item.get(
+                        "original_url"
+                    )
+                    or (
+                        "https://www.youtube.com/"
+                        "watch?v="
+                        f"{video_id}"
+                    )
                 ),
-                "published_at": published,
+                "published_at": published_at,
                 "updated_at": None,
                 "thumbnail": (
-                    item.get("thumbnail")
-                    or f"https://i.ytimg.com/vi/{vid}/hqdefault.jpg"
+                    item.get(
+                        "thumbnail"
+                    )
+                    or (
+                        "https://i.ytimg.com/vi/"
+                        f"{video_id}/hqdefault.jpg"
+                    )
                 ),
                 "source_id": source["id"],
                 "source_name": source.get(
                     "name",
-                    "YouTube",
+                    source["id"],
                 ),
                 "source_channel_id": (
-                    item.get("channel_id") or ""
+                    item.get(
+                        "channel_id"
+                    )
+                    or ""
                 ),
-                "description": item.get(
-                    "description"
-                )
-                or "",
-                "duration": item.get("duration"),
+                "description": (
+                    item.get(
+                        "description"
+                    )
+                    or ""
+                ),
+                "duration": item.get(
+                    "duration"
+                ),
             }
         )
 
-    return out
+    return videos
 
 
-def fetch_with_ytdlp(
+def fetch_playlist_with_ytdlp(
     source: dict[str, Any],
     limit: int,
 ) -> list[dict[str, Any]]:
-    url = source_videos_url(source)
+    url = channel_videos_url(
+        source
+    )
 
     if not url:
         return []
 
-    cmd = [
+    command = [
         "yt-dlp",
-        "--dump-json",
-        "--skip-download",
-        "--ignore-errors",
-        "--no-warnings",
+        "--dump-single-json",
         "--flat-playlist",
-        "--playlist-items",
-        f"1:{limit}",
-        url,
-    ]
-
-    proc = subprocess.run(
-        cmd,
-        capture_output=True,
-        text=True,
-        timeout=120,
-    )
-
-    flat = parse_ytdlp_json_lines(
-        proc.stdout,
-        source,
-    )
-
-    # Fast first pass: only fetch full metadata for videos
-    # which have a realistic chance of being a match.
-    candidates = [
-        item
-        for item in flat
-        if looks_like_possible_match_title(
-            item.get("title", "")
-        )
-    ]
-
-    details_by_id: dict[str, dict[str, Any]] = {}
-
-    for item in candidates[:40]:
-        vid = item["id"]
-
-        detail_cmd = [
-            "yt-dlp",
-            "--dump-single-json",
-            "--skip-download",
-            "--no-warnings",
-            "--no-playlist",
-            f"https://www.youtube.com/watch?v={vid}",
-        ]
-
-        try:
-            detail = subprocess.run(
-                detail_cmd,
-                capture_output=True,
-                text=True,
-                timeout=35,
-            )
-
-            if (
-                detail.returncode == 0
-                and detail.stdout.strip()
-            ):
-                payload = json.loads(
-                    detail.stdout
-                )
-
-                timestamp = (
-                    payload.get("release_timestamp")
-                    or payload.get("timestamp")
-                )
-
-                published = parse_date(
-                    timestamp
-                    if timestamp is not None
-                    else payload.get("upload_date")
-                )
-
-                details_by_id[vid] = {
-                    "published_at": published,
-                    "updated_at": None,
-                    "description": payload.get(
-                        "description"
-                    )
-                    or "",
-                    "thumbnail": (
-                        payload.get("thumbnail")
-                        or item.get("thumbnail")
-                    ),
-                    "url": (
-                        payload.get("webpage_url")
-                        or item.get("url")
-                    ),
-                    "channel_id": (
-                        payload.get("channel_id")
-                        or item.get(
-                            "source_channel_id",
-                            "",
-                        )
-                    ),
-                    "duration": payload.get(
-                        "duration"
-                    ),
-                }
-
-        except (
-            subprocess.TimeoutExpired,
-            json.JSONDecodeError,
-        ):
-            continue
-
-    out: list[dict[str, Any]] = []
-
-    for item in flat:
-        detail = details_by_id.get(
-            item["id"],
-            {},
-        )
-
-        merged = {
-            **item,
-            **detail,
-        }
-
-        merged["source_id"] = source["id"]
-        merged["source_name"] = source.get(
-            "name",
-            "YouTube",
-        )
-        merged["source_channel_id"] = (
-            merged.get("channel_id")
-            or merged.get(
-                "source_channel_id",
-                "",
-            )
-        )
-
-        merged.pop("channel_id", None)
-
-        out.append(merged)
-
-    if out:
-        return out
-
-    # Full fallback if flat playlist extraction failed.
-    full_cmd = [
-        "yt-dlp",
-        "--dump-json",
-        "--skip-download",
         "--ignore-errors",
         "--no-warnings",
         "--playlist-items",
@@ -654,875 +841,228 @@ def fetch_with_ytdlp(
         url,
     ]
 
-    proc = subprocess.run(
-        full_cmd,
+    process = subprocess.run(
+        command,
         capture_output=True,
         text=True,
-        timeout=240,
+        timeout=150,
     )
 
-    return parse_ytdlp_json_lines(
-        proc.stdout,
+    if (
+        process.returncode
+        not in (0, 1)
+    ):
+        raise RuntimeError(
+            process.stderr.strip()[
+                -1000:
+            ]
+            or "yt-dlp failed"
+        )
+
+    return parse_ytdlp_playlist(
+        process.stdout,
         source,
     )
 
 
-def team_patterns(
-    team: dict[str, Any],
-) -> list[str]:
-    return [
-        x
-        for x in [
-            team.get("name", ""),
-            *(team.get("aliases") or []),
-        ]
-        if x
-    ]
-
-
-def find_team_mentions(
-    text: str,
-    team: dict[str, Any],
-) -> list[tuple[int, int, str]]:
-    normalized = normalize(text)
-    result: list[tuple[int, int, str]] = []
-
-    for alias in team_patterns(team):
-        term = normalize(alias)
-
-        if not term:
-            continue
-
-        for match in re.finditer(
-            r"(?<![a-z0-9])"
-            + re.escape(term)
-            + r"(?![a-z0-9])",
-            normalized,
-        ):
-            result.append(
-                (
-                    match.start(),
-                    match.end(),
-                    alias,
-                )
-            )
-
-    return result
-
-
-def get_configured_hits(
-    text: str,
-    teams: list[dict[str, Any]],
-) -> list[dict[str, Any]]:
-    hits: list[dict[str, Any]] = []
-
-    for team in teams:
-        if find_team_mentions(text, team):
-            hits.append(
-                {
-                    "id": team["id"],
-                    "name": team["name"],
-                }
-            )
-
-    return hits
-
-
-def score_from_title(
-    title: str,
-) -> tuple[int, int, str] | None:
-    match = SCORE_RE.search(
-        html.unescape(title or "")
-    )
-
-    if not match:
-        return None
-
-    home = int(match.group(1))
-    away = int(match.group(2))
-
-    return home, away, f"{home}-{away}"
-
-
-def clean_side(
-    text: str,
-    teams: list[dict[str, Any]],
-) -> str:
-    value = html.unescape(text or "")
-
-    value = re.sub(
-        r"^\s*(?:(?:le|la|les)\s+)?"
-        r"résumé(?:\s+de)?\s*[:|-]?\s*",
-        "",
-        value,
-        flags=re.I,
-    )
-
-    value = re.sub(
-        r"^\s*(?:match\s+)?highlights?"
-        r"\s*[-:–—|]+\s*",
-        "",
-        value,
-        flags=re.I,
-    )
-
-    value = re.sub(
-        r"^\s*(?:summary|recap)"
-        r"\s*[-:–—|]+\s*",
-        "",
-        value,
-        flags=re.I,
-    )
-
-    value = SCORE_RE.sub(" ", value)
-
-    value = re.sub(
-        r"\([^)]*\)",
-        " ",
-        value,
-    )
-
-    value = re.sub(
-        r"\[.*?\]",
-        " ",
-        value,
-    )
-
-    value = re.split(
-        r"\s*[|•·]\s*",
-        value,
-        maxsplit=1,
-    )[0]
-
-    value = re.split(
-        r"\s+[-–—:]\s+"
-        r"(?=(?:premier|ligue|bundesliga|la\s+liga|"
-        r"champions|europa|conference|troph|coupe|club|"
-        r"highlights?|résumé|resume)\b)",
-        value,
-        maxsplit=1,
-        flags=re.I,
-    )[0]
-
-    normalized = normalize(value)
-
-    normalized = re.sub(
-        r"^(?:le|la|les|l|un|une|the|fc)\s+",
-        "",
-        normalized,
-    )
-
-    return re.sub(
-        r"\s+",
-        " ",
-        normalized,
-    ).strip()
-
-
-def split_explicit_match(
-    title: str,
-) -> tuple[str, str] | None:
-    text = html.unescape(title or "")
-
-    # Score is our strongest evidence:
-    # "Arsenal 2-1 Chelsea".
-    score_match = SCORE_RE.search(text)
-
-    if score_match:
-        left = text[:score_match.start()]
-        right = text[score_match.end():]
-
-        right = re.split(
-            r"\s*[|•·]\s*",
-            right,
-            maxsplit=1,
-        )[0]
-
-        right = re.split(
-            r"\s+-\s+"
-            r"(?=(?:Premier|Ligue|Bundesliga|La Liga|"
-            r"Champions|Europa|Troph|Coupe|Club)\b)",
-            right,
-            maxsplit=1,
-            flags=re.I,
-        )[0]
-
-        left = re.split(
-            r"\s*[|•·]\s*",
-            left,
-            maxsplit=1,
-        )[-1]
-
-        if left.strip() and right.strip():
-            return left.strip(), right.strip()
-
-    # Explicit "vs", "/", "contre", etc.
-    for pattern in (PAIR_RE, HYPHEN_PAIR_RE):
-        matches = list(pattern.finditer(text))
-
-        for match in reversed(matches):
-            left = text[:match.start()]
-            right = text[match.end():]
-
-            if (
-                len(normalize(left)) < 2
-                or len(normalize(right)) < 2
-            ):
-                continue
-
-            right = re.split(
-                r"\s*[|•·]\s*",
-                right,
-                maxsplit=1,
-            )[0]
-
-            right = re.split(
-                r"\s+-\s+"
-                r"(?=(?:Premier|Ligue|Bundesliga|La Liga|"
-                r"Champions|Europa|Troph|Coupe|Club)\b)",
-                right,
-                maxsplit=1,
-                flags=re.I,
-            )[0]
-
-            return left.strip(), right.strip()
-
-    return None
-
-
-def extract_opponent_after_relation(
-    text: str,
-    relation_match: re.Match[str],
-) -> str:
-    right = text[relation_match.end():]
-
-    right = re.split(
-        r"\s*[|•·]\s*",
-        right,
-        maxsplit=1,
-    )[0]
-
-    right = re.split(
-        r"[!?.,]",
-        right,
-        maxsplit=1,
-    )[0]
-
-    right = re.sub(
-        r"^\s*(?:un|une|le|la|les|l['’])\s+",
-        "",
-        right,
-        flags=re.I,
-    )
-
-    words = re.split(
-        r"\s+",
-        right.strip(),
-    )
-
-    kept: list[str] = []
-
-    for word in words:
-        n = normalize(word)
-
-        if not n:
-            continue
-
-        if n in NOISE_WORDS:
-            break
-
-        if len(kept) >= 4:
-            break
-
-        kept.append(word)
-
-    return " ".join(kept).strip()
-
-
-def extract_match_sides(
-    title: str,
-    teams: list[dict[str, Any]],
-) -> tuple[str, str, dict[str, Any]] | None:
-    explicit = split_explicit_match(title)
-
-    score = score_from_title(title)
-
-    if explicit:
-        left, right = explicit
-
-        left_hits = get_configured_hits(
-            left,
-            teams,
-        )
-
-        right_hits = get_configured_hits(
-            right,
-            teams,
-        )
-
-        if left_hits or right_hits:
-            return (
-                left,
-                right,
-                {
-                    "score": (
-                        score[2]
-                        if score
-                        else None
-                    ),
-                    "confidence": "high",
-                },
-            )
-
-    text = html.unescape(title or "")
-
-    for relation in NATURAL_RELATION_RE.finditer(text):
-        before = text[:relation.start()]
-        after = extract_opponent_after_relation(
-            text,
-            relation,
-        )
-
-        before_hits = get_configured_hits(
-            before,
-            teams,
-        )
-
-        after_hits = get_configured_hits(
-            after,
-            teams,
-        )
-
-        # "Le Bayern ... sur Schalke".
-        if before_hits and after and not after_hits:
-            return (
-                before,
-                after,
-                {
-                    "score": (
-                        score[2]
-                        if score
-                        else None
-                    ),
-                    "confidence": "high",
-                },
-            )
-
-        # Reverse or less common phrasing.
-        if after_hits and before:
-            return (
-                before,
-                after,
-                {
-                    "score": (
-                        score[2]
-                        if score
-                        else None
-                    ),
-                    "confidence": "medium",
-                },
-            )
-
-    return None
-
-
-def team_from_side(
-    side: str,
-    teams: list[dict[str, Any]],
-) -> dict[str, Any] | None:
-    hits = get_configured_hits(
-        side,
-        teams,
-    )
-
-    if hits:
-        return hits[0]
-
-    return None
-
-
-def opponent_label(
-    side: str,
-    teams: list[dict[str, Any]],
-) -> str:
-    value = html.unescape(side or "")
-
-    value = re.sub(
-        r"^\s*(?:(?:le|la|les)\s+)?"
-        r"résumé(?:\s+de)?\s*[:|-]?\s*",
-        "",
-        value,
-        flags=re.I,
-    )
-
-    value = re.sub(
-        r"^\s*(?:match\s+)?highlights?"
-        r"\s*[-:–—|]+\s*",
-        "",
-        value,
-        flags=re.I,
-    )
-
-    value = re.split(
-        r"\s*[|•·]\s*",
-        value,
-        maxsplit=1,
-    )[0]
-
-    value = re.split(
-        r"\s+[-–—:]\s+"
-        r"(?=(?:premier|ligue|bundesliga|la\s+liga|"
-        r"champions|europa|conference|troph|coupe|club)\b)",
-        value,
-        maxsplit=1,
-        flags=re.I,
-    )[0]
-
-    for team in teams:
-        for alias in team_patterns(team):
-            value = re.sub(
-                r"(?<![A-Za-z0-9])"
-                + re.escape(alias)
-                + r"(?![A-Za-z0-9])",
-                " ",
-                value,
-                flags=re.I,
-            )
-
-    words = re.split(
-        r"\s+",
-        value.strip(),
-    )
-
-    kept: list[str] = []
-
-    for word in words:
-        if normalize(word) in NOISE_WORDS:
-            break
-
-        if len(kept) >= 4:
-            break
-
-        if word:
-            kept.append(
-                word.strip(
-                    ".,!?;:()[]{}"
-                )
-            )
-
-    value = re.sub(
-        r"\s+",
-        " ",
-        " ".join(kept),
-    ).strip(" -–—:|")
-
-    if value.isupper():
-        value = value.title()
-
-    return value[:80]
-
-
-def competition_from_title(
-    title: str,
-) -> str | None:
-    for competition in COMPETITIONS:
-        if contains_term(
-            title,
-            competition,
-        ):
-            return (
-                competition
-                .replace(
-                    "trophee",
-                    "trophée",
-                )
-                .title()
-            )
-
-    return None
-
-
-def title_has_excluded_keyword(
-    title: str,
-    exclude_keywords: list[str],
-) -> list[str]:
-    return [
-        keyword
-        for keyword in exclude_keywords
-        if contains_term(
-            title,
-            keyword,
-        )
-    ]
-
-
-def looks_like_possible_match_title(
+def title_candidate_for_metadata(
     title: str,
 ) -> bool:
-    norm = normalize(title)
-
-    return bool(
-        SCORE_RE.search(title)
-        or PAIR_RE.search(title)
-        or HYPHEN_PAIR_RE.search(title)
-        or NATURAL_RELATION_RE.search(title)
-        or any(
-            word in norm
-            for word in (
-                "highlights",
-                "resume",
-                "resumé",
-                "recap",
-                "goals",
-                "buts",
-            )
-        )
-    )
-
-
-def analyze_video(
-    video: dict[str, Any],
-    app: dict[str, Any],
-    teams: list[dict[str, Any]],
-) -> tuple[bool, dict[str, Any]]:
-    title = html.unescape(
-        video.get("title") or ""
-    )
-
-    summary_keywords = (
-        app.get("summary_keywords")
-        or sorted(SUMMARY_FALLBACK)
-    )
-
-    exclude_keywords = (
-        app.get("exclude_keywords")
-        or sorted(EXCLUDE_FALLBACK)
-    )
-
-    excluded = title_has_excluded_keyword(
-        title,
-        exclude_keywords,
-    )
-
-    if excluded:
-        return False, {
-            "reason": "excluded keyword",
-            "excluded_keywords": excluded,
-        }
-
-    configured_hits = get_configured_hits(
-        title,
-        teams,
-    )
-
-    sides = extract_match_sides(
-        title,
-        teams,
-    )
-
-    if not sides or not configured_hits:
-        return False, {
-            "reason": "no two-sided match evidence",
-            "excluded_keywords": [],
-        }
-
-    left, right, side_meta = sides
-
-    left_team = team_from_side(
-        left,
-        teams,
-    )
-
-    right_team = team_from_side(
-        right,
-        teams,
-    )
-
-    if not left_team and not right_team:
-        return False, {
-            "reason": "configured team not in match side",
-            "excluded_keywords": [],
-        }
-
-    title_summary = any(
-        contains_term(
-            title,
-            keyword,
-        )
-        for keyword in summary_keywords
-    )
-
-    score = score_from_title(title)
-
-    relation_evidence = (
-        side_meta.get("confidence")
-        in {"high", "medium"}
-    )
-
-    if not (
-        title_summary
-        or score
-        or relation_evidence
-    ):
-        return False, {
-            "reason": "not enough summary evidence",
-            "excluded_keywords": [],
-        }
-
-    home = {
-        "id": (
-            left_team["id"]
-            if left_team
-            else None
-        ),
-        "name": (
-            left_team["name"]
-            if left_team
-            else opponent_label(
-                left,
-                teams,
-            )
-        ),
-        "followed": bool(left_team),
-    }
-
-    away = {
-        "id": (
-            right_team["id"]
-            if right_team
-            else None
-        ),
-        "name": (
-            right_team["name"]
-            if right_team
-            else opponent_label(
-                right,
-                teams,
-            )
-        ),
-        "followed": bool(right_team),
-    }
-
-    if not home["name"] or not away["name"]:
-        return False, {
-            "reason": "could not identify both sides",
-            "excluded_keywords": [],
-        }
-
-    match_date = None
-
-    date_match = DATE_RE.search(title)
-
-    if date_match:
-        try:
-            match_date = datetime(
-                int(date_match.group(1)),
-                int(date_match.group(2)),
-                int(date_match.group(3)),
-                tzinfo=timezone.utc,
-            ).isoformat()
-        except ValueError:
-            match_date = None
-
-    score_text = (
-        score[2]
-        if score
-        else None
-    )
-
-    competition = competition_from_title(
+    norm = normalize(
         title
     )
 
-    title_for_display = (
-        f"{home['name']} vs {away['name']}"
+    if not norm:
+        return False
+
+    has_summary_word = any(
+        token in norm
+        for token in (
+            "highlight",
+            "resume",
+            "recap",
+            "goal",
+            "goals",
+            "buts",
+            "match",
+        )
     )
 
-    if score_text:
-        title_for_display = (
-            f"{home['name']} "
-            f"{score_text} "
-            f"{away['name']}"
+    has_match_separator = bool(
+        EXPLICIT_SEPARATOR_RE.search(
+            title
         )
+    )
 
-    followed_ids = [
-        team["id"]
-        for team in (
-            left_team,
-            right_team,
-        )
-        if team
+    has_score = bool(
+        SCORE_RE.search(title)
+    )
+
+    has_relation = bool(
+        RELATION_RE.search(title)
+    )
+
+    return (
+        has_summary_word
+        or has_match_separator
+        or has_score
+        or has_relation
+    )
+
+
+def fetch_video_details(
+    video_id: str,
+) -> dict[str, Any]:
+    url = (
+        "https://www.youtube.com/"
+        "watch?v="
+        f"{video_id}"
+    )
+
+    command = [
+        "yt-dlp",
+        "--dump-single-json",
+        "--no-playlist",
+        "--no-warnings",
+        "--ignore-errors",
+        url,
     ]
 
-    if not followed_ids:
-        return False, {
-            "reason": "no followed team",
-            "excluded_keywords": [],
-        }
+    process = subprocess.run(
+        command,
+        capture_output=True,
+        text=True,
+        timeout=35,
+    )
 
-    opponent = ""
+    if (
+        process.returncode != 0
+        or not process.stdout.strip()
+    ):
+        return {}
 
-    if left_team and not right_team:
-        opponent = away["name"]
+    try:
+        payload = json.loads(
+            process.stdout
+        )
+    except json.JSONDecodeError:
+        return {}
 
-    elif right_team and not left_team:
-        opponent = home["name"]
-
-    canonical_pair = "|".join(
-        sorted(
-            followed_ids
-            + (
-                [slug(opponent)]
-                if opponent
-                else []
+    return {
+        "published_at": (
+            parse_date(
+                payload.get(
+                    "release_timestamp"
+                )
             )
-        )
-    )
-
-    key_parts = [
-        canonical_pair or "unknown",
-        slug(competition or "football"),
-        score_text or "noscore",
-    ]
-
-    match_key = "|".join(key_parts)
-
-    if left_team and right_team:
-        match_key = "|".join(
-            [
-                "teams",
-                "+".join(
-                    sorted(
-                        [
-                            left_team["id"],
-                            right_team["id"],
-                        ]
-                    )
-                ),
-                slug(
-                    competition
-                    or "football"
-                ),
-                score_text
-                or "noscore",
-            ]
-        )
-
-    meta = {
-        "match_key": match_key,
-        "match_title": title_for_display,
-        "home_team": home,
-        "away_team": away,
-        "score": score_text,
-        "competition": competition,
-        "match_date": match_date,
-        "team_ids": followed_ids,
-        "confidence": side_meta.get(
-            "confidence",
-            "medium",
+            or parse_date(
+                payload.get(
+                    "timestamp"
+                )
+            )
+            or parse_date(
+                payload.get(
+                    "upload_date"
+                )
+            )
         ),
-        "reason": "two-sided match detected",
-        "summary_keywords": [
-            keyword
-            for keyword in summary_keywords
-            if contains_term(
-                title,
-                keyword,
+        "updated_at": None,
+        "description": (
+            payload.get(
+                "description"
             )
-        ],
-        "excluded_keywords": [],
+            or ""
+        ),
+        "thumbnail": (
+            payload.get(
+                "thumbnail"
+            )
+        ),
+        "url": (
+            payload.get(
+                "webpage_url"
+            )
+            or url
+        ),
+        "source_channel_id": (
+            payload.get(
+                "channel_id"
+            )
+            or ""
+        ),
     }
 
-    return True, meta
 
-
-def enrich_video(
-    video: dict[str, Any],
-    app: dict[str, Any],
-    teams: list[dict[str, Any]],
-) -> dict[str, Any] | None:
-    ok, meta = analyze_video(
-        video,
-        app,
-        teams,
-    )
-
-    if not ok:
-        return None
-
-    result = dict(video)
-
-    result["is_summary"] = True
-    result["match_key"] = meta[
-        "match_key"
-    ]
-    result["match_title"] = meta[
-        "match_title"
-    ]
-    result["home_team"] = meta[
-        "home_team"
-    ]
-    result["away_team"] = meta[
-        "away_team"
-    ]
-    result["score"] = meta[
-        "score"
-    ]
-    result["competition"] = meta[
-        "competition"
-    ]
-    result["match_date"] = meta[
-        "match_date"
-    ]
-
-    result["teams"] = [
-        {
-            "id": meta[side]["id"],
-            "name": meta[side]["name"],
-        }
-        for side in (
-            "home_team",
-            "away_team",
+def enrich_missing_metadata(
+    videos: list[dict[str, Any]],
+    maximum: int = 45,
+) -> list[dict[str, Any]]:
+    candidates = [
+        video
+        for video in videos
+        if title_candidate_for_metadata(
+            video.get(
+                "title",
+                "",
+            )
         )
-        if meta[side]["id"] is not None
     ]
 
-    result["match_confidence"] = meta[
-        "confidence"
-    ]
+    # Prioritize videos which could actually be displayed.
+    candidates = candidates[:maximum]
 
-    result["match_reason"] = meta[
-        "reason"
-    ]
-
-    result["summary_keywords"] = meta[
-        "summary_keywords"
-    ]
-
-    result["excluded_keywords"] = []
-
-    if not result.get("published_at"):
-        result["published_at"] = (
-            result.get("updated_at")
+    for index, video in enumerate(
+        candidates,
+        start=1,
+    ):
+        needs_date = not video.get(
+            "published_at"
         )
 
-    return result
+        if not needs_date:
+            continue
+
+        details = fetch_video_details(
+            video["id"]
+        )
+
+        if not details:
+            continue
+
+        for key, value in details.items():
+            if value not in (
+                None,
+                "",
+            ):
+                video[key] = value
+
+        # Keep GitHub Actions from hammering YouTube.
+        if index < len(candidates):
+            time.sleep(0.25)
+
+    return videos
 
 
 def extract_source_videos(
     source: dict[str, Any],
     limit: int,
-) -> tuple[list[dict[str, Any]], str]:
+) -> tuple[
+    list[dict[str, Any]],
+    str,
+]:
     ytdlp_error = ""
 
     try:
-        videos = fetch_with_ytdlp(
+        videos = fetch_playlist_with_ytdlp(
             source,
             limit,
         )
 
         if videos:
-            return videos, "yt-dlp"
+            return (
+                videos,
+                "yt-dlp",
+            )
 
     except Exception as exc:
         ytdlp_error = str(exc)
@@ -1542,29 +1082,1072 @@ def extract_source_videos(
     feed_url = (
         "https://www.youtube.com/"
         "feeds/videos.xml"
-        f"?channel_id={channel_id}"
+        "?channel_id="
+        f"{channel_id}"
     )
 
-    xml = fetch(feed_url)
+    xml = fetch(
+        feed_url,
+        timeout=30,
+    )
 
     return (
-        parse_feed(
+        parse_atom_feed(
             xml,
             source,
-            min(limit, 15),
             channel_id,
+            min(
+                limit,
+                15,
+            ),
         ),
         "atom",
     )
 
 
-def empty_output() -> dict[str, Any]:
+# ---------------------------------------------------------------------------
+# Team detection
+# ---------------------------------------------------------------------------
+
+
+def team_aliases(
+    team: dict[str, Any],
+) -> list[str]:
+    values = [
+        team.get(
+            "name",
+            "",
+        )
+    ]
+
+    values.extend(
+        team.get(
+            "aliases",
+            []
+        )
+        or []
+    )
+
+    result = []
+
+    for value in values:
+        if value:
+            result.append(
+                str(value)
+            )
+
+    return result
+
+
+def team_hits_in_text(
+    text: str,
+    teams: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    hits = []
+
+    for team in teams:
+        for alias in team_aliases(
+            team
+        ):
+            if contains_term(
+                text,
+                alias,
+            ):
+                hits.append(
+                    {
+                        "id": team["id"],
+                        "name": team["name"],
+                        "alias": alias,
+                    }
+                )
+                break
+
+    return hits
+
+
+def strip_team_names(
+    text: str,
+    teams: list[dict[str, Any]],
+) -> str:
+    value = text or ""
+
+    for team in teams:
+        for alias in team_aliases(
+            team
+        ):
+            value = re.sub(
+                r"(?<![A-Za-z0-9])"
+                + re.escape(alias)
+                + r"(?![A-Za-z0-9])",
+                " ",
+                value,
+                flags=re.IGNORECASE,
+            )
+
+    return value
+
+
+def clean_side_text(
+    text: str,
+    teams: list[dict[str, Any]],
+) -> str:
+    value = html.unescape(
+        text or ""
+    )
+
+    value = re.sub(
+        r"^\s*(?:le|la|les|l['’])?\s*"
+        r"(?:résumé|resume|highlights?|recap)"
+        r"\s*(?:de|du|des|of)?\s*"
+        r"[:\-–—|]?\s*",
+        "",
+        value,
+        flags=re.IGNORECASE,
+    )
+
+    value = re.sub(
+        r"\([^)]*\)",
+        " ",
+        value,
+    )
+
+    value = re.split(
+        r"\s*[|•·]\s*",
+        value,
+        maxsplit=1,
+    )[0]
+
+    value = SCORE_RE.sub(
+        " ",
+        value,
+    )
+
+    # Remove obvious competition suffixes.
+    value = re.split(
+        r"\s+-\s+(?="
+        r"(?:premier|ligue|bundesliga|la\s+liga|"
+        r"champions|europa|conference|trophee|"
+        r"trophée|coupe|club|league)\b)",
+        value,
+        maxsplit=1,
+        flags=re.IGNORECASE,
+    )[0]
+
+    return re.sub(
+        r"\s+",
+        " ",
+        value,
+    ).strip(
+        " -–—:|"
+    )
+
+
+def looks_like_generic_non_team(
+    text: str,
+) -> bool:
+    words = normalize(
+        text
+    ).split()
+
+    if not words:
+        return True
+
+    if len(words) > 5:
+        return True
+
+    if all(
+        word in GENERIC_NON_TEAM_WORDS
+        for word in words
+    ):
+        return True
+
+    if len(words) == 1:
+        return (
+            words[0]
+            in GENERIC_NON_TEAM_WORDS
+        )
+
+    return False
+
+
+def extract_score(
+    title: str,
+) -> str | None:
+    match = SCORE_RE.search(
+        title
+    )
+
+    if not match:
+        return None
+
+    return (
+        f"{match.group(1)}-"
+        f"{match.group(2)}"
+    )
+
+
+def extract_explicit_sides(
+    title: str,
+) -> tuple[str, str] | None:
+    text = html.unescape(
+        title or ""
+    )
+
+    # Scores should be removed only after finding
+    # the sides around the score.
+    score_match = SCORE_RE.search(
+        text
+    )
+
+    if score_match:
+        left = text[
+            :score_match.start()
+        ]
+
+        right = text[
+            score_match.end():]
+        
+        # Don't let the competition become the opponent.
+        right = re.split(
+            r"\s*[|•·]\s*",
+            right,
+            maxsplit=1,
+        )[0]
+
+        right = re.split(
+            r"\s+-\s+(?="
+            r"(?:premier|ligue|bundesliga|la\s+liga|"
+            r"champions|europa|conference|trophee|"
+            r"trophée|coupe|club|league)\b)",
+            right,
+            maxsplit=1,
+            flags=re.IGNORECASE,
+        )[0]
+
+        # For score titles, this is a high-value signal.
+        if left.strip() and right.strip():
+            return (
+                left.strip(),
+                right.strip(),
+            )
+
+    separators = list(
+        EXPLICIT_SEPARATOR_RE.finditer(
+            text
+        )
+    )
+
+    if not separators:
+        return None
+
+    # Prefer the last explicit separator:
+    # "Résumé de Arsenal / Chelsea - Premier League"
+    separator = separators[-1]
+
+    left = text[
+        :separator.start()
+    ]
+
+    right = text[
+        separator.end():]
+
+    right = re.split(
+        r"\s*[|•·]\s*",
+        right,
+        maxsplit=1,
+    )[0]
+
+    right = re.split(
+        r"\s+-\s+(?="
+        r"(?:premier|ligue|bundesliga|la\s+liga|"
+        r"champions|europa|conference|trophee|"
+        r"trophée|coupe|club|league)\b)",
+        right,
+        maxsplit=1,
+        flags=re.IGNORECASE,
+    )[0]
+
+    if not left.strip() or not right.strip():
+        return None
+
+    return (
+        left.strip(),
+        right.strip(),
+    )
+
+
+def extract_natural_sides(
+    title: str,
+    teams: list[dict[str, Any]],
+) -> tuple[str, str] | None:
+    text = html.unescape(
+        title or ""
+    )
+
+    configured_hits = (
+        team_hits_in_text(
+            text,
+            teams,
+        )
+    )
+
+    if not configured_hits:
+        return None
+
+    # We explicitly ignore "sur" in contexts like
+    # "double le Bayern sur le classement".
+    for relation in RELATION_RE.finditer(
+        text
+    ):
+        before = text[
+            :relation.start()
+        ]
+
+        after = text[
+            relation.end():]
+
+        before_hits = (
+            team_hits_in_text(
+                before,
+                teams,
+            )
+        )
+
+        # At least one configured team must be before
+        # the relation. This avoids a random context mention.
+        if not before_hits:
+            continue
+
+        after = re.split(
+            r"\s*[|•·]",
+            after,
+            maxsplit=1,
+        )[0]
+
+        after = re.split(
+            r"[!?.,]",
+            after,
+            maxsplit=1,
+        )[0]
+
+        after = re.sub(
+            r"^\s*(?:un|une|le|la|les|l['’])\s+",
+            "",
+            after,
+            flags=re.IGNORECASE,
+        )
+
+        words = after.split()
+
+        kept = []
+
+        for word in words:
+            clean_word = word.strip(
+                ".,!?;:()[]{}"
+            )
+
+            norm_word = normalize(
+                clean_word
+            )
+
+            if not norm_word:
+                continue
+
+            if (
+                norm_word
+                in GENERIC_NON_TEAM_WORDS
+            ):
+                break
+
+            if len(kept) >= 4:
+                break
+
+            kept.append(
+                clean_word
+            )
+
+        opponent = " ".join(
+            kept
+        ).strip()
+
+        if not opponent:
+            continue
+
+        if looks_like_generic_non_team(
+            opponent
+        ):
+            continue
+
+        if any(
+            contains_term(
+                opponent,
+                team_alias,
+            )
+            for configured in teams
+            for team_alias in team_aliases(
+                configured
+            )
+        ):
+            # If it literally contains a configured team,
+            # it's a stronger case.
+            return (
+                before.strip(),
+                opponent,
+            )
+
+        # Natural-language article title:
+        # "Le Bayern s'impose sur Schalke"
+        if (
+            any(
+                verb in normalize(
+                    before
+                )
+                for verb in MATCH_VERBS
+            )
+            or len(kept) >= 1
+        ):
+            return (
+                before.strip(),
+                opponent,
+            )
+
+    return None
+
+
+def identify_match_sides(
+    title: str,
+    teams: list[dict[str, Any]],
+) -> tuple[
+    str,
+    str,
+    str | None,
+] | None:
+    explicit = extract_explicit_sides(
+        title
+    )
+
+    if explicit:
+        left, right = explicit
+
+        left_clean = clean_side_text(
+            left,
+            teams,
+        )
+
+        right_clean = clean_side_text(
+            right,
+            teams,
+        )
+
+        left_hits = team_hits_in_text(
+            left,
+            teams,
+        )
+
+        right_hits = team_hits_in_text(
+            right,
+            teams,
+        )
+
+        if not left_hits and not right_hits:
+            return None
+
+        # Reject obvious garbage such as:
+        # "PSG vs Ligue"
+        if (
+            looks_like_generic_non_team(
+                left_clean
+            )
+            or looks_like_generic_non_team(
+                right_clean
+            )
+        ):
+            return None
+
+        return (
+            left_clean,
+            right_clean,
+            "high",
+        )
+
+    natural = extract_natural_sides(
+        title,
+        teams,
+    )
+
+    if natural:
+        left, right = natural
+
+        left_clean = clean_side_text(
+            left,
+            teams,
+        )
+
+        right_clean = clean_side_text(
+            right,
+            teams,
+        )
+
+        if (
+            looks_like_generic_non_team(
+                right_clean
+            )
+        ):
+            return None
+
+        return (
+            left_clean,
+            right_clean,
+            "medium",
+        )
+
+    return None
+
+
+def team_from_side(
+    side: str,
+    teams: list[dict[str, Any]],
+) -> dict[str, Any] | None:
+    hits = team_hits_in_text(
+        side,
+        teams,
+    )
+
+    if not hits:
+        return None
+
     return {
-        "generated_at": None,
-        "source_status": [],
-        "videos": [],
-        "matches": [],
+        "id": hits[0]["id"],
+        "name": hits[0]["name"],
     }
+
+
+def clean_opponent_name(
+    side: str,
+    teams: list[dict[str, Any]],
+) -> str:
+    value = strip_team_names(
+        side,
+        teams,
+    )
+
+    value = re.sub(
+        r"\b(?:le|la|les|l['’]|un|une|the)\b",
+        " ",
+        value,
+        flags=re.IGNORECASE,
+    )
+
+    value = re.sub(
+        r"\b(?:qui|se|s|de|du|des|avec|pour|dans|sur|face|contre)\b",
+        " ",
+        value,
+        flags=re.IGNORECASE,
+    )
+
+    words = []
+
+    for word in value.split():
+        normalized_word = normalize(
+            word
+        )
+
+        if (
+            normalized_word
+            in GENERIC_NON_TEAM_WORDS
+        ):
+            break
+
+        if len(words) >= 4:
+            break
+
+        words.append(
+            word.strip(
+                ".,!?;:()[]{}"
+            )
+        )
+
+    value = re.sub(
+        r"\s+",
+        " ",
+        " ".join(words),
+    ).strip()
+
+    if not value:
+        return ""
+
+    # Preserve common capitalization from source,
+    # but avoid shouting.
+    if value.isupper():
+        value = value.title()
+
+    return value[:80]
+
+
+# ---------------------------------------------------------------------------
+# Match / summary classification
+# ---------------------------------------------------------------------------
+
+
+def find_competition(
+    title: str,
+) -> str | None:
+    normalized = normalize(
+        title
+    )
+
+    for competition in sorted(
+        COMPETITIONS,
+        key=len,
+        reverse=True,
+    ):
+        if (
+            normalize(
+                competition
+            )
+            in normalized
+        ):
+            return (
+                competition
+                .replace(
+                    "trophee",
+                    "trophée",
+                )
+                .title()
+            )
+
+    return None
+
+
+def summary_keywords_found(
+    text: str,
+    keywords: list[str],
+) -> list[str]:
+    return [
+        keyword
+        for keyword in keywords
+        if contains_term(
+            text,
+            keyword,
+        )
+    ]
+
+
+def excluded_keywords_found(
+    text: str,
+    keywords: list[str],
+) -> list[str]:
+    return [
+        keyword
+        for keyword in keywords
+        if contains_term(
+            text,
+            keyword,
+        )
+    ]
+
+
+def title_contains_context_pattern(
+    title: str,
+) -> bool:
+    normalized = normalize(
+        title
+    )
+
+    return any(
+        phrase in normalized
+        for phrase in (
+            normalize(pattern)
+            for pattern in CONTEXT_PATTERNS
+        )
+    )
+
+
+def classify_video(
+    video: dict[str, Any],
+    app: dict[str, Any],
+    teams: list[dict[str, Any]],
+) -> dict[str, Any] | None:
+    title = html.unescape(
+        video.get(
+            "title",
+            "",
+        )
+        or ""
+    )
+
+    description = html.unescape(
+        video.get(
+            "description",
+            "",
+        )
+        or ""
+    )
+
+    text = (
+        f"{title}\n{description}"
+    )
+
+    summary_keywords = (
+        app.get(
+            "summary_keywords"
+        )
+        or sorted(
+            SUMMARY_FALLBACK
+        )
+    )
+
+    exclude_keywords = (
+        app.get(
+            "exclude_keywords"
+        )
+        or sorted(
+            EXCLUDE_FALLBACK
+        )
+    )
+
+    excluded = (
+        excluded_keywords_found(
+            title,
+            exclude_keywords,
+        )
+    )
+
+    # We intentionally inspect the title first.
+    # A description may contain unrelated channel metadata.
+    if excluded:
+        return None
+
+    title_team_hits = (
+        team_hits_in_text(
+            title,
+            teams,
+        )
+    )
+
+    if not title_team_hits:
+        return None
+
+    summary_matches = (
+        summary_keywords_found(
+            title,
+            summary_keywords,
+        )
+    )
+
+    score = extract_score(
+        title
+    )
+
+    sides = identify_match_sides(
+        title,
+        teams,
+    )
+
+    if not sides:
+        return None
+
+    left,
+    right,
+    confidence = sides
+
+    left_team = team_from_side(
+        left,
+        teams,
+    )
+
+    right_team = team_from_side(
+        right,
+        teams,
+    )
+
+    # One of the two sides MUST be a followed team.
+    if not left_team and not right_team:
+        return None
+
+    # This rejects "FERRAN TORRES reveals his GOALS with PSG"
+    # because there isn't a real two-sided match.
+    if (
+        not summary_matches
+        and not score
+        and confidence != "high"
+    ):
+        return None
+
+    # Additional guard against contextual team mentions.
+    if (
+        len(title_team_hits) == 1
+        and title_contains_context_pattern(
+            title
+        )
+    ):
+        # Explicit two-sided match wins.
+        if confidence != "high":
+            return None
+
+    home_name = (
+        left_team["name"]
+        if left_team
+        else clean_opponent_name(
+            left,
+            teams,
+        )
+    )
+
+    away_name = (
+        right_team["name"]
+        if right_team
+        else clean_opponent_name(
+            right,
+            teams,
+        )
+    )
+
+    if not home_name or not away_name:
+        return None
+
+    if (
+        normalize(
+            home_name
+        )
+        == normalize(
+            away_name
+        )
+    ):
+        return None
+
+    team_ids = []
+
+    if left_team:
+        team_ids.append(
+            left_team["id"]
+        )
+
+    if right_team:
+        team_ids.append(
+            right_team["id"]
+        )
+
+    team_ids = sorted(
+        set(team_ids)
+    )
+
+    # There must be at least one followed team.
+    if not team_ids:
+        return None
+
+    competition = find_competition(
+        title
+    )
+
+    match_date = None
+
+    date_match = DATE_RE.search(
+        title
+    )
+
+    if date_match:
+        try:
+            match_date = datetime(
+                int(
+                    date_match.group(
+                        1
+                    )
+                ),
+                int(
+                    date_match.group(
+                        2
+                    )
+                ),
+                int(
+                    date_match.group(
+                        3
+                    )
+                ),
+                tzinfo=timezone.utc,
+            ).isoformat()
+        except ValueError:
+            match_date = None
+
+    # If the title doesn't contain a date,
+    # use the YouTube publication timestamp as
+    # a fallback for display and retention.
+    published_at = (
+        parse_date(
+            video.get(
+                "published_at"
+            )
+        )
+        or parse_date(
+            video.get(
+                "updated_at"
+            )
+        )
+    )
+
+    score_text = score
+
+    # Stable opponent fingerprint.
+    if left_team:
+        opponent = away_name
+    else:
+        opponent = home_name
+
+    followed_pair = "+".join(
+        sorted(team_ids)
+    )
+
+    opponent_fingerprint = slug(
+        opponent
+    )
+
+    pair_ids = sorted(
+        [
+            left_team["id"]
+            if left_team
+            else f"opponent:{opponent_fingerprint}",
+            right_team["id"]
+            if right_team
+            else f"opponent:{opponent_fingerprint}",
+        ]
+    )
+
+    # We use both teams whenever both are followed.
+    # Otherwise we use followed team + opponent.
+    match_key = "|".join(
+        [
+            "match",
+            "+".join(
+                pair_ids
+            ),
+            slug(
+                competition
+                or "football"
+            ),
+            score_text
+            or "noscore",
+        ]
+    )
+
+    # Human friendly title.
+    if score_text:
+        match_title = (
+            f"{home_name} "
+            f"{score_text} "
+            f"{away_name}"
+        )
+    else:
+        match_title = (
+            f"{home_name} vs "
+            f"{away_name}"
+        )
+
+    return {
+        "match_key": match_key,
+        "match_title": match_title,
+        "home_team": {
+            "id": (
+                left_team["id"]
+                if left_team
+                else None
+            ),
+            "name": home_name,
+            "followed": bool(
+                left_team
+            ),
+        },
+        "away_team": {
+            "id": (
+                right_team["id"]
+                if right_team
+                else None
+            ),
+            "name": away_name,
+            "followed": bool(
+                right_team
+            ),
+        },
+        "score": score_text,
+        "competition": competition,
+        "match_date": (
+            match_date
+            or published_at
+        ),
+        "team_ids": team_ids,
+        "confidence": confidence,
+        "summary_keywords": summary_matches,
+        "excluded_keywords": [],
+    }
+
+
+def enrich_video(
+    video: dict[str, Any],
+    app: dict[str, Any],
+    teams: list[dict[str, Any]],
+) -> dict[str, Any] | None:
+    metadata = classify_video(
+        video,
+        app,
+        teams,
+    )
+
+    if metadata is None:
+        return None
+
+    result = dict(
+        video
+    )
+
+    result["is_summary"] = True
+    result["match_key"] = (
+        metadata["match_key"]
+    )
+    result["match_title"] = (
+        metadata["match_title"]
+    )
+    result["home_team"] = (
+        metadata["home_team"]
+    )
+    result["away_team"] = (
+        metadata["away_team"]
+    )
+    result["score"] = (
+        metadata["score"]
+    )
+    result["competition"] = (
+        metadata["competition"]
+    )
+    result["match_date"] = (
+        metadata["match_date"]
+    )
+    result["teams"] = []
+
+    for side in (
+        metadata["home_team"],
+        metadata["away_team"],
+    ):
+        if side.get("id"):
+            result["teams"].append(
+                {
+                    "id": side["id"],
+                    "name": side["name"],
+                }
+            )
+
+    result["match_confidence"] = (
+        metadata["confidence"]
+    )
+    result["summary_keywords"] = (
+        metadata["summary_keywords"]
+    )
+    result["excluded_keywords"] = []
+
+    return result
+
+
+# ---------------------------------------------------------------------------
+# Persistence / grouping
+# ---------------------------------------------------------------------------
 
 
 def load_existing() -> dict[str, Any]:
@@ -1576,15 +2159,30 @@ def load_existing() -> dict[str, Any]:
             "r",
             encoding="utf-8",
         ) as fh:
-            value = json.load(fh)
+            value = json.load(
+                fh
+            )
+
+        if not isinstance(
+            value,
+            dict,
+        ):
+            return empty_output()
 
         value.setdefault(
             "videos",
             [],
         )
-
         value.setdefault(
             "matches",
+            [],
+        )
+        value.setdefault(
+            "source_status",
+            [],
+        )
+        value.setdefault(
+            "teams",
             [],
         )
 
@@ -1597,9 +2195,45 @@ def load_existing() -> dict[str, Any]:
         return empty_output()
 
 
+def is_recent_enough(
+    published_at: str | None,
+    cutoff: datetime,
+) -> bool:
+    if not published_at:
+        # Keep undated items for the current run.
+        return True
+
+    try:
+        dt = datetime.fromisoformat(
+            published_at.replace(
+                "Z",
+                "+00:00",
+            )
+        )
+
+        if dt.tzinfo is None:
+            dt = dt.replace(
+                tzinfo=timezone.utc
+            )
+
+        return (
+            dt.astimezone(
+                timezone.utc
+            )
+            >= cutoff
+        )
+
+    except ValueError:
+        return True
+
+
 def build_matches(
-    videos: list[dict[str, Any]],
-) -> list[dict[str, Any]]:
+    videos: list[
+        dict[str, Any]
+    ],
+) -> list[
+    dict[str, Any]
+]:
     groups: dict[
         str,
         list[dict[str, Any]],
@@ -1607,21 +2241,29 @@ def build_matches(
 
     for video in videos:
         key = (
-            video.get("match_key")
-            or video.get("id")
+            video.get(
+                "match_key"
+            )
+            or video.get(
+                "id"
+            )
         )
 
         groups.setdefault(
             key,
             [],
-        ).append(video)
+        ).append(
+            video
+        )
 
-    matches: list[dict[str, Any]] = []
+    matches = []
 
-    for key, items in groups.items():
+    for match_key, items in groups.items():
         items.sort(
-            key=lambda video: (
-                video.get("published_at")
+            key=lambda item: (
+                item.get(
+                    "published_at"
+                )
                 or ""
             ),
             reverse=True,
@@ -1629,54 +2271,81 @@ def build_matches(
 
         first = items[0]
 
-        team_ids = sorted(
-            {
-                team["id"]
-                for video in items
-                for team in (
-                    video.get("teams")
-                    or []
-                )
-                if team.get("id")
-            }
-        )
+        team_map: dict[
+            str,
+            str,
+        ] = {}
 
-        team_names = []
-
-        seen_names = set()
-
-        for video in items:
+        for item in items:
             for team in (
-                video.get("teams")
+                item.get(
+                    "teams"
+                )
                 or []
             ):
-                team_id = team.get(
-                    "id"
-                )
-
-                team_name = team.get(
-                    "name"
-                )
-
-                if (
-                    team_name
-                    and team_id not in seen_names
-                ):
-                    team_names.append(
-                        team_name
+                if team.get("id"):
+                    team_map[
+                        team["id"]
+                    ] = team.get(
+                        "name",
+                        team["id"],
                     )
-                    seen_names.add(
-                        team_id
-                    )
+
+        sources = {}
+        for item in items:
+            source_id = item.get(
+                "source_id"
+            )
+
+            if source_id:
+                sources[
+                    source_id
+                ] = {
+                    "id": source_id,
+                    "name": item.get(
+                        "source_name",
+                        source_id,
+                    ),
+                }
+
+        match_date_values = [
+            item.get(
+                "match_date"
+            )
+            or item.get(
+                "published_at"
+            )
+            for item in items
+            if (
+                item.get(
+                    "match_date"
+                )
+                or item.get(
+                    "published_at"
+                )
+            )
+        ]
+
+        published_values = [
+            item.get(
+                "published_at"
+            )
+            for item in items
+            if item.get(
+                "published_at"
+            )
+        ]
 
         matches.append(
             {
-                "match_key": key,
+                "match_key": match_key,
                 "title": (
                     first.get(
                         "match_title"
                     )
-                    or first.get("title")
+                    or first.get(
+                        "title"
+                    )
                     or "Résumé"
                 ),
                 "home_team": first.get(
@@ -1692,34 +2361,33 @@ def build_matches(
                     "competition"
                 ),
                 "match_date": (
-                    first.get(
-                        "match_date"
+                    min(
+                        match_date_values
                     )
-                    or first.get(
-                        "published_at"
+                    if match_date_values
+                    else None
+                ),
+                "published_at": (
+                    max(
+                        published_values
                     )
+                    if published_values
+                    else None
                 ),
-                "published_at": max(
-                    (
-                        video.get(
-                            "published_at"
-                        )
-                        for video in items
-                        if video.get(
-                            "published_at"
-                        )
-                    ),
-                    default=None,
+                "team_ids": sorted(
+                    team_map.keys()
                 ),
-                "team_ids": team_ids,
-                "team_names": team_names,
+                "team_names": [
+                    team_map[key]
+                    for key in sorted(
+                        team_map
+                    )
+                ],
                 "sources_count": len(
-                    {
-                        video.get(
-                            "source_id"
-                        )
-                        for video in items
-                    }
+                    sources
+                ),
+                "sources": list(
+                    sources.values()
                 ),
                 "videos": items,
             }
@@ -1727,8 +2395,12 @@ def build_matches(
 
     matches.sort(
         key=lambda match: (
-            match.get("match_date")
-            or match.get("published_at")
+            match.get(
+                "match_date"
+            )
+            or match.get(
+                "published_at"
+            )
             or ""
         ),
         reverse=True,
@@ -1737,25 +2409,105 @@ def build_matches(
     return matches
 
 
+def merge_video_records(
+    existing_videos: list[
+        dict[str, Any]
+    ],
+    new_videos: list[
+        dict[str, Any]
+    ],
+    app: dict[str, Any],
+    teams: list[dict[str, Any]],
+) -> list[
+    dict[str, Any]
+]:
+    # Important:
+    # every time we run the collector, we reclassify old
+    # records too. This automatically removes previous false positives.
+    by_id: dict[
+        str,
+        dict[str, Any],
+    ] = {}
+
+    for video in existing_videos:
+        video_id = video.get(
+            "id"
+        )
+
+        if not video_id:
+            continue
+
+        by_id[
+            video_id
+        ] = video
+
+    for video in new_videos:
+        video_id = video.get(
+            "id"
+        )
+
+        if not video_id:
+            continue
+
+        old = by_id.get(
+            video_id,
+            {},
+        )
+
+        merged = {
+            **old,
+            **video,
+        }
+
+        by_id[
+            video_id
+        ] = merged
+
+    retained = []
+
+    for video in by_id.values():
+        enriched = enrich_video(
+            video,
+            app,
+            teams,
+        )
+
+        if enriched:
+            retained.append(
+                enriched
+            )
+
+    return retained
+
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
+
+
 def main() -> int:
-    cfg = load_json(
+    config = load_json(
         CONFIG,
         EXAMPLE,
     )
 
-    app = cfg.get(
+    app = config.get(
         "app",
         {},
     )
 
-    teams = cfg.get(
-        "teams",
-        [],
-    )
+    teams = [
+        team
+        for team in config.get(
+            "teams",
+            [],
+        )
+        if team.get("id")
+    ]
 
     sources = [
         source
-        for source in cfg.get(
+        for source in config.get(
             "sources",
             [],
         )
@@ -1767,36 +2519,11 @@ def main() -> int:
 
     existing = load_existing()
 
-    # Reclassify old records with the new engine.
-    # This automatically removes old false positives.
-    by_video_id: dict[
-        str,
-        dict[str, Any],
-    ] = {}
+    all_new_videos = []
 
-    for old in existing.get(
-        "videos",
-        [],
-    ):
-        enriched = enrich_video(
-            old,
-            app,
-            teams,
-        )
+    statuses = []
 
-        if enriched and enriched.get(
-            "id"
-        ):
-            by_video_id[
-                enriched["id"]
-            ] = enriched
-
-    statuses: list[
-        dict[str, Any]
-    ] = []
-
-    # Always scan a decent history even if config.json
-    # still contains the old value of 15.
+    # We intentionally inspect more than the old 15 videos.
     limit = max(
         60,
         int(
@@ -1807,12 +2534,17 @@ def main() -> int:
         ),
     )
 
+    print(
+        f"Scanning {len(sources)} sources "
+        f"with up to {limit} recent videos/source..."
+    )
+
     for source in sources:
         source_id = source.get(
             "id"
         )
 
-        result = {
+        status = {
             "source_id": source_id,
             "source_name": source.get(
                 "name",
@@ -1825,64 +2557,76 @@ def main() -> int:
         }
 
         try:
-            parsed, method = (
+            videos, method = (
                 extract_source_videos(
                     source,
                     limit,
                 )
             )
 
-            result["method"] = method
-            result["count"] = len(parsed)
+            # Get true publication dates for likely candidates.
+            videos = enrich_missing_metadata(
+                videos,
+                maximum=45,
+            )
 
-            for video in parsed:
-                enriched = enrich_video(
-                    video,
-                    app,
-                    teams,
-                )
+            status["ok"] = True
+            status["count"] = len(
+                videos
+            )
+            status["method"] = method
 
-                if enriched and enriched.get(
-                    "id"
-                ):
-                    enriched["fetched_at"] = (
-                        datetime.now(
-                            timezone.utc
-                        ).isoformat()
-                    )
-
-                    by_video_id[
-                        enriched["id"]
-                    ] = enriched
-
-            result["ok"] = True
+            all_new_videos.extend(
+                videos
+            )
 
         except (
             HTTPError,
             URLError,
             ET.ParseError,
             TimeoutError,
-            ValueError,
             RuntimeError,
+            ValueError,
             json.JSONDecodeError,
         ) as exc:
-            result["error"] = str(exc)[
-                :500
-            ]
+            status["error"] = str(
+                exc
+            )[:800]
 
         except Exception as exc:
-            result["error"] = (
-                "Unexpected error: "
+            status["error"] = (
                 f"{type(exc).__name__}: "
                 f"{exc}"
-            )[:500]
+            )[:800]
 
-        statuses.append(result)
+        statuses.append(
+            status
+        )
 
-        time.sleep(0.5)
+        print(
+            f"[{source.get('name', source_id)}] "
+            f"{'OK' if status['ok'] else 'ERROR'} "
+            f"({status['count']} videos)"
+        )
 
+        time.sleep(0.4)
+
+    # Reclassify both old and newly downloaded records.
+    retained = merge_video_records(
+        existing.get(
+            "videos",
+            [],
+        ),
+        all_new_videos,
+        app,
+        teams,
+    )
+
+    # Keep only the configured retention period.
     cutoff = (
-        datetime.now(timezone.utc)
+        datetime.now(
+            timezone.utc
+        )
         - timedelta(
             days=int(
                 app.get(
@@ -1893,38 +2637,27 @@ def main() -> int:
         )
     )
 
-    retained: list[
-        dict[str, Any]
-    ] = []
-
-    for video in by_video_id.values():
-        pub = video.get(
-            "published_at"
+    filtered = [
+        video
+        for video in retained
+        if is_recent_enough(
+            video.get(
+                "published_at"
+            )
+            or video.get(
+                "match_date"
+            ),
+            cutoff,
         )
+    ]
 
-        keep = True
-
-        if pub:
-            try:
-                keep = (
-                    datetime.fromisoformat(
-                        pub.replace(
-                            "Z",
-                            "+00:00",
-                        )
-                    )
-                    >= cutoff
-                )
-            except ValueError:
-                keep = True
-
-        if keep:
-            retained.append(video)
-
-    retained.sort(
+    filtered.sort(
         key=lambda video: (
             video.get(
                 "published_at"
+            )
+            or video.get(
+                "match_date"
             )
             or ""
         ),
@@ -1932,31 +2665,31 @@ def main() -> int:
     )
 
     matches = build_matches(
-        retained
+        filtered
     )
 
     output = {
         "generated_at": datetime.now(
             timezone.utc
         ).isoformat(),
+
         "teams": [
             {
-                "id": team.get(
-                    "id"
-                ),
-                "name": team.get(
-                    "name"
-                ),
+                "id": team["id"],
+                "name": team["name"],
             }
             for team in teams
-            if team.get("id")
         ],
+
         "source_status": statuses,
-        "videos": retained,
+
+        "videos": filtered,
+
         "matches": matches,
+
         "stats": {
             "videos": len(
-                retained
+                filtered
             ),
             "matches": len(
                 matches
@@ -1985,34 +2718,39 @@ def main() -> int:
             ensure_ascii=False,
             indent=2,
         )
-        fh.write("\n")
 
-    print(
-        f"Stored {len(retained)} videos "
-        f"grouped into {len(matches)} matches."
-    )
-
-    for item in statuses:
-        method = (
-            f" [{item['method']}]"
-            if item.get("method")
-            else ""
+        fh.write(
+            "\n"
         )
 
-        if item["ok"]:
-            print(
-                f"- {item['source_name']}"
-                f"{method}: "
-                f"{item['count']} videos scanned"
-            )
-        else:
-            print(
-                f"- {item['source_name']}: "
-                f"ERROR: {item['error']}"
-            )
+    print()
+    print(
+        "========================================"
+    )
+    print(
+        "Football Hub collection complete"
+    )
+    print(
+        "========================================"
+    )
+    print(
+        f"Videos retained : {len(filtered)}"
+    )
+    print(
+        f"Matches grouped : {len(matches)}"
+    )
+
+    for match in matches[:15]:
+        print(
+            "- "
+            f"{match.get('title', 'Résumé')}"
+            f" | sources={match.get('sources_count', 0)}"
+        )
 
     return 0
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    raise SystemExit(
+        main()
+    )
