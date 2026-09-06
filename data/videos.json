@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-06T18:58:19.313852+00:00",
+  "generated_at": "2026-09-06T19:05:55.063967+00:00",
   "source_status": [
     {
       "source_id": "bein-sports-france",
@@ -56,7 +56,7 @@
         }
       ],
       "match_key": "2026-09-06|arsenal|noscore|ledearsenalchelseapremierleague202627j3",
-      "fetched_at": "2026-09-06T18:58:16.905712+00:00"
+      "fetched_at": "2026-09-06T19:05:53.012497+00:00"
     },
     {
       "id": "u-UlVLaebEA",
@@ -83,7 +83,7 @@
         }
       ],
       "match_key": "2026-09-06|bayern|noscore|mayencehumiliehambourgavecunemanitaetdoublelebayern",
-      "fetched_at": "2026-09-06T18:58:16.259029+00:00"
+      "fetched_at": "2026-09-06T19:05:52.559972+00:00"
     },
     {
       "id": "OOmde4Mp7jM",
@@ -110,7 +110,7 @@
         }
       ],
       "match_key": "2026-09-05|bayern|noscore|lebayernsecasselesdentssurunschalkeheroique",
-      "fetched_at": "2026-09-06T18:58:16.266405+00:00"
+      "fetched_at": "2026-09-06T19:05:52.572367+00:00"
     }
   ],
   "stats": {
