@@ -1,0 +1,21 @@
+{
+  "app": {
+    "name": "Football Hub",
+    "description": "Mon agrégateur personnel de résumés de matchs",
+    "max_videos_per_source": 15,
+    "keep_days": 45,
+    "summary_keywords": [
+      "highlights", "match highlights", "extended highlights", "full highlights",
+      "match recap", "recap", "résumé", "resume", "résumé du match", "resumen",
+      "highlights del partido", "best moments", "all goals", "goals & highlights",
+      "match goals", "all goals & highlights"
+    ],
+    "exclude_keywords": [
+      "reaction", "reactions", "preview", "predictions", "prediction", "press conference",
+      "press-conference", "interview", "interviews", "training", "behind the scenes",
+      "transfer", "transfers", "news", "news roundup", "analysis", "tactical analysis"
+    ]
+  },
+  "teams": [],
+  "sources": []
+}
