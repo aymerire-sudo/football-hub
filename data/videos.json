@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-06T20:04:11.454433+00:00",
+  "generated_at": "2026-09-06T20:45:33.489123+00:00",
   "teams": [
     {
       "id": "psg",
@@ -27,7 +27,7 @@
       "source_id": "bein-sports-france",
       "source_name": "beIN SPORTS France",
       "ok": true,
-      "count": 60,
+      "count": 220,
       "method": "yt-dlp",
       "error": null
     },
@@ -35,7 +35,7 @@
       "source_id": "canal-plus-sport",
       "source_name": "CANAL+ Sport",
       "ok": true,
-      "count": 60,
+      "count": 160,
       "method": "yt-dlp",
       "error": null
     },
@@ -43,7 +43,7 @@
       "source_id": "dazn-france",
       "source_name": "DAZN France",
       "ok": true,
-      "count": 60,
+      "count": 160,
       "method": "yt-dlp",
       "error": null
     },
@@ -51,7 +51,7 @@
       "source_id": "ligue-1",
       "source_name": "Ligue 1 McDonald's",
       "ok": true,
-      "count": 60,
+      "count": 180,
       "method": "yt-dlp",
       "error": null
     }
@@ -84,7 +84,7 @@
           "name": "Arsenal"
         }
       ],
-      "match_key": "match|arsenal+opp:chelsea|premier-league|noscore",
+      "match_key": "match|arsenal|chelsea|premier-league|round:3",
       "match_title": "Arsenal vs Chelsea",
       "fetched_at": "2026-09-06T19:17:09.213641+00:00",
       "home_team": {
@@ -116,11 +116,11 @@
       "description": "",
       "duration": 460,
       "is_summary": true,
-      "match_key": "match|opp:rc-lens+psg|trophee-des-champions|noscore",
-      "match_title": "RC LENS vs PSG",
+      "match_key": "match|lens|psg|trophee-des-champions|date:unknown",
+      "match_title": "RC Lens vs PSG",
       "home_team": {
         "id": null,
-        "name": "RC LENS",
+        "name": "RC Lens",
         "followed": false
       },
       "away_team": {
@@ -147,11 +147,258 @@
       "team_ids": [
         "psg"
       ]
+    },
+    {
+      "id": "tiKOdItvfuY",
+      "title": "Cholet vs. Lyon-Villeurbanne | Betclic ELITE 2025-2026 | DAZN Highlights",
+      "url": "https://www.youtube.com/watch?v=tiKOdItvfuY",
+      "published_at": null,
+      "updated_at": null,
+      "thumbnail": "https://i.ytimg.com/vi/tiKOdItvfuY/hqdefault.jpg",
+      "source_id": "dazn-france",
+      "source_name": "DAZN France",
+      "source_channel_id": "",
+      "description": "",
+      "is_summary": true,
+      "match_key": "match|opp:cholet|ol|football|date:unknown",
+      "match_title": "Cholet vs OL",
+      "home_team": {
+        "id": null,
+        "name": "Cholet",
+        "followed": false
+      },
+      "away_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
+      "score": null,
+      "competition": null,
+      "match_date": null,
+      "team_ids": [
+        "ol"
+      ],
+      "match_confidence": "high",
+      "summary_keywords": [
+        "highlights"
+      ],
+      "teams": [
+        {
+          "id": "ol",
+          "name": "OL"
+        }
+      ]
+    },
+    {
+      "id": "DO1xJOarc-Y",
+      "title": "Lyon-Villeurbanne vs. Cholet | Betclic Elite Playoffs 2025-2026 | DAZN Highlights",
+      "url": "https://www.youtube.com/watch?v=DO1xJOarc-Y",
+      "published_at": null,
+      "updated_at": null,
+      "thumbnail": "https://i.ytimg.com/vi/DO1xJOarc-Y/hqdefault.jpg",
+      "source_id": "dazn-france",
+      "source_name": "DAZN France",
+      "source_channel_id": "",
+      "description": "",
+      "is_summary": true,
+      "match_key": "match|ol|opp:cholet|football|date:unknown",
+      "match_title": "OL vs Cholet",
+      "home_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "Cholet",
+        "followed": false
+      },
+      "score": null,
+      "competition": null,
+      "match_date": null,
+      "team_ids": [
+        "ol"
+      ],
+      "match_confidence": "high",
+      "summary_keywords": [
+        "highlights"
+      ],
+      "teams": [
+        {
+          "id": "ol",
+          "name": "OL"
+        }
+      ]
+    },
+    {
+      "id": "atThZxhKUj0",
+      "title": "Lyon-Villeurbanne - JL Bourg | Betclic Elite 2025-2026 | DAZN Highlights",
+      "url": "https://www.youtube.com/watch?v=atThZxhKUj0",
+      "published_at": null,
+      "updated_at": null,
+      "thumbnail": "https://i.ytimg.com/vi/atThZxhKUj0/hqdefault.jpg",
+      "source_id": "dazn-france",
+      "source_name": "DAZN France",
+      "source_channel_id": "",
+      "description": "",
+      "is_summary": true,
+      "match_key": "match|ol|opp:jl-bourg|football|date:unknown",
+      "match_title": "OL vs JL Bourg",
+      "home_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "JL Bourg",
+        "followed": false
+      },
+      "score": null,
+      "competition": null,
+      "match_date": null,
+      "team_ids": [
+        "ol"
+      ],
+      "match_confidence": "high",
+      "summary_keywords": [
+        "highlights"
+      ],
+      "teams": [
+        {
+          "id": "ol",
+          "name": "OL"
+        }
+      ]
+    },
+    {
+      "id": "hB_Lh8UtwUk",
+      "title": "Monaco - Lyon-Villeurbanne | Betclic ELITE 2025 - 2026 | DAZN Highlights",
+      "url": "https://www.youtube.com/watch?v=hB_Lh8UtwUk",
+      "published_at": null,
+      "updated_at": null,
+      "thumbnail": "https://i.ytimg.com/vi/hB_Lh8UtwUk/hqdefault.jpg",
+      "source_id": "dazn-france",
+      "source_name": "DAZN France",
+      "source_channel_id": "",
+      "description": "",
+      "is_summary": true,
+      "match_key": "match|opp:monaco-lyon-villeurbanne|opp:2026|football|date:unknown",
+      "match_title": "Monaco Lyon-Villeurbanne vs 2026",
+      "home_team": {
+        "id": "ol",
+        "name": "Monaco Lyon-Villeurbanne",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "2026",
+        "followed": false
+      },
+      "score": null,
+      "competition": null,
+      "match_date": null,
+      "team_ids": [
+        "ol"
+      ],
+      "match_confidence": "high",
+      "summary_keywords": [
+        "highlights"
+      ],
+      "teams": [
+        {
+          "id": "ol",
+          "name": "Monaco Lyon-Villeurbanne"
+        }
+      ]
+    },
+    {
+      "id": "cReWtEzojr4",
+      "title": "Lyon-Villeurbanne - Saint-Quentin | Betclic Elite 2025 - 2026 | DAZN Highlights",
+      "url": "https://www.youtube.com/watch?v=cReWtEzojr4",
+      "published_at": null,
+      "updated_at": null,
+      "thumbnail": "https://i.ytimg.com/vi/cReWtEzojr4/hqdefault.jpg",
+      "source_id": "dazn-france",
+      "source_name": "DAZN France",
+      "source_channel_id": "",
+      "description": "",
+      "is_summary": true,
+      "match_key": "match|ol|opp:2026|football|date:unknown",
+      "match_title": "OL vs 2026",
+      "home_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "2026",
+        "followed": false
+      },
+      "score": null,
+      "competition": null,
+      "match_date": null,
+      "team_ids": [
+        "ol"
+      ],
+      "match_confidence": "high",
+      "summary_keywords": [
+        "highlights"
+      ],
+      "teams": [
+        {
+          "id": "ol",
+          "name": "OL"
+        }
+      ]
+    },
+    {
+      "id": "R4hbyuFfHI8",
+      "title": "Match Highlights - Toulouse vs. Lyon - Ligue 1 McDonald's 26/27",
+      "url": "https://www.youtube.com/watch?v=R4hbyuFfHI8",
+      "published_at": null,
+      "updated_at": null,
+      "thumbnail": "https://i.ytimg.com/vi/R4hbyuFfHI8/hqdefault.jpg",
+      "source_id": "ligue-1",
+      "source_name": "Ligue 1 McDonald's",
+      "source_channel_id": "",
+      "description": "",
+      "is_summary": true,
+      "match_key": "match|toulouse|ol|ligue-1|date:unknown",
+      "match_title": "Toulouse vs OL",
+      "home_team": {
+        "id": null,
+        "name": "Toulouse",
+        "followed": false
+      },
+      "away_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
+      "score": null,
+      "competition": "Ligue 1",
+      "match_date": null,
+      "team_ids": [
+        "ol"
+      ],
+      "match_confidence": "medium",
+      "summary_keywords": [
+        "highlights",
+        "match highlights"
+      ],
+      "teams": [
+        {
+          "id": "ol",
+          "name": "OL"
+        }
+      ]
     }
   ],
   "matches": [
     {
-      "match_key": "match|arsenal+opp:chelsea|premier-league|noscore",
+      "match_key": "match|arsenal|chelsea|premier-league|round:3",
       "title": "Arsenal vs Chelsea",
       "home_team": {
         "id": "arsenal",
@@ -208,7 +455,7 @@
               "name": "Arsenal"
             }
           ],
-          "match_key": "match|arsenal+opp:chelsea|premier-league|noscore",
+          "match_key": "match|arsenal|chelsea|premier-league|round:3",
           "match_title": "Arsenal vs Chelsea",
           "fetched_at": "2026-09-06T19:17:09.213641+00:00",
           "home_team": {
@@ -230,11 +477,11 @@
       ]
     },
     {
-      "match_key": "match|opp:rc-lens+psg|trophee-des-champions|noscore",
-      "title": "RC LENS vs PSG",
+      "match_key": "match|lens|psg|trophee-des-champions|date:unknown",
+      "title": "RC Lens vs PSG",
       "home_team": {
         "id": null,
-        "name": "RC LENS",
+        "name": "RC Lens",
         "followed": false
       },
       "away_team": {
@@ -273,11 +520,11 @@
           "description": "",
           "duration": 460,
           "is_summary": true,
-          "match_key": "match|opp:rc-lens+psg|trophee-des-champions|noscore",
-          "match_title": "RC LENS vs PSG",
+          "match_key": "match|lens|psg|trophee-des-champions|date:unknown",
+          "match_title": "RC Lens vs PSG",
           "home_team": {
             "id": null,
-            "name": "RC LENS",
+            "name": "RC Lens",
             "followed": false
           },
           "away_team": {
@@ -306,11 +553,456 @@
           ]
         }
       ]
+    },
+    {
+      "match_key": "match|opp:cholet|ol|football|date:unknown",
+      "title": "Cholet vs OL",
+      "home_team": {
+        "id": null,
+        "name": "Cholet",
+        "followed": false
+      },
+      "away_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
+      "score": null,
+      "competition": null,
+      "match_date": null,
+      "published_at": null,
+      "team_ids": [
+        "ol"
+      ],
+      "team_names": [
+        "OL"
+      ],
+      "sources_count": 1,
+      "sources": [
+        {
+          "id": "dazn-france",
+          "name": "DAZN France"
+        }
+      ],
+      "videos": [
+        {
+          "id": "tiKOdItvfuY",
+          "title": "Cholet vs. Lyon-Villeurbanne | Betclic ELITE 2025-2026 | DAZN Highlights",
+          "url": "https://www.youtube.com/watch?v=tiKOdItvfuY",
+          "published_at": null,
+          "updated_at": null,
+          "thumbnail": "https://i.ytimg.com/vi/tiKOdItvfuY/hqdefault.jpg",
+          "source_id": "dazn-france",
+          "source_name": "DAZN France",
+          "source_channel_id": "",
+          "description": "",
+          "is_summary": true,
+          "match_key": "match|opp:cholet|ol|football|date:unknown",
+          "match_title": "Cholet vs OL",
+          "home_team": {
+            "id": null,
+            "name": "Cholet",
+            "followed": false
+          },
+          "away_team": {
+            "id": "ol",
+            "name": "OL",
+            "followed": true
+          },
+          "score": null,
+          "competition": null,
+          "match_date": null,
+          "team_ids": [
+            "ol"
+          ],
+          "match_confidence": "high",
+          "summary_keywords": [
+            "highlights"
+          ],
+          "teams": [
+            {
+              "id": "ol",
+              "name": "OL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "match_key": "match|ol|opp:cholet|football|date:unknown",
+      "title": "OL vs Cholet",
+      "home_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "Cholet",
+        "followed": false
+      },
+      "score": null,
+      "competition": null,
+      "match_date": null,
+      "published_at": null,
+      "team_ids": [
+        "ol"
+      ],
+      "team_names": [
+        "OL"
+      ],
+      "sources_count": 1,
+      "sources": [
+        {
+          "id": "dazn-france",
+          "name": "DAZN France"
+        }
+      ],
+      "videos": [
+        {
+          "id": "DO1xJOarc-Y",
+          "title": "Lyon-Villeurbanne vs. Cholet | Betclic Elite Playoffs 2025-2026 | DAZN Highlights",
+          "url": "https://www.youtube.com/watch?v=DO1xJOarc-Y",
+          "published_at": null,
+          "updated_at": null,
+          "thumbnail": "https://i.ytimg.com/vi/DO1xJOarc-Y/hqdefault.jpg",
+          "source_id": "dazn-france",
+          "source_name": "DAZN France",
+          "source_channel_id": "",
+          "description": "",
+          "is_summary": true,
+          "match_key": "match|ol|opp:cholet|football|date:unknown",
+          "match_title": "OL vs Cholet",
+          "home_team": {
+            "id": "ol",
+            "name": "OL",
+            "followed": true
+          },
+          "away_team": {
+            "id": null,
+            "name": "Cholet",
+            "followed": false
+          },
+          "score": null,
+          "competition": null,
+          "match_date": null,
+          "team_ids": [
+            "ol"
+          ],
+          "match_confidence": "high",
+          "summary_keywords": [
+            "highlights"
+          ],
+          "teams": [
+            {
+              "id": "ol",
+              "name": "OL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "match_key": "match|ol|opp:jl-bourg|football|date:unknown",
+      "title": "OL vs JL Bourg",
+      "home_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "JL Bourg",
+        "followed": false
+      },
+      "score": null,
+      "competition": null,
+      "match_date": null,
+      "published_at": null,
+      "team_ids": [
+        "ol"
+      ],
+      "team_names": [
+        "OL"
+      ],
+      "sources_count": 1,
+      "sources": [
+        {
+          "id": "dazn-france",
+          "name": "DAZN France"
+        }
+      ],
+      "videos": [
+        {
+          "id": "atThZxhKUj0",
+          "title": "Lyon-Villeurbanne - JL Bourg | Betclic Elite 2025-2026 | DAZN Highlights",
+          "url": "https://www.youtube.com/watch?v=atThZxhKUj0",
+          "published_at": null,
+          "updated_at": null,
+          "thumbnail": "https://i.ytimg.com/vi/atThZxhKUj0/hqdefault.jpg",
+          "source_id": "dazn-france",
+          "source_name": "DAZN France",
+          "source_channel_id": "",
+          "description": "",
+          "is_summary": true,
+          "match_key": "match|ol|opp:jl-bourg|football|date:unknown",
+          "match_title": "OL vs JL Bourg",
+          "home_team": {
+            "id": "ol",
+            "name": "OL",
+            "followed": true
+          },
+          "away_team": {
+            "id": null,
+            "name": "JL Bourg",
+            "followed": false
+          },
+          "score": null,
+          "competition": null,
+          "match_date": null,
+          "team_ids": [
+            "ol"
+          ],
+          "match_confidence": "high",
+          "summary_keywords": [
+            "highlights"
+          ],
+          "teams": [
+            {
+              "id": "ol",
+              "name": "OL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "match_key": "match|opp:monaco-lyon-villeurbanne|opp:2026|football|date:unknown",
+      "title": "Monaco Lyon-Villeurbanne vs 2026",
+      "home_team": {
+        "id": "ol",
+        "name": "Monaco Lyon-Villeurbanne",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "2026",
+        "followed": false
+      },
+      "score": null,
+      "competition": null,
+      "match_date": null,
+      "published_at": null,
+      "team_ids": [
+        "ol"
+      ],
+      "team_names": [
+        "Monaco Lyon-Villeurbanne"
+      ],
+      "sources_count": 1,
+      "sources": [
+        {
+          "id": "dazn-france",
+          "name": "DAZN France"
+        }
+      ],
+      "videos": [
+        {
+          "id": "hB_Lh8UtwUk",
+          "title": "Monaco - Lyon-Villeurbanne | Betclic ELITE 2025 - 2026 | DAZN Highlights",
+          "url": "https://www.youtube.com/watch?v=hB_Lh8UtwUk",
+          "published_at": null,
+          "updated_at": null,
+          "thumbnail": "https://i.ytimg.com/vi/hB_Lh8UtwUk/hqdefault.jpg",
+          "source_id": "dazn-france",
+          "source_name": "DAZN France",
+          "source_channel_id": "",
+          "description": "",
+          "is_summary": true,
+          "match_key": "match|opp:monaco-lyon-villeurbanne|opp:2026|football|date:unknown",
+          "match_title": "Monaco Lyon-Villeurbanne vs 2026",
+          "home_team": {
+            "id": "ol",
+            "name": "Monaco Lyon-Villeurbanne",
+            "followed": true
+          },
+          "away_team": {
+            "id": null,
+            "name": "2026",
+            "followed": false
+          },
+          "score": null,
+          "competition": null,
+          "match_date": null,
+          "team_ids": [
+            "ol"
+          ],
+          "match_confidence": "high",
+          "summary_keywords": [
+            "highlights"
+          ],
+          "teams": [
+            {
+              "id": "ol",
+              "name": "Monaco Lyon-Villeurbanne"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "match_key": "match|ol|opp:2026|football|date:unknown",
+      "title": "OL vs 2026",
+      "home_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "2026",
+        "followed": false
+      },
+      "score": null,
+      "competition": null,
+      "match_date": null,
+      "published_at": null,
+      "team_ids": [
+        "ol"
+      ],
+      "team_names": [
+        "OL"
+      ],
+      "sources_count": 1,
+      "sources": [
+        {
+          "id": "dazn-france",
+          "name": "DAZN France"
+        }
+      ],
+      "videos": [
+        {
+          "id": "cReWtEzojr4",
+          "title": "Lyon-Villeurbanne - Saint-Quentin | Betclic Elite 2025 - 2026 | DAZN Highlights",
+          "url": "https://www.youtube.com/watch?v=cReWtEzojr4",
+          "published_at": null,
+          "updated_at": null,
+          "thumbnail": "https://i.ytimg.com/vi/cReWtEzojr4/hqdefault.jpg",
+          "source_id": "dazn-france",
+          "source_name": "DAZN France",
+          "source_channel_id": "",
+          "description": "",
+          "is_summary": true,
+          "match_key": "match|ol|opp:2026|football|date:unknown",
+          "match_title": "OL vs 2026",
+          "home_team": {
+            "id": "ol",
+            "name": "OL",
+            "followed": true
+          },
+          "away_team": {
+            "id": null,
+            "name": "2026",
+            "followed": false
+          },
+          "score": null,
+          "competition": null,
+          "match_date": null,
+          "team_ids": [
+            "ol"
+          ],
+          "match_confidence": "high",
+          "summary_keywords": [
+            "highlights"
+          ],
+          "teams": [
+            {
+              "id": "ol",
+              "name": "OL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "match_key": "match|toulouse|ol|ligue-1|date:unknown",
+      "title": "Toulouse vs OL",
+      "home_team": {
+        "id": null,
+        "name": "Toulouse",
+        "followed": false
+      },
+      "away_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
+      "score": null,
+      "competition": "Ligue 1",
+      "match_date": null,
+      "published_at": null,
+      "team_ids": [
+        "ol"
+      ],
+      "team_names": [
+        "OL"
+      ],
+      "sources_count": 1,
+      "sources": [
+        {
+          "id": "ligue-1",
+          "name": "Ligue 1 McDonald's"
+        }
+      ],
+      "videos": [
+        {
+          "id": "R4hbyuFfHI8",
+          "title": "Match Highlights - Toulouse vs. Lyon - Ligue 1 McDonald's 26/27",
+          "url": "https://www.youtube.com/watch?v=R4hbyuFfHI8",
+          "published_at": null,
+          "updated_at": null,
+          "thumbnail": "https://i.ytimg.com/vi/R4hbyuFfHI8/hqdefault.jpg",
+          "source_id": "ligue-1",
+          "source_name": "Ligue 1 McDonald's",
+          "source_channel_id": "",
+          "description": "",
+          "is_summary": true,
+          "match_key": "match|toulouse|ol|ligue-1|date:unknown",
+          "match_title": "Toulouse vs OL",
+          "home_team": {
+            "id": null,
+            "name": "Toulouse",
+            "followed": false
+          },
+          "away_team": {
+            "id": "ol",
+            "name": "OL",
+            "followed": true
+          },
+          "score": null,
+          "competition": "Ligue 1",
+          "match_date": null,
+          "team_ids": [
+            "ol"
+          ],
+          "match_confidence": "medium",
+          "summary_keywords": [
+            "highlights",
+            "match highlights"
+          ],
+          "teams": [
+            {
+              "id": "ol",
+              "name": "OL"
+            }
+          ]
+        }
+      ]
     }
   ],
   "stats": {
-    "videos": 2,
-    "matches": 2,
+    "videos": 8,
+    "matches": 8,
     "teams": 5,
     "sources": 4
   }
