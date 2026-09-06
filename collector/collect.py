@@ -1061,7 +1061,6 @@ def find_known_clubs(
 def canonical_known_side(
     value: str,
 ) -> dict[str, Any] | None:
-    """Return the canonical club when this title side matches one club."""
     clubs = find_known_clubs(value)
 
     if len(clubs) != 1:
@@ -1164,6 +1163,90 @@ def competition_from_title(
 # ============================================================
 # RECONNAISSANCE DES TITRES
 # ============================================================
+
+
+BASKETBALL_KEYWORDS = {
+    "basket",
+    "basketball",
+    "betclic elite",
+    "betclic",
+    "lnb",
+    "pro a",
+    "jeep elite",
+    "euroleague",
+    "eurocup",
+    "fiba",
+    "nba",
+    "wnba",
+    "jl bourg",
+    "bourg en bresse",
+    "monaco lyon villeurbanne",
+    "asvel",
+    "cholet basket",
+    "nantes basket",
+    "gravelines dunkerque",
+}
+
+FOOTBALL_KEYWORDS = {
+    "football",
+    "soccer",
+    "ligue 1",
+    "ligue 2",
+    "premier league",
+    "la liga",
+    "laliga",
+    "bundesliga",
+    "serie a",
+    "champions league",
+    "europa league",
+    "conference league",
+    "fa cup",
+    "carabao cup",
+    "trophee des champions",
+    "trophée des champions",
+    "coupe de france",
+}
+
+
+def is_basketball_title(title: str) -> bool:
+    normalized = normalize(title)
+    return any(
+        normalize(keyword) in normalized
+        for keyword in BASKETBALL_KEYWORDS
+    )
+
+
+def is_football_title_for_source(
+    title: str,
+    source_id: str | None,
+) -> bool:
+    """
+    Le channel DAZN France mélange notamment du football et du basket.
+    On exclut donc explicitement les titres basketball avant toute
+    détection d'équipe.
+    """
+    if is_basketball_title(title):
+        return False
+
+    # Pour les autres sources, leur flux est déjà football-focused.
+    if source_id != "dazn-france":
+        return True
+
+    normalized = normalize(title)
+
+    # Pour DAZN, un titre football doit idéalement contenir une
+    # compétition football ou au moins deux clubs de notre vocabulaire.
+    if any(
+        normalize(keyword) in normalized
+        for keyword in FOOTBALL_KEYWORDS
+    ):
+        return True
+
+    clubs = find_known_clubs(title)
+    if len(clubs) >= 2:
+        return True
+
+    return False
 
 
 def looks_like_summary(
@@ -1317,7 +1400,15 @@ def side_is_generic(
 def infer_unknown_side(
     text: str,
 ) -> str:
-    """Infer a short opponent name, while rejecting sentence-like fragments."""
+    """
+    Essaie d'identifier un adversaire non présent dans KNOWN_CLUBS.
+
+    Très strict pour éviter :
+      - les années comme "2026"
+      - les scores
+      - les phrases de joueur
+      - les morceaux de titre sans nom de club
+    """
     value = clean_side(text)
 
     value = re.sub(
@@ -1337,17 +1428,36 @@ def infer_unknown_side(
         return ""
 
     useful_words = []
+
     for word in words:
         token = normalize(word)
+
         if not token:
             continue
+
+        # Une année, un score ou un nombre seul ne peut pas être une équipe.
+        if re.fullmatch(r"\d{1,4}", token):
+            return ""
+
         if token in GENERIC:
             return ""
+
         useful_words.append(word)
 
     result = " ".join(useful_words).strip()
 
     if not result or side_is_generic(result):
+        return ""
+
+    normalized_result = normalize(result)
+
+    # Refuse les morceaux trop ressemblants à des informations de match.
+    if normalized_result in {
+        "2026",
+        "2027",
+        "2026 27",
+        "2027 28",
+    }:
         return ""
 
     return result
@@ -1659,12 +1769,6 @@ def identify_match(
         ):
             continue
 
-        # Unknown opponents must come from a short, team-like side.
-        if not left_known and len(normalize(left).split()) > 3:
-            continue
-        if not right_known and len(normalize(right).split()) > 3:
-            continue
-
         if (
             normalize(left_name)
             == normalize(right_name)
@@ -1714,6 +1818,13 @@ def classify_video(
         )
         or ""
     )
+
+    if not is_football_title_for_source(
+        title,
+        video.get("source_id"),
+    ):
+        return None
+
 
     if not title:
         return None
