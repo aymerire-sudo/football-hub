@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-06T19:16:13.600627+00:00",
+  "generated_at": "2026-09-06T19:16:37.558607+00:00",
   "teams": [
     {
       "id": "psg",
@@ -86,7 +86,7 @@
       ],
       "match_key": "arsenal|noscore|chelsea premier league 2026 27 j3",
       "match_title": "Le résumé de Arsenal / Chelsea - Premier League 2026-27 (J3)",
-      "fetched_at": "2026-09-06T19:16:11.506550+00:00"
+      "fetched_at": "2026-09-06T19:16:35.649661+00:00"
     },
     {
       "id": "u-UlVLaebEA",
@@ -144,7 +144,7 @@
       ],
       "match_key": "bayern|noscore|schalke se casse dents",
       "match_title": "Résumé : Le BAYERN se casse les dents sur un SCHALKE héroïque !",
-      "fetched_at": "2026-09-06T19:16:10.928923+00:00"
+      "fetched_at": "2026-09-06T19:16:35.115705+00:00"
     }
   ],
   "matches": [
@@ -190,7 +190,7 @@
           ],
           "match_key": "arsenal|noscore|chelsea premier league 2026 27 j3",
           "match_title": "Le résumé de Arsenal / Chelsea - Premier League 2026-27 (J3)",
-          "fetched_at": "2026-09-06T19:16:11.506550+00:00"
+          "fetched_at": "2026-09-06T19:16:35.649661+00:00"
         }
       ]
     },
@@ -278,7 +278,7 @@
           ],
           "match_key": "bayern|noscore|schalke se casse dents",
           "match_title": "Résumé : Le BAYERN se casse les dents sur un SCHALKE héroïque !",
-          "fetched_at": "2026-09-06T19:16:10.928923+00:00"
+          "fetched_at": "2026-09-06T19:16:35.115705+00:00"
         }
       ]
     }
