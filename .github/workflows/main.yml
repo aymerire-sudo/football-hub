@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - "data/videos.json"
 
   schedule:
     - cron: "*/30 * * * *"
@@ -15,6 +17,10 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: football-hub-update
+  cancel-in-progress: false
+
 jobs:
   update-and-deploy:
     runs-on: ubuntu-latest
@@ -23,8 +29,10 @@ jobs:
       name: github-pages
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -37,7 +45,8 @@ jobs:
           python -m pip install yt-dlp
 
       - name: Collect and classify football summaries
-        run: python collector/collect.py
+        run: |
+          python collector/collect.py
 
       - name: Commit updated data
         run: |
@@ -50,7 +59,12 @@ jobs:
             echo "No data changes to commit."
           else
             git commit -m "Update football videos"
-            git push
+
+            echo "Synchronizing with origin/main..."
+            git pull --rebase origin main
+
+            echo "Pushing updated data..."
+            git push origin HEAD:main
           fi
 
       - name: Configure GitHub Pages
