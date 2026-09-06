@@ -1,5 +1,5 @@
 const DATA_URL = './data/videos.json';
-const STORE_KEY = 'football-hub:v3';
+const STORE_KEY = 'football-hub:v4';
 
 const state = {
   data: null,
@@ -10,10 +10,17 @@ const state = {
   search: '',
   seen: new Set(),
   theme: 'light',
-  activeVideoId: null
+  activeVideoId: null,
+  activeMatch: null,
+  playbackTimer: null
 };
 
-const $ = (selector) => document.querySelector(selector);
+const $ = (selector) =>
+  document.querySelector(selector);
+
+/* ============================================================
+   STOCKAGE / THEME
+   ============================================================ */
 
 function loadStore() {
   try {
@@ -62,25 +69,29 @@ function loadStore() {
 }
 
 function saveStore() {
-  localStorage.setItem(
-    STORE_KEY,
-    JSON.stringify({
-      selectedTeams: [
-        ...state.selectedTeams
-      ],
-      selectedSources: [
-        ...state.selectedSources
-      ],
-      seen: [
-        ...state.seen
-      ],
-      favoritesOnly:
-        state.favoritesOnly,
-      unseenOnly:
-        state.unseenOnly,
-      theme: state.theme
-    })
-  );
+  try {
+    localStorage.setItem(
+      STORE_KEY,
+      JSON.stringify({
+        selectedTeams: [
+          ...state.selectedTeams
+        ],
+        selectedSources: [
+          ...state.selectedSources
+        ],
+        seen: [
+          ...state.seen
+        ],
+        favoritesOnly:
+          state.favoritesOnly,
+        unseenOnly:
+          state.unseenOnly,
+        theme: state.theme
+      })
+    );
+  } catch (_) {
+    // Ignore localStorage errors.
+  }
 }
 
 function applyTheme() {
@@ -96,6 +107,10 @@ function applyTheme() {
         : '☼';
   }
 }
+
+/* ============================================================
+   DATES / TEXTE
+   ============================================================ */
 
 function parseDate(value) {
   if (!value) return null;
@@ -172,7 +187,9 @@ function formatDate(value) {
 function formatMatchDate(value) {
   const date = parseDate(value);
 
-  if (!date) return '';
+  if (!date) {
+    return '';
+  }
 
   return new Intl.DateTimeFormat(
     'fr-FR',
@@ -200,25 +217,166 @@ function escapeHtml(value) {
   );
 }
 
+/* ============================================================
+   YOUTUBE
+   ============================================================ */
+
 function videoIdFromUrl(url) {
+  if (!url) return '';
+
   try {
     const parsed = new URL(url);
 
-    return (
-      parsed.searchParams.get('v') ||
+    // https://www.youtube.com/watch?v=XXXXXXXXXXX
+    const fromQuery =
+      parsed.searchParams.get('v');
+
+    if (fromQuery) {
+      return fromQuery;
+    }
+
+    // https://youtu.be/XXXXXXXXXXX
+    if (
+      parsed.hostname.includes('youtu.be')
+    ) {
+      return (
+        parsed.pathname
+          .split('/')
+          .filter(Boolean)[0] || ''
+      );
+    }
+
+    // https://www.youtube.com/shorts/XXXXXXXXXXX
+    const parts =
       parsed.pathname
         .split('/')
-        .filter(Boolean)
-        .pop() ||
-      ''
-    );
+        .filter(Boolean);
+
+    const specialIndex =
+      parts.findIndex(
+        (part) =>
+          part === 'shorts' ||
+          part === 'embed' ||
+          part === 'live'
+      );
+
+    if (
+      specialIndex >= 0 &&
+      parts[specialIndex + 1]
+    ) {
+      return parts[
+        specialIndex + 1
+      ];
+    }
+
+    return parts.at(-1) || '';
   } catch (_) {
     return '';
   }
 }
 
+function getYoutubeUrl(
+  video,
+  videoId
+) {
+  return (
+    video?.url ||
+    `https://www.youtube.com/watch?v=${encodeURIComponent(
+      videoId
+    )}`
+  );
+}
+
+function clearPlaybackTimer() {
+  if (state.playbackTimer) {
+    clearTimeout(
+      state.playbackTimer
+    );
+
+    state.playbackTimer = null;
+  }
+}
+
+function showPlayerFallback(
+  message
+) {
+  const fallback =
+    $('#playerFallback');
+
+  const fallbackText =
+    $('#playerFallbackText');
+
+  if (!fallback) return;
+
+  if (fallbackText) {
+    fallbackText.textContent =
+      message;
+  }
+
+  fallback.classList.remove(
+    'hidden'
+  );
+}
+
+function hidePlayerFallback() {
+  const fallback =
+    $('#playerFallback');
+
+  if (fallback) {
+    fallback.classList.add(
+      'hidden'
+    );
+  }
+}
+
+function schedulePlaybackCheck() {
+  clearPlaybackTimer();
+
+  /*
+   * On ne peut pas lire le contenu visuel d'un iframe YouTube
+   * car il est sur un autre domaine.
+   *
+   * On utilise donc un délai de sécurité :
+   * si la vidéo ne se lance pas, on affiche le fallback.
+   */
+  state.playbackTimer =
+    setTimeout(() => {
+      if (
+        !state.activeVideoId
+      ) {
+        return;
+      }
+
+      showPlayerFallback(
+        'La lecture intégrée ne démarre pas. La vidéo peut être bloquée dans ton pays, interdire la lecture intégrée ou être momentanément indisponible.'
+      );
+    }, 8000);
+}
+
+function buildYoutubeEmbedUrl(
+  videoId
+) {
+  return (
+    'https://www.youtube-nocookie.com/embed/' +
+    `${encodeURIComponent(
+      videoId
+    )}` +
+    '?autoplay=1' +
+    '&playsinline=1' +
+    '&rel=0' +
+    '&modestbranding=1' +
+    '&enablejsapi=1'
+  );
+}
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+
 function ensureModal() {
-  if ($('#videoModal')) return;
+  if ($('#videoModal')) {
+    return;
+  }
 
   document.body.insertAdjacentHTML(
     'beforeend',
@@ -239,6 +397,7 @@ function ensureModal() {
           aria-modal="true"
           aria-labelledby="modalTitle"
         >
+
           <div class="video-modal-header">
             <div>
               <div
@@ -262,6 +421,7 @@ function ensureModal() {
           </div>
 
           <div class="video-frame-wrap">
+
             <iframe
               id="videoPlayer"
               title="Lecteur YouTube"
@@ -269,9 +429,53 @@ function ensureModal() {
               allowfullscreen
               referrerpolicy="strict-origin-when-cross-origin"
             ></iframe>
+
+            <div
+              id="playerFallback"
+              class="player-fallback hidden"
+            >
+              <div class="player-fallback-icon">
+                ▶
+              </div>
+
+              <strong>
+                Lecture intégrée indisponible
+              </strong>
+
+              <p
+                id="playerFallbackText"
+              >
+                La vidéo ne peut pas être
+                lue directement dans Football Hub.
+              </p>
+
+              <div
+                class="player-fallback-actions"
+              >
+
+                <a
+                  id="fallbackYoutube"
+                  class="watch"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  ↗ Ouvrir sur YouTube
+                </a>
+
+                <button
+                  id="fallbackAnother"
+                  class="watch secondary"
+                  type="button"
+                >
+                  Choisir une autre source
+                </button>
+
+              </div>
+            </div>
           </div>
 
           <div class="video-modal-footer">
+
             <div
               id="modalSources"
               class="video-source-list"
@@ -285,13 +489,15 @@ function ensureModal() {
             >
               ↗ Ouvrir sur YouTube
             </a>
+
           </div>
 
           <p class="embed-note">
-            Le lecteur reste sur Football Hub.
-            Si une vidéo interdit l'intégration,
-            utilise « Ouvrir sur YouTube ».
+            Certaines vidéos YouTube peuvent être
+            limitées selon le pays ou ne pas autoriser
+            la lecture intégrée.
           </p>
+
         </section>
       </div>
     `
@@ -330,9 +536,132 @@ function ensureModal() {
       }
     }
   );
+
+  $('#fallbackAnother')
+    .addEventListener(
+      'click',
+      playAnotherSource
+    );
 }
 
-function openModal(video, match) {
+function updateYoutubeLinks(
+  video,
+  videoId
+) {
+  const url =
+    getYoutubeUrl(
+      video,
+      videoId
+    );
+
+  const openYoutube =
+    $('#openYoutube');
+
+  const fallbackYoutube =
+    $('#fallbackYoutube');
+
+  if (openYoutube) {
+    openYoutube.href = url;
+  }
+
+  if (fallbackYoutube) {
+    fallbackYoutube.href = url;
+  }
+}
+
+function renderModalSources(
+  sources,
+  activeId
+) {
+  const container =
+    $('#modalSources');
+
+  if (!container) {
+    return;
+  }
+
+  container.innerHTML =
+    sources
+      .map(
+        (source) => {
+          const sourceId =
+            source.id ||
+            videoIdFromUrl(
+              source.url
+            );
+
+          return `
+            <button
+              class="source-choice ${
+                sourceId === activeId
+                  ? 'active'
+                  : ''
+              }"
+              type="button"
+              data-source-video-id="${escapeHtml(
+                sourceId
+              )}"
+            >
+
+              <span>
+                ${escapeHtml(
+                  source.source_name ||
+                    'YouTube'
+                )}
+              </span>
+
+              <small>
+                ${formatDate(
+                  source.published_at
+                )}
+              </small>
+
+            </button>
+          `;
+        }
+      )
+      .join('');
+
+  container
+    .querySelectorAll(
+      '[data-source-video-id]'
+    )
+    .forEach((button) => {
+      button.addEventListener(
+        'click',
+        () => {
+          const next =
+            sources.find(
+              (source) => {
+                const sourceId =
+                  source.id ||
+                  videoIdFromUrl(
+                    source.url
+                  );
+
+                return (
+                  sourceId ===
+                  button.dataset
+                    .sourceVideoId
+                );
+              }
+            );
+
+          if (next) {
+            openModal(
+              next,
+              state.activeMatch
+            );
+          }
+        }
+      );
+    });
+}
+
+function openModal(
+  video,
+  match
+) {
   ensureModal();
 
   const modal =
@@ -342,34 +671,32 @@ function openModal(video, match) {
     $('#videoPlayer');
 
   const id =
-    video.id ||
+    video?.id ||
     videoIdFromUrl(
-      video.url
+      video?.url
     );
 
-  if (!id) return;
+  if (
+    !modal ||
+    !player ||
+    !id
+  ) {
+    return;
+  }
 
-  state.activeVideoId = id;
+  clearPlaybackTimer();
+
+  state.activeVideoId =
+    id;
+
+  state.activeMatch =
+    match || null;
 
   state.seen.add(id);
 
   saveStore();
 
-  const origin =
-    encodeURIComponent(
-      location.origin
-    );
-
-  player.src =
-    `https://www.youtube-nocookie.com/embed/` +
-    `${encodeURIComponent(id)}` +
-    `?autoplay=1` +
-    `&playsinline=1` +
-    `&rel=0` +
-    `&modestbranding=1` +
-    `&origin=${origin}`;
-
-  $('#modalTitle').textContent =
+  const title =
     match?.title ||
     video.match_title ||
     video.title ||
@@ -381,78 +708,58 @@ function openModal(video, match) {
           match.match_date
         )}`
       : formatDate(
-          video.published_at
+          video.published_at ||
+            video.match_date
         );
+
+  $('#modalTitle').textContent =
+    title;
 
   $('#modalMeta').textContent =
     `${video.source_name || 'YouTube'} · ${dateText}`;
 
-  $('#openYoutube').href =
-    video.url ||
-    `https://www.youtube.com/watch?v=${encodeURIComponent(
-      id
-    )}`;
+  updateYoutubeLinks(
+    video,
+    id
+  );
 
   const sources =
-    match?.videos || [video];
+    match?.videos?.length
+      ? match.videos
+      : [video];
 
-  $('#modalSources').innerHTML =
-    sources
-      .map(
-        (source) => `
-          <button
-            class="source-choice ${
-              source.id === id
-                ? 'active'
-                : ''
-            }"
-            type="button"
-            data-video-id="${escapeHtml(
-              source.id
-            )}"
-          >
-            <span>
-              ${escapeHtml(
-                source.source_name ||
-                  'YouTube'
-              )}
-            </span>
+  renderModalSources(
+    sources,
+    id
+  );
 
-            <small>
-              ${formatDate(
-                source.published_at
-              )}
-            </small>
-          </button>
-        `
-      )
-      .join('');
+  hidePlayerFallback();
 
-  $('#modalSources')
-    .querySelectorAll(
-      '[data-video-id]'
-    )
-    .forEach((button) => {
-      button.addEventListener(
-        'click',
-        () => {
-          const next =
-            sources.find(
-              (source) =>
-                source.id ===
-                button.dataset
-                  .videoId
-            );
+  /*
+   * On détruit l'ancienne source avant d'en charger
+   * une nouvelle afin d'éviter de laisser une ancienne
+   * vidéo jouer en arrière-plan.
+   */
+  player.src = '';
 
-          if (next) {
-            openModal(
-              next,
-              match
-            );
-          }
-        }
+  /*
+   * Petit délai pour laisser au navigateur le temps
+   * de nettoyer l'ancien iframe.
+   */
+  setTimeout(() => {
+    if (
+      state.activeVideoId !== id
+    ) {
+      return;
+    }
+
+    player.src =
+      buildYoutubeEmbedUrl(
+        id
       );
-    });
+
+    schedulePlaybackCheck();
+  }, 50);
 
   modal.classList.remove(
     'hidden'
@@ -468,11 +775,67 @@ function openModal(video, match) {
   );
 }
 
+function playAnotherSource() {
+  const match =
+    state.activeMatch;
+
+  const activeId =
+    state.activeVideoId;
+
+  const sources =
+    match?.videos || [];
+
+  if (
+    sources.length <= 1
+  ) {
+    showPlayerFallback(
+      'Aucune autre source officielle n’est disponible pour ce match.'
+    );
+
+    return;
+  }
+
+  const activeIndex =
+    sources.findIndex(
+      (video) => {
+        const id =
+          video.id ||
+          videoIdFromUrl(
+            video.url
+          );
+
+        return id === activeId;
+      }
+    );
+
+  const nextIndex =
+    activeIndex >= 0
+      ? (
+          activeIndex + 1
+        ) %
+        sources.length
+      : 0;
+
+  const next =
+    sources[nextIndex];
+
+  if (next) {
+    openModal(
+      next,
+      match
+    );
+  }
+}
+
 function closeModal() {
   const modal =
     $('#videoModal');
 
-  if (!modal) return;
+  if (!modal) {
+    return;
+  }
+
+  clearPlaybackTimer();
 
   const player =
     $('#videoPlayer');
@@ -480,6 +843,8 @@ function closeModal() {
   if (player) {
     player.src = '';
   }
+
+  hidePlayerFallback();
 
   modal.classList.add(
     'hidden'
@@ -494,8 +859,16 @@ function closeModal() {
     'modal-open'
   );
 
-  state.activeVideoId = null;
+  state.activeVideoId =
+    null;
+
+  state.activeMatch =
+    null;
 }
+
+/* ============================================================
+   DONNEES / FILTRES
+   ============================================================ */
 
 function renderStats() {
   const videos =
@@ -518,10 +891,13 @@ function renderStats() {
   const stats =
     $('#stats');
 
-  if (!stats) return;
+  if (!stats) {
+    return;
+  }
 
   stats.innerHTML = `
     <div class="stat">
+
       <div class="stat-value">
         ${matches.length}
       </div>
@@ -529,9 +905,11 @@ function renderStats() {
       <div class="stat-label">
         matchs conservés
       </div>
+
     </div>
 
     <div class="stat">
+
       <div class="stat-value">
         ${unseen}
       </div>
@@ -539,27 +917,32 @@ function renderStats() {
       <div class="stat-label">
         nouveaux pour toi
       </div>
+
     </div>
   `;
 }
 
-function collectTeams(videos) {
+function collectTeams(
+  videos
+) {
   const map =
     new Map();
 
   videos.forEach(
     (video) => {
-      (video.teams || [])
-        .forEach(
-          (team) => {
-            if (team?.id) {
-              map.set(
-                team.id,
-                team
-              );
-            }
+      (
+        video.teams ||
+        []
+      ).forEach(
+        (team) => {
+          if (team?.id) {
+            map.set(
+              team.id,
+              team
+            );
           }
-        );
+        }
+      );
     }
   );
 
@@ -881,7 +1264,8 @@ function buildLegacyMatches(
               )
             ).size,
 
-          videos: items
+          videos:
+            items
         };
       }
     )
@@ -984,20 +1368,24 @@ function filteredMatches() {
       const searchable = [
         match.title,
         match.competition,
+
         ...(match.team_names ||
           []),
+
         ...(match.home_team
           ? [
               match.home_team
                 .name
             ]
           : []),
+
         ...(match.away_team
           ? [
               match.away_team
                 .name
             ]
           : []),
+
         ...videos.flatMap(
           (video) => [
             video.title,
@@ -1020,6 +1408,10 @@ function filteredMatches() {
     }
   );
 }
+
+/* ============================================================
+   AFFICHAGE
+   ============================================================ */
 
 function renderFeed() {
   const matches =
@@ -1109,6 +1501,7 @@ function renderFeed() {
                     video.id
                   )}"
                 >
+
                   <span>
                     <strong>
                       ${escapeHtml(
@@ -1122,16 +1515,21 @@ function renderFeed() {
                     class="source-row-right"
                   >
                     ▶ ${formatDate(
-                      video.published_at
+                      video.published_at ||
+                        video.match_date
                     )}
                   </span>
+
                 </button>
               `
             )
             .join('');
 
         return `
-          <article class="card match-card">
+          <article
+            class="card match-card"
+          >
+
             <button
               class="thumb-wrap thumb-button"
               type="button"
@@ -1145,6 +1543,7 @@ function renderFeed() {
                 title
               )}"
             >
+
               <img
                 class="thumb"
                 loading="lazy"
@@ -1165,9 +1564,11 @@ function renderFeed() {
               <span class="play-overlay">
                 ▶
               </span>
+
             </button>
 
             <div class="card-body">
+
               <div class="teams">
                 ${
                   teamTags ||
@@ -1195,6 +1596,7 @@ function renderFeed() {
               }
 
               <div class="meta">
+
                 <span>
                   ${
                     videos.length
@@ -1219,6 +1621,7 @@ function renderFeed() {
                     )
                   }
                 </span>
+
               </div>
 
               ${
@@ -1236,6 +1639,7 @@ function renderFeed() {
               </div>
 
               <div class="card-actions">
+
                 <button
                   class="watch"
                   type="button"
@@ -1268,7 +1672,9 @@ function renderFeed() {
                       : '↺'
                   }
                 </button>
+
               </div>
+
             </div>
           </article>
         `;
@@ -1319,6 +1725,7 @@ function renderFeed() {
         'click',
         (event) => {
           event.preventDefault();
+          event.stopPropagation();
 
           const match =
             getMatches().find(
@@ -1332,6 +1739,7 @@ function renderFeed() {
             match?.videos || [];
 
           const allSeen =
+            videosForMatch.length > 0 &&
             videosForMatch.every(
               (video) =>
                 state.seen.has(
@@ -1365,19 +1773,23 @@ function renderAll() {
   renderChips();
 
   $('#favoritesToggle')
-    .classList.toggle(
+    ?.classList.toggle(
       'active',
       state.favoritesOnly
     );
 
   $('#unseenToggle')
-    .classList.toggle(
+    ?.classList.toggle(
       'active',
       state.unseenOnly
     );
 
   renderFeed();
 }
+
+/* ============================================================
+   INITIALISATION
+   ============================================================ */
 
 async function boot() {
   loadStore();
@@ -1437,107 +1849,132 @@ async function boot() {
   renderAll();
 }
 
-$('#search').addEventListener(
+/* ============================================================
+   EVENTS
+   ============================================================ */
+
+$('#search')?.addEventListener(
   'input',
   (event) => {
     state.search =
       event.target.value;
+
     renderFeed();
   }
 );
 
-$('#favoritesToggle').addEventListener(
-  'click',
-  () => {
-    state.favoritesOnly =
-      !state.favoritesOnly;
+$('#favoritesToggle')
+  ?.addEventListener(
+    'click',
+    () => {
+      state.favoritesOnly =
+        !state.favoritesOnly;
 
-    if (
-      state.favoritesOnly &&
-      !state.selectedTeams.size
-    ) {
-      alert(
-        'Sélectionne au moins une équipe pour utiliser ce filtre.'
+      if (
+        state.favoritesOnly &&
+        !state.selectedTeams.size
+      ) {
+        alert(
+          'Sélectionne au moins une équipe pour utiliser ce filtre.'
+        );
+
+        state.favoritesOnly =
+          false;
+
+        return;
+      }
+
+      saveStore();
+      renderAll();
+    }
+  );
+
+$('#unseenToggle')
+  ?.addEventListener(
+    'click',
+    () => {
+      state.unseenOnly =
+        !state.unseenOnly;
+
+      saveStore();
+      renderAll();
+    }
+  );
+
+$('#themeBtn')
+  ?.addEventListener(
+    'click',
+    () => {
+      state.theme =
+        state.theme === 'dark'
+          ? 'light'
+          : 'dark';
+
+      saveStore();
+      applyTheme();
+    }
+  );
+
+$('#resetBtn')
+  ?.addEventListener(
+    'click',
+    () => {
+      localStorage.removeItem(
+        STORE_KEY
       );
+
+      state.selectedTeams.clear();
+      state.selectedSources.clear();
+      state.seen.clear();
 
       state.favoritesOnly =
         false;
 
-      return;
+      state.unseenOnly =
+        false;
+
+      state.theme =
+        'light';
+
+      state.search = '';
+
+      const search =
+        $('#search');
+
+      if (search) {
+        search.value = '';
+      }
+
+      applyTheme();
+      renderAll();
     }
-
-    saveStore();
-    renderAll();
-  }
-);
-
-$('#unseenToggle').addEventListener(
-  'click',
-  () => {
-    state.unseenOnly =
-      !state.unseenOnly;
-
-    saveStore();
-    renderAll();
-  }
-);
-
-$('#themeBtn').addEventListener(
-  'click',
-  () => {
-    state.theme =
-      state.theme === 'dark'
-        ? 'light'
-        : 'dark';
-
-    saveStore();
-    applyTheme();
-  }
-);
-
-$('#resetBtn').addEventListener(
-  'click',
-  () => {
-    localStorage.removeItem(
-      STORE_KEY
-    );
-
-    state.selectedTeams.clear();
-    state.selectedSources.clear();
-    state.seen.clear();
-
-    state.favoritesOnly =
-      false;
-
-    state.unseenOnly =
-      false;
-
-    state.theme =
-      'light';
-
-    state.search = '';
-
-    $('#search').value = '';
-
-    applyTheme();
-    renderAll();
-  }
-);
+  );
 
 boot().catch((error) => {
   console.error(error);
 
-  $('#empty').classList.remove(
-    'hidden'
-  );
+  const empty =
+    $('#empty');
 
-  $('#empty').querySelector(
-    'h3'
-  ).textContent =
-    'Impossible de charger les données.';
+  if (empty) {
+    empty.classList.remove(
+      'hidden'
+    );
 
-  $('#empty').querySelector(
-    'p'
-  ).textContent =
-    `${error.message}. Vérifie que data/videos.json est bien publié avec le site.`;
+    const heading =
+      empty.querySelector('h3');
+
+    const paragraph =
+      empty.querySelector('p');
+
+    if (heading) {
+      heading.textContent =
+        'Impossible de charger les données.';
+    }
+
+    if (paragraph) {
+      paragraph.textContent =
+        `${error.message}. Vérifie que data/videos.json est bien publié avec le site.`;
+    }
+  }
 });
