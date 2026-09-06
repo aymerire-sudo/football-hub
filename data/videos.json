@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-06T19:19:12.424426+00:00",
+  "generated_at": "2026-09-06T19:23:30.342794+00:00",
   "teams": [
     {
       "id": "psg",
@@ -173,7 +173,7 @@
       ],
       "match_key": "psg|noscore|ferrantorresrevealshiswithpsg",
       "match_title": "FERRAN TORRES reveals his GOALS with PSG!",
-      "fetched_at": "2026-09-06T19:18:59.754522+00:00"
+      "fetched_at": "2026-09-06T19:23:19.754731+00:00"
     },
     {
       "id": "R4hbyuFfHI8",
@@ -203,7 +203,7 @@
       ],
       "match_key": "ol|noscore|ligue 1 mcdonald s 26 27 toulouse",
       "match_title": "Match Highlights - Toulouse vs. Lyon - Ligue 1 McDonald's 26/27",
-      "fetched_at": "2026-09-06T19:19:11.986681+00:00"
+      "fetched_at": "2026-09-06T19:23:29.915233+00:00"
     },
     {
       "id": "7G71SrjfI4k",
@@ -232,7 +232,7 @@
       ],
       "match_key": "psg|noscore|rclensparissaintgermain2026tropheedeschampions",
       "match_title": "RC LENS - PARIS SAINT-GERMAIN Highlights | 2026 TROPHEE DES CHAMPIONS",
-      "fetched_at": "2026-09-06T19:19:11.990750+00:00"
+      "fetched_at": "2026-09-06T19:23:29.918232+00:00"
     }
   ],
   "matches": [
@@ -410,7 +410,7 @@
           ],
           "match_key": "psg|noscore|ferrantorresrevealshiswithpsg",
           "match_title": "FERRAN TORRES reveals his GOALS with PSG!",
-          "fetched_at": "2026-09-06T19:18:59.754522+00:00"
+          "fetched_at": "2026-09-06T19:23:19.754731+00:00"
         }
       ]
     },
@@ -455,7 +455,7 @@
           ],
           "match_key": "ol|noscore|ligue 1 mcdonald s 26 27 toulouse",
           "match_title": "Match Highlights - Toulouse vs. Lyon - Ligue 1 McDonald's 26/27",
-          "fetched_at": "2026-09-06T19:19:11.986681+00:00"
+          "fetched_at": "2026-09-06T19:23:29.915233+00:00"
         }
       ]
     },
@@ -499,7 +499,7 @@
           ],
           "match_key": "psg|noscore|rclensparissaintgermain2026tropheedeschampions",
           "match_title": "RC LENS - PARIS SAINT-GERMAIN Highlights | 2026 TROPHEE DES CHAMPIONS",
-          "fetched_at": "2026-09-06T19:19:11.990750+00:00"
+          "fetched_at": "2026-09-06T19:23:29.918232+00:00"
         }
       ]
     }
