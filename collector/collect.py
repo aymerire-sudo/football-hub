@@ -1058,6 +1058,23 @@ def find_known_clubs(
     )
 
 
+def canonical_known_side(
+    value: str,
+) -> dict[str, Any] | None:
+    """Return the canonical club when this title side matches one club."""
+    clubs = find_known_clubs(value)
+
+    if len(clubs) != 1:
+        return None
+
+    club = clubs[0]
+
+    return {
+        "id": club["id"],
+        "name": club["name"],
+    }
+
+
 # ============================================================
 # SCORES / COMPETITIONS
 # ============================================================
@@ -1300,9 +1317,8 @@ def side_is_generic(
 def infer_unknown_side(
     text: str,
 ) -> str:
-    value = clean_side(
-        text
-    )
+    """Infer a short opponent name, while rejecting sentence-like fragments."""
+    value = clean_side(text)
 
     value = re.sub(
         r"^\s*(?:un|une|le|la|les|l['’]|the)\s+",
@@ -1311,40 +1327,27 @@ def infer_unknown_side(
         flags=re.I,
     )
 
-    words = []
+    words = [
+        word.strip(".,!?;:()[]{}")
+        for word in value.split()
+        if normalize(word)
+    ]
 
-    for word in value.split():
-        token = normalize(
-            word
-        )
-
-        if not token:
-            continue
-
-        if token in GENERIC:
-            break
-
-        if len(words) >= 3:
-            break
-
-        words.append(
-            word.strip(
-                ".,!?;:()[]{}"
-            )
-        )
-
-    result = " ".join(
-        words
-    ).strip()
-
-    if side_is_generic(
-        result
-    ):
+    if not words or len(words) > 3:
         return ""
 
-    if len(
-        normalize(result).split()
-    ) > 3:
+    useful_words = []
+    for word in words:
+        token = normalize(word)
+        if not token:
+            continue
+        if token in GENERIC:
+            return ""
+        useful_words.append(word)
+
+    result = " ".join(useful_words).strip()
+
+    if not result or side_is_generic(result):
         return ""
 
     return result
@@ -1654,6 +1657,12 @@ def identify_match(
             not left_name
             or not right_name
         ):
+            continue
+
+        # Unknown opponents must come from a short, team-like side.
+        if not left_known and len(normalize(left).split()) > 3:
+            continue
+        if not right_known and len(normalize(right).split()) > 3:
             continue
 
         if (
