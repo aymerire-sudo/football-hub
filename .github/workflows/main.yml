@@ -4,8 +4,10 @@ on:
   push:
     branches:
       - main
+
   schedule:
     - cron: "*/30 * * * *"
+
   workflow_dispatch:
 
 permissions:
@@ -36,12 +38,23 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
           git add data/videos.json
-          git diff --cached --quiet || git commit -m "Update football videos"
-          git push
+
+          if git diff --cached --quiet; then
+            echo "No data changes to commit."
+          else
+            git commit -m "Update football videos"
+            git push
+          fi
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
+
+      - name: Prepare Pages site
+        run: |
+          mkdir -p site/data
+          cp data/videos.json site/data/videos.json
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
