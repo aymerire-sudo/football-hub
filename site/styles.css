@@ -821,3 +821,116 @@ body.modal-open {
       0 14px 14px;
   }
 }
+
+
+/* ============================================================
+   Lecteur YouTube robuste / fallback
+   ============================================================ */
+
+.youtube-player {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  background: #000;
+}
+
+.youtube-player iframe {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  border: 0;
+}
+
+.video-frame-wrap {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  overflow: hidden;
+}
+
+.player-fallback {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 24px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, .88),
+      rgba(0, 0, 0, .96)
+    );
+  color: #fff;
+  text-align: center;
+}
+
+.player-fallback.hidden {
+  display: none;
+}
+
+.player-fallback-icon {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255,255,255,.14);
+  font-size: 22px;
+}
+
+.player-fallback strong {
+  font-size: 17px;
+}
+
+.player-fallback p {
+  max-width: 620px;
+  margin: 0;
+  color: rgba(255,255,255,.78);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.player-fallback-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.player-fallback-actions .watch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-modal-panel {
+  overflow: hidden;
+}
+
+@media (max-width: 600px) {
+  .player-fallback {
+    padding: 16px;
+  }
+
+  .player-fallback strong {
+    font-size: 15px;
+  }
+
+  .player-fallback p {
+    font-size: 12px;
+  }
+
+  .player-fallback-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .player-fallback-actions .watch {
+    width: 100%;
+  }
+}
