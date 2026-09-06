@@ -1,10 +1,121 @@
 {
-  "generated_at": "2026-09-06T17:59:41.677998+00:00",
-  "source_status": [],
-  "videos": [],
+  "generated_at": "2026-09-06T18:58:19.313852+00:00",
+  "source_status": [
+    {
+      "source_id": "bein-sports-france",
+      "source_name": "beIN SPORTS France",
+      "ok": true,
+      "count": 15,
+      "error": null
+    },
+    {
+      "source_id": "canal-plus-sport",
+      "source_name": "CANAL+ Sport",
+      "ok": true,
+      "count": 15,
+      "error": null
+    },
+    {
+      "source_id": "dazn-france",
+      "source_name": "DAZN France",
+      "ok": true,
+      "count": 15,
+      "error": null
+    },
+    {
+      "source_id": "ligue-1",
+      "source_name": "Ligue 1 McDonald's",
+      "ok": true,
+      "count": 15,
+      "error": null
+    }
+  ],
+  "videos": [
+    {
+      "id": "p6HehBiUrxs",
+      "title": "Le résumé de Arsenal / Chelsea - Premier League 2026-27 (J3)",
+      "url": "https://www.youtube.com/watch?v=p6HehBiUrxs",
+      "published_at": "2026-09-06T18:29:31+00:00",
+      "updated_at": "2026-09-06T18:31:38+00:00",
+      "thumbnail": "https://i.ytimg.com/vi/p6HehBiUrxs/hqdefault.jpg",
+      "source_id": "canal-plus-sport",
+      "source_name": "CANAL+ Sport",
+      "source_channel_id": "UC8ggH3zU61XO0nMskSQwZdA",
+      "description": "",
+      "is_summary": true,
+      "summary_keywords": [
+        "résumé",
+        "resume",
+        "resumé"
+      ],
+      "excluded_keywords": [],
+      "teams": [
+        {
+          "id": "arsenal",
+          "name": "Arsenal"
+        }
+      ],
+      "match_key": "2026-09-06|arsenal|noscore|ledearsenalchelseapremierleague202627j3",
+      "fetched_at": "2026-09-06T18:58:16.905712+00:00"
+    },
+    {
+      "id": "u-UlVLaebEA",
+      "title": "Résumé : MAYENCE humilie HAMBOURG avec une MANITA et double le BAYERN !",
+      "url": "https://www.youtube.com/watch?v=u-UlVLaebEA",
+      "published_at": "2026-09-06T15:56:16+00:00",
+      "updated_at": "2026-09-06T16:22:23+00:00",
+      "thumbnail": "https://i.ytimg.com/vi/u-UlVLaebEA/hqdefault.jpg",
+      "source_id": "bein-sports-france",
+      "source_name": "beIN SPORTS France",
+      "source_channel_id": "UCfj4kQ6_mYO5r4hzX5KloVw",
+      "description": "",
+      "is_summary": true,
+      "summary_keywords": [
+        "résumé",
+        "resume",
+        "resumé"
+      ],
+      "excluded_keywords": [],
+      "teams": [
+        {
+          "id": "bayern",
+          "name": "Bayern Munich"
+        }
+      ],
+      "match_key": "2026-09-06|bayern|noscore|mayencehumiliehambourgavecunemanitaetdoublelebayern",
+      "fetched_at": "2026-09-06T18:58:16.259029+00:00"
+    },
+    {
+      "id": "OOmde4Mp7jM",
+      "title": "Résumé : Le BAYERN se casse les dents sur un SCHALKE héroïque !",
+      "url": "https://www.youtube.com/watch?v=OOmde4Mp7jM",
+      "published_at": "2026-09-05T18:35:56+00:00",
+      "updated_at": "2026-09-06T18:38:46+00:00",
+      "thumbnail": "https://i.ytimg.com/vi/OOmde4Mp7jM/hqdefault.jpg",
+      "source_id": "bein-sports-france",
+      "source_name": "beIN SPORTS France",
+      "source_channel_id": "UCfj4kQ6_mYO5r4hzX5KloVw",
+      "description": "",
+      "is_summary": true,
+      "summary_keywords": [
+        "résumé",
+        "resume",
+        "resumé"
+      ],
+      "excluded_keywords": [],
+      "teams": [
+        {
+          "id": "bayern",
+          "name": "Bayern Munich"
+        }
+      ],
+      "match_key": "2026-09-05|bayern|noscore|lebayernsecasselesdentssurunschalkeheroique",
+      "fetched_at": "2026-09-06T18:58:16.266405+00:00"
+    }
+  ],
   "stats": {
-    "videos": 0,
-    "teams": 0,
-    "sources": 0
+    "videos": 3,
+    "teams": 5,
+    "sources": 4
   }
 }
