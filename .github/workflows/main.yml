@@ -36,7 +36,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install yt-dlp
 
-      - name: Collect new videos
+      - name: Collect and classify football summaries
         run: python collector/collect.py
 
       - name: Commit updated data
