@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-06T19:17:11.262993+00:00",
+  "generated_at": "2026-09-06T19:19:12.424426+00:00",
   "teams": [
     {
       "id": "psg",
@@ -27,32 +27,32 @@
       "source_id": "bein-sports-france",
       "source_name": "beIN SPORTS France",
       "ok": true,
-      "count": 15,
-      "method": "atom",
+      "count": 60,
+      "method": "yt-dlp",
       "error": null
     },
     {
       "source_id": "canal-plus-sport",
       "source_name": "CANAL+ Sport",
       "ok": true,
-      "count": 15,
-      "method": "atom",
+      "count": 60,
+      "method": "yt-dlp",
       "error": null
     },
     {
       "source_id": "dazn-france",
       "source_name": "DAZN France",
       "ok": true,
-      "count": 15,
-      "method": "atom",
+      "count": 60,
+      "method": "yt-dlp",
       "error": null
     },
     {
       "source_id": "ligue-1",
       "source_name": "Ligue 1 McDonald's",
       "ok": true,
-      "count": 15,
-      "method": "atom",
+      "count": 60,
+      "method": "yt-dlp",
       "error": null
     }
   ],
@@ -145,6 +145,94 @@
       "match_key": "bayern|noscore|schalke se casse dents",
       "match_title": "Résumé : Le BAYERN se casse les dents sur un SCHALKE héroïque !",
       "fetched_at": "2026-09-06T19:17:08.605486+00:00"
+    },
+    {
+      "id": "CziB5uFTP_M",
+      "title": "FERRAN TORRES reveals his GOALS with PSG!",
+      "url": "https://www.youtube.com/watch?v=CziB5uFTP_M",
+      "published_at": null,
+      "updated_at": null,
+      "thumbnail": "https://i.ytimg.com/vi/CziB5uFTP_M/hqdefault.jpg",
+      "source_id": "bein-sports-france",
+      "source_name": "beIN SPORTS France",
+      "source_channel_id": "",
+      "description": "",
+      "is_summary": true,
+      "summary_keywords": [
+        "goals"
+      ],
+      "excluded_keywords": [],
+      "match_confidence": "medium",
+      "match_reason": null,
+      "score": null,
+      "teams": [
+        {
+          "id": "psg",
+          "name": "PSG"
+        }
+      ],
+      "match_key": "psg|noscore|ferrantorresrevealshiswithpsg",
+      "match_title": "FERRAN TORRES reveals his GOALS with PSG!",
+      "fetched_at": "2026-09-06T19:18:59.754522+00:00"
+    },
+    {
+      "id": "R4hbyuFfHI8",
+      "title": "Match Highlights - Toulouse vs. Lyon - Ligue 1 McDonald's 26/27",
+      "url": "https://www.youtube.com/watch?v=R4hbyuFfHI8",
+      "published_at": null,
+      "updated_at": null,
+      "thumbnail": "https://i.ytimg.com/vi/R4hbyuFfHI8/hqdefault.jpg",
+      "source_id": "ligue-1",
+      "source_name": "Ligue 1 McDonald's",
+      "source_channel_id": "",
+      "description": "",
+      "is_summary": true,
+      "summary_keywords": [
+        "highlights",
+        "match highlights"
+      ],
+      "excluded_keywords": [],
+      "match_confidence": "high",
+      "match_reason": null,
+      "score": null,
+      "teams": [
+        {
+          "id": "ol",
+          "name": "OL"
+        }
+      ],
+      "match_key": "ol|noscore|ligue 1 mcdonald s 26 27 toulouse",
+      "match_title": "Match Highlights - Toulouse vs. Lyon - Ligue 1 McDonald's 26/27",
+      "fetched_at": "2026-09-06T19:19:11.986681+00:00"
+    },
+    {
+      "id": "7G71SrjfI4k",
+      "title": "RC LENS - PARIS SAINT-GERMAIN Highlights | 2026 TROPHEE DES CHAMPIONS",
+      "url": "https://www.youtube.com/watch?v=7G71SrjfI4k",
+      "published_at": null,
+      "updated_at": null,
+      "thumbnail": "https://i.ytimg.com/vi/7G71SrjfI4k/hqdefault.jpg",
+      "source_id": "ligue-1",
+      "source_name": "Ligue 1 McDonald's",
+      "source_channel_id": "",
+      "description": "",
+      "is_summary": true,
+      "summary_keywords": [
+        "highlights"
+      ],
+      "excluded_keywords": [],
+      "match_confidence": "medium",
+      "match_reason": null,
+      "score": null,
+      "teams": [
+        {
+          "id": "psg",
+          "name": "PSG"
+        }
+      ],
+      "match_key": "psg|noscore|rclensparissaintgermain2026tropheedeschampions",
+      "match_title": "RC LENS - PARIS SAINT-GERMAIN Highlights | 2026 TROPHEE DES CHAMPIONS",
+      "fetched_at": "2026-09-06T19:19:11.990750+00:00"
     }
   ],
   "matches": [
@@ -281,11 +369,144 @@
           "fetched_at": "2026-09-06T19:17:08.605486+00:00"
         }
       ]
+    },
+    {
+      "match_key": "psg|noscore|ferrantorresrevealshiswithpsg",
+      "team_ids": [
+        "psg"
+      ],
+      "team_names": [
+        "PSG"
+      ],
+      "score": null,
+      "title": "FERRAN TORRES reveals his GOALS with PSG!",
+      "published_at": null,
+      "sources_count": 1,
+      "videos": [
+        {
+          "id": "CziB5uFTP_M",
+          "title": "FERRAN TORRES reveals his GOALS with PSG!",
+          "url": "https://www.youtube.com/watch?v=CziB5uFTP_M",
+          "published_at": null,
+          "updated_at": null,
+          "thumbnail": "https://i.ytimg.com/vi/CziB5uFTP_M/hqdefault.jpg",
+          "source_id": "bein-sports-france",
+          "source_name": "beIN SPORTS France",
+          "source_channel_id": "",
+          "description": "",
+          "is_summary": true,
+          "summary_keywords": [
+            "goals"
+          ],
+          "excluded_keywords": [],
+          "match_confidence": "medium",
+          "match_reason": null,
+          "score": null,
+          "teams": [
+            {
+              "id": "psg",
+              "name": "PSG"
+            }
+          ],
+          "match_key": "psg|noscore|ferrantorresrevealshiswithpsg",
+          "match_title": "FERRAN TORRES reveals his GOALS with PSG!",
+          "fetched_at": "2026-09-06T19:18:59.754522+00:00"
+        }
+      ]
+    },
+    {
+      "match_key": "ol|noscore|ligue 1 mcdonald s 26 27 toulouse",
+      "team_ids": [
+        "ol"
+      ],
+      "team_names": [
+        "OL"
+      ],
+      "score": null,
+      "title": "Match Highlights - Toulouse vs. Lyon - Ligue 1 McDonald's 26/27",
+      "published_at": null,
+      "sources_count": 1,
+      "videos": [
+        {
+          "id": "R4hbyuFfHI8",
+          "title": "Match Highlights - Toulouse vs. Lyon - Ligue 1 McDonald's 26/27",
+          "url": "https://www.youtube.com/watch?v=R4hbyuFfHI8",
+          "published_at": null,
+          "updated_at": null,
+          "thumbnail": "https://i.ytimg.com/vi/R4hbyuFfHI8/hqdefault.jpg",
+          "source_id": "ligue-1",
+          "source_name": "Ligue 1 McDonald's",
+          "source_channel_id": "",
+          "description": "",
+          "is_summary": true,
+          "summary_keywords": [
+            "highlights",
+            "match highlights"
+          ],
+          "excluded_keywords": [],
+          "match_confidence": "high",
+          "match_reason": null,
+          "score": null,
+          "teams": [
+            {
+              "id": "ol",
+              "name": "OL"
+            }
+          ],
+          "match_key": "ol|noscore|ligue 1 mcdonald s 26 27 toulouse",
+          "match_title": "Match Highlights - Toulouse vs. Lyon - Ligue 1 McDonald's 26/27",
+          "fetched_at": "2026-09-06T19:19:11.986681+00:00"
+        }
+      ]
+    },
+    {
+      "match_key": "psg|noscore|rclensparissaintgermain2026tropheedeschampions",
+      "team_ids": [
+        "psg"
+      ],
+      "team_names": [
+        "PSG"
+      ],
+      "score": null,
+      "title": "RC LENS - PARIS SAINT-GERMAIN Highlights | 2026 TROPHEE DES CHAMPIONS",
+      "published_at": null,
+      "sources_count": 1,
+      "videos": [
+        {
+          "id": "7G71SrjfI4k",
+          "title": "RC LENS - PARIS SAINT-GERMAIN Highlights | 2026 TROPHEE DES CHAMPIONS",
+          "url": "https://www.youtube.com/watch?v=7G71SrjfI4k",
+          "published_at": null,
+          "updated_at": null,
+          "thumbnail": "https://i.ytimg.com/vi/7G71SrjfI4k/hqdefault.jpg",
+          "source_id": "ligue-1",
+          "source_name": "Ligue 1 McDonald's",
+          "source_channel_id": "",
+          "description": "",
+          "is_summary": true,
+          "summary_keywords": [
+            "highlights"
+          ],
+          "excluded_keywords": [],
+          "match_confidence": "medium",
+          "match_reason": null,
+          "score": null,
+          "teams": [
+            {
+              "id": "psg",
+              "name": "PSG"
+            }
+          ],
+          "match_key": "psg|noscore|rclensparissaintgermain2026tropheedeschampions",
+          "match_title": "RC LENS - PARIS SAINT-GERMAIN Highlights | 2026 TROPHEE DES CHAMPIONS",
+          "fetched_at": "2026-09-06T19:19:11.990750+00:00"
+        }
+      ]
     }
   ],
   "stats": {
-    "videos": 3,
-    "matches": 3,
+    "videos": 6,
+    "matches": 6,
     "teams": 5,
     "sources": 4
   }
