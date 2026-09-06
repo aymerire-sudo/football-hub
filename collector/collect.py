@@ -35,7 +35,7 @@ NS = {
 
 
 # ============================================================
-# FALLBACK VOCABULARY
+# VOCABULAIRE
 # ============================================================
 
 DEFAULT_SUMMARY_KEYWORDS = {
@@ -44,9 +44,8 @@ DEFAULT_SUMMARY_KEYWORDS = {
     "match highlights",
     "extended highlights",
     "full highlights",
-    "daZn highlights",
-    "recap",
     "match recap",
+    "recap",
     "résumé",
     "resume",
     "résumé du match",
@@ -60,7 +59,6 @@ DEFAULT_SUMMARY_KEYWORDS = {
     "best moments",
     "meilleurs moments",
 }
-
 
 DEFAULT_EXCLUDE_KEYWORDS = {
     "reaction",
@@ -106,7 +104,6 @@ DEFAULT_EXCLUDE_KEYWORDS = {
     "documentaire",
     "documentary",
     "coulisses",
-    "homage",
     "hommage",
     "secrets de",
     "explique",
@@ -114,21 +111,358 @@ DEFAULT_EXCLUDE_KEYWORDS = {
 }
 
 
+CONTEXT_PATTERNS = {
+    "classement",
+    "points",
+    "leader",
+    "leaders",
+    "devance",
+    "devant",
+    "dépasse",
+    "double le",
+    "double la",
+    "double les",
+    "prend la tête",
+    "en tête",
+    "au classement",
+    "course au titre",
+}
+
+
+GENERIC = {
+    "resume",
+    "résumé",
+    "highlights",
+    "highlight",
+    "extended",
+    "full",
+    "match",
+    "recap",
+    "buts",
+    "but",
+    "goals",
+    "goal",
+    "all",
+    "the",
+    "le",
+    "la",
+    "les",
+    "un",
+    "une",
+    "des",
+    "du",
+    "de",
+    "a",
+    "au",
+    "aux",
+    "avec",
+    "pour",
+    "dans",
+    "et",
+    "qui",
+    "se",
+    "sur",
+    "contre",
+    "face",
+    "live",
+    "direct",
+    "official",
+    "officiel",
+    "video",
+    "vidéo",
+    "season",
+    "saison",
+    "journee",
+    "journée",
+    "round",
+    "week",
+    "manita",
+    "héroique",
+    "heroique",
+    "folle",
+    "énorme",
+    "enorme",
+    "incroyable",
+    "impressionnant",
+    "impressionnante",
+    "solide",
+    "dominant",
+    "domine",
+    "humilie",
+    "humilié",
+    "écrase",
+    "ecrase",
+    "frappe",
+    "tombe",
+    "perd",
+    "gagne",
+    "bat",
+    "révèle",
+    "reveal",
+    "reveals",
+    "torres",
+    "barcola",
+    "champion",
+    "champions",
+    "league",
+    "ligue",
+}
+
+
+COMPETITIONS = (
+    "uefa champions league",
+    "champions league",
+    "europa league",
+    "conference league",
+    "premier league",
+    "la liga",
+    "bundesliga",
+    "ligue 1",
+    "ligue 2",
+    "coupe de france",
+    "coupe de la ligue",
+    "trophee des champions",
+    "trophée des champions",
+    "fa cup",
+    "carabao cup",
+    "community shield",
+    "dfb pokal",
+    "copa del rey",
+    "supercopa",
+    "club world cup",
+    "mondial des clubs",
+    "world cup",
+    "coupe du monde",
+    "euro",
+    "euros",
+)
+
+
 # ============================================================
-# CLUB DATABASE
-#
-# The five followed teams come from config.json.
-# This additional club dictionary lets us identify opponents
-# and therefore distinguish:
-#
-#   "Bayern - Schalke"                         -> MATCH
-#   "Mayence - Hambourg ... double le Bayern"  -> Mainz/Hamburg
-#
-# from a contextual mention.
+# OUTILS GENERIQUES
+# ============================================================
+
+
+def load_json(
+    path: Path,
+    fallback: Path | None = None,
+) -> dict[str, Any]:
+    """
+    Charge un fichier JSON et vérifie qu'il contient un objet.
+    Utilise fallback si path n'existe pas.
+    """
+    target = path if path.exists() else fallback
+
+    if target is None or not target.exists():
+        raise FileNotFoundError(
+            f"Configuration introuvable : {path}"
+        )
+
+    with target.open(
+        "r",
+        encoding="utf-8",
+    ) as fh:
+        data = json.load(fh)
+
+    if not isinstance(data, dict):
+        raise ValueError(
+            f"Le fichier JSON {target} doit contenir un objet."
+        )
+
+    return data
+
+
+def normalize(
+    value: str | None,
+) -> str:
+    value = html.unescape(
+        value or ""
+    )
+
+    value = unicodedata.normalize(
+        "NFKD",
+        value,
+    )
+
+    value = "".join(
+        char
+        for char in value
+        if not unicodedata.combining(char)
+    )
+
+    value = value.lower()
+    value = value.replace(
+        "&",
+        " and ",
+    )
+
+    value = re.sub(
+        r"[^a-z0-9]+",
+        " ",
+        value,
+    )
+
+    return re.sub(
+        r"\s+",
+        " ",
+        value,
+    ).strip()
+
+
+def slug(
+    value: str | None,
+) -> str:
+    return re.sub(
+        r"[^a-z0-9]+",
+        "-",
+        normalize(value),
+    ).strip("-")
+
+
+def contains(
+    text: str | None,
+    term: str | None,
+) -> bool:
+    haystack = normalize(text)
+    needle = normalize(term)
+
+    if not needle:
+        return False
+
+    return bool(
+        re.search(
+            r"(?<![a-z0-9])"
+            + re.escape(needle)
+            + r"(?![a-z0-9])",
+            haystack,
+        )
+    )
+
+
+def parse_date(
+    value: Any,
+) -> str | None:
+    if value is None:
+        return None
+
+    value = str(value).strip()
+
+    if not value:
+        return None
+
+    try:
+        if re.fullmatch(
+            r"\d{8}",
+            value,
+        ):
+            dt = datetime.strptime(
+                value,
+                "%Y%m%d",
+            ).replace(
+                tzinfo=timezone.utc
+            )
+
+            return dt.isoformat()
+
+        if re.fullmatch(
+            r"\d+(?:\.\d+)?",
+            value,
+        ):
+            timestamp = float(
+                value
+            )
+
+            if timestamp >= 1_000_000_000:
+                return datetime.fromtimestamp(
+                    timestamp,
+                    timezone.utc,
+                ).isoformat()
+
+        dt = datetime.fromisoformat(
+            value.replace(
+                "Z",
+                "+00:00",
+            )
+        )
+
+        if dt.tzinfo is None:
+            dt = dt.replace(
+                tzinfo=timezone.utc
+            )
+
+        return dt.astimezone(
+            timezone.utc
+        ).isoformat()
+
+    except ValueError:
+        return None
+
+
+# ============================================================
+# EQUIPES SUIVIES
+# ============================================================
+
+
+def aliases_for_team(
+    team: dict[str, Any],
+) -> list[str]:
+    return [
+        str(value)
+        for value in [
+            team.get("name"),
+            *(
+                team.get(
+                    "aliases",
+                    []
+                )
+                or []
+            ),
+        ]
+        if value
+    ]
+
+
+def team_matches(
+    text: str,
+    team: dict[str, Any],
+) -> bool:
+    return any(
+        contains(
+            text,
+            alias,
+        )
+        for alias in aliases_for_team(
+            team
+        )
+    )
+
+
+def followed_team_hits(
+    text: str,
+    teams: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    result = []
+
+    for team in teams:
+        if team_matches(
+            text,
+            team,
+        ):
+            result.append(
+                {
+                    "id": team["id"],
+                    "name": team["name"],
+                }
+            )
+
+    return result
+
+
+# ============================================================
+# BASE DE CLUBS / ADVERSAIRES
 # ============================================================
 
 KNOWN_CLUBS: dict[str, list[str]] = {
-    # France
     "psg": [
         "PSG",
         "Paris Saint-Germain",
@@ -225,56 +559,20 @@ KNOWN_CLUBS: dict[str, list[str]] = {
         "Brest",
         "Stade Brestois",
     ],
-    "auxerre": [
-        "Auxerre",
-        "AJ Auxerre",
-    ],
-    "le-mans": [
-        "Le Mans",
-    ],
-    "dijon": [
-        "Dijon",
-        "Dijon FCO",
-    ],
-    "grenoble": [
-        "Grenoble",
-        "Grenoble Foot",
-    ],
-    "laval": [
-        "Laval",
-        "Stade Lavallois",
-    ],
-    "clermont": [
-        "Clermont",
-        "Clermont Foot",
-    ],
-    "dunkerque": [
-        "Dunkerque",
-        "USL Dunkerque",
-    ],
     "caen": [
         "Caen",
         "SM Caen",
-    ],
-    "sochaux": [
-        "Sochaux",
-        "FC Sochaux",
-    ],
-    "pau": [
-        "Pau",
-        "Pau FC",
-    ],
-    "annecy": [
-        "Annecy",
-        "FC Annecy",
     ],
     "guingamp": [
         "Guingamp",
         "EA Guingamp",
     ],
-    "boulogne": [
-        "Boulogne-sur-Mer",
-        "US Boulogne",
+    "dijon": [
+        "Dijon",
+        "Dijon FCO",
+    ],
+    "le-mans": [
+        "Le Mans",
     ],
     "red-star": [
         "Red Star",
@@ -283,7 +581,6 @@ KNOWN_CLUBS: dict[str, list[str]] = {
         "Paris FC",
     ],
 
-    # England
     "arsenal": [
         "Arsenal",
         "Arsenal FC",
@@ -340,7 +637,6 @@ KNOWN_CLUBS: dict[str, list[str]] = {
         "Hull City",
     ],
 
-    # Germany
     "bayern": [
         "Bayern Munich",
         "Bayern München",
@@ -417,7 +713,6 @@ KNOWN_CLUBS: dict[str, list[str]] = {
         "SV Elversberg",
     ],
 
-    # Spain
     "real-madrid": [
         "Real Madrid",
         "Real Madrid CF",
@@ -454,7 +749,6 @@ KNOWN_CLUBS: dict[str, list[str]] = {
     ],
     "racing-santander": [
         "Racing Santander",
-        "Racing",
     ],
     "alaves": [
         "Alavés",
@@ -484,7 +778,6 @@ KNOWN_CLUBS: dict[str, list[str]] = {
         "Valencia CF",
     ],
 
-    # Turkey / Portugal / Italy / etc.
     "fenerbahce": [
         "Fenerbahçe",
         "Fenerbahce",
@@ -524,18 +817,14 @@ KNOWN_CLUBS: dict[str, list[str]] = {
     "trabzonspor": [
         "Trabzonspor",
     ],
-    "besiktas": [
-        "Besiktas",
-        "Beşiktaş",
-    ],
     "roma": [
         "Roma",
         "AS Roma",
     ],
     "inter": [
-        "Inter",
         "Inter Milan",
         "Internazionale",
+        "Inter",
     ],
     "napoli": [
         "Napoli",
@@ -596,209 +885,9 @@ KNOWN_CLUBS: dict[str, list[str]] = {
 }
 
 
-# ---------------------------------------------------------------------------
-# Team aliases / config
-# ---------------------------------------------------------------------------
-
-
-def aliases_for_config_team(
-    team: dict[str, Any],
-) -> list[str]:
-    return [
-        str(value)
-        for value in [
-            team.get("name"),
-            *(team.get("aliases") or []),
-        ]
-        if value
-    ]
-
-
-def normalize(
-    value: str | None,
-) -> str:
-    value = html.unescape(
-        value or ""
-    )
-
-    value = unicodedata.normalize(
-        "NFKD",
-        value,
-    )
-
-    value = "".join(
-        char
-        for char in value
-        if not unicodedata.combining(char)
-    )
-
-    value = value.lower()
-    value = value.replace(
-        "&",
-        " and ",
-    )
-
-    value = re.sub(
-        r"[^a-z0-9]+",
-        " ",
-        value,
-    )
-
-    return re.sub(
-        r"\s+",
-        " ",
-        value,
-    ).strip()
-
-
-def slug(
-    value: str | None,
-) -> str:
-    return re.sub(
-        r"[^a-z0-9]+",
-        "-",
-        normalize(value),
-    ).strip("-")
-
-
-def contains(
-    text: str | None,
-    term: str | None,
-) -> bool:
-    haystack = normalize(text)
-    needle = normalize(term)
-
-    if not needle:
-        return False
-
-    return bool(
-        re.search(
-            r"(?<![a-z0-9])"
-            + re.escape(needle)
-            + r"(?![a-z0-9])",
-            haystack,
-        )
-    )
-
-
-def team_match(
-    text: str,
-    team: dict[str, Any],
-) -> bool:
-    return any(
-        contains(
-            text,
-            alias,
-        )
-        for alias in aliases_for_config_team(
-            team
-        )
-    )
-
-
-def followed_team_hits(
-    text: str,
-    teams: list[dict[str, Any]],
-) -> list[dict[str, Any]]:
-    found = []
-
-    for team in teams:
-        if team_match(
-            text,
-            team,
-        ):
-            found.append(
-                {
-                    "id": team["id"],
-                    "name": team["name"],
-                }
-            )
-
-    return found
-
-
-# ---------------------------------------------------------------------------
-# Known club detection
-# ---------------------------------------------------------------------------
-
-
-def known_aliases() -> list[
-    tuple[str, str]
-]:
-    pairs = []
-
-    for club_id, aliases in KNOWN_CLUBS.items():
-        for alias in aliases:
-            pairs.append(
-                (
-                    club_id,
-                    alias,
-                )
-            )
-
-    # Longest aliases first prevents
-    # "Real Madrid" from being matched as just "Madrid".
-    pairs.sort(
-        key=lambda item: len(
-            normalize(item[1])
-        ),
-        reverse=True,
-    )
-
-    return pairs
-
-
-KNOWN_ALIASES = known_aliases()
-
-
-def find_known_clubs(
-    text: str,
-) -> list[dict[str, Any]]:
-    normalized = normalize(
-        text
-    )
-
-    found = {}
-
-    for club_id, alias in KNOWN_ALIASES:
-        term = normalize(
-            alias
-        )
-
-        if not term:
-            continue
-
-        match = re.search(
-            r"(?<![a-z0-9])"
-            + re.escape(term)
-            + r"(?![a-z0-9])",
-            normalized,
-        )
-
-        if not match:
-            continue
-
-        if club_id not in found:
-            found[club_id] = {
-                "id": club_id,
-                "name": canonical_club_name(
-                    club_id
-                ),
-                "alias": alias,
-                "start": match.start(),
-                "end": match.end(),
-            }
-
-    return sorted(
-        found.values(),
-        key=lambda item: item["start"],
-    )
-
-
-def canonical_club_name(
-    club_id: str,
-) -> str:
-    mapping = {
+CANONICAL_NAMES = {
+    key: value
+    for key, value in {
         "psg": "PSG",
         "ol": "OL",
         "arsenal": "Arsenal",
@@ -897,53 +986,81 @@ def canonical_club_name(
         "venezia": "Venise",
         "cagliari": "Cagliari",
         "lecce": "Lecce",
-    }
+    }.items()
+}
 
-    return mapping.get(
-        club_id,
-        club_id.replace(
-            "-",
-            " ",
-        ).title(),
+
+def find_known_clubs(
+    text: str,
+) -> list[dict[str, Any]]:
+    normalized = normalize(
+        text
+    )
+
+    found = {}
+
+    aliases = []
+
+    for club_id, values in KNOWN_CLUBS.items():
+        for alias in values:
+            aliases.append(
+                (
+                    club_id,
+                    alias,
+                )
+            )
+
+    aliases.sort(
+        key=lambda item: len(
+            normalize(
+                item[1]
+            )
+        ),
+        reverse=True,
+    )
+
+    for club_id, alias in aliases:
+        needle = normalize(
+            alias
+        )
+
+        if not needle:
+            continue
+
+        match = re.search(
+            r"(?<![a-z0-9])"
+            + re.escape(needle)
+            + r"(?![a-z0-9])",
+            normalized,
+        )
+
+        if not match:
+            continue
+
+        if club_id not in found:
+            found[club_id] = {
+                "id": club_id,
+                "name": CANONICAL_NAMES.get(
+                    club_id,
+                    club_id.replace(
+                        "-",
+                        " ",
+                    ).title(),
+                ),
+                "alias": alias,
+                "start": match.start(),
+                "end": match.end(),
+            }
+
+    return sorted(
+        found.values(),
+        key=lambda item: item["start"],
     )
 
 
-def followed_club_ids(
-    teams: list[dict[str, Any]],
-) -> dict[str, str]:
-    mapping = {}
-
-    for team in teams:
-        config_id = team["id"]
-
-        for club_id, aliases in KNOWN_CLUBS.items():
-            if any(
-                normalize(alias)
-                == normalize(config_alias)
-                or contains(
-                    alias,
-                    config_alias,
-                )
-                or contains(
-                    config_alias,
-                    alias,
-                )
-                for alias in aliases
-                for config_alias in aliases_for_config_team(
-                    team
-                )
-            ):
-                mapping[
-                    club_id
-                ] = config_id
-
-    return mapping
-
-
-# ---------------------------------------------------------------------------
-# Score / competition / text helpers
-# ---------------------------------------------------------------------------
-
+# ============================================================
+# SCORES / COMPETITIONS
+# ============================================================
 
 SCORE_RE = re.compile(
     r"(?<!\d)(\d{1,2})\s*[-–—:]\s*(\d{1,2})(?!\d)"
@@ -958,65 +1075,42 @@ EXPLICIT_SEPARATOR_RE = re.compile(
     r"\s*/\s*"
 )
 
-# Used for "Arsenal - Chelsea".
 HYPHEN_PAIR_RE = re.compile(
-    r"(?<![A-Za-z0-9])\s+[-–—]\s+(?![A-Za-z0-9])"
+    r"\s+[-–—]\s+"
 )
-
-RELATION_RE = re.compile(
-    r"\b(?:face\s+à|face\s+a|contre|sur)\b",
-    re.IGNORECASE,
-)
-
-CONTEXT_PATTERNS = {
-    "classement",
-    "points",
-    "leader",
-    "leaders",
-    "devance",
-    "devant",
-    "dépasse",
-    "double le",
-    "double la",
-    "double les",
-    "prend la tête",
-    "en tête",
-    "au classement",
-    "course au titre",
-}
 
 
 def extract_score(
-    text: str,
+    title: str,
 ) -> str | None:
-    found = SCORE_RE.search(
-        text
+    match = SCORE_RE.search(
+        title
     )
 
-    if not found:
+    if not match:
         return None
 
     return (
-        f"{found.group(1)}-"
-        f"{found.group(2)}"
+        f"{match.group(1)}-"
+        f"{match.group(2)}"
     )
 
 
 def extract_date_from_title(
     title: str,
 ) -> str | None:
-    found = DATE_RE.search(
+    match = DATE_RE.search(
         title
     )
 
-    if not found:
+    if not match:
         return None
 
     try:
         return datetime(
-            int(found.group(1)),
-            int(found.group(2)),
-            int(found.group(3)),
+            int(match.group(1)),
+            int(match.group(2)),
+            int(match.group(3)),
             tzinfo=timezone.utc,
         ).isoformat()
 
@@ -1031,36 +1125,8 @@ def competition_from_title(
         title
     )
 
-    competitions = (
-        "uefa champions league",
-        "champions league",
-        "europa league",
-        "conference league",
-        "premier league",
-        "la liga",
-        "bundesliga",
-        "ligue 1",
-        "ligue 2",
-        "coupe de france",
-        "coupe de la ligue",
-        "trophee des champions",
-        "trophée des champions",
-        "fa cup",
-        "carabao cup",
-        "community shield",
-        "dfb pokal",
-        "copa del rey",
-        "supercopa",
-        "club world cup",
-        "mondial des clubs",
-        "world cup",
-        "coupe du monde",
-        "euro",
-        "euros",
-    )
-
     for competition in sorted(
-        competitions,
+        COMPETITIONS,
         key=len,
         reverse=True,
     ):
@@ -1076,6 +1142,11 @@ def competition_from_title(
             )
 
     return None
+
+
+# ============================================================
+# RECONNAISSANCE DES TITRES
+# ============================================================
 
 
 def looks_like_summary(
@@ -1100,10 +1171,6 @@ def looks_like_summary(
         )
     )
 
-    normalized = normalize(
-        title
-    )
-
     if any(
         contains(
             title,
@@ -1122,7 +1189,7 @@ def looks_like_summary(
     )
 
 
-def looks_contextual(
+def is_contextual_mention(
     title: str,
 ) -> bool:
     normalized = normalize(
@@ -1130,9 +1197,10 @@ def looks_contextual(
     )
 
     return any(
-        normalize(pattern)
-        in normalized
-        for pattern in CONTEXT_PATTERNS
+        normalize(
+            phrase
+        ) in normalized
+        for phrase in CONTEXT_PATTERNS
     )
 
 
@@ -1164,13 +1232,6 @@ def clean_side(
         value,
     )
 
-    value = re.split(
-        r"\s*[|•·]\s*",
-        value,
-        maxsplit=1,
-    )[0]
-
-    # Season labels are NEVER clubs.
     value = re.sub(
         r"\b(?:20\d{2})[-/]\d{2}\b",
         " ",
@@ -1178,27 +1239,33 @@ def clean_side(
     )
 
     value = re.sub(
-        r"\b(?:J\d+|J\d+(?:re|e)|"
-        r"week\s*\d+|"
+        r"\b(?:J\d+|"
         r"journ[eé]e\s*\d+|"
+        r"week\s*\d+|"
         r"round\s*\d+)\b",
         " ",
         value,
         flags=re.I,
     )
 
-    value = re.sub(
+    value = re.split(
+        r"\s*[|•·]",
+        value,
+        maxsplit=1,
+    )[0]
+
+    value = re.split(
         r"\s+-\s+(?="
         r"(?:premier|ligue|bundesliga|"
-        r"la\s+liga|champions|europa|"
+        r"la\s+liga|laliga|champions|europa|"
         r"conference|trophee|trophée|"
         r"coupe|club|league|"
         r"highlights?|résumé|resume|"
         r"goals?|buts?)\b)",
-        "",
         value,
+        maxsplit=1,
         flags=re.I,
-    )
+    )[0]
 
     return re.sub(
         r"\s+",
@@ -1219,68 +1286,22 @@ def side_is_generic(
     if not normalized:
         return True
 
-    generic = {
-        "ligue",
-        "league",
-        "football",
-        "match",
-        "matches",
-        "game",
-        "games",
-        "highlights",
-        "highlight",
-        "resume",
-        "résumé",
-        "recap",
-        "buts",
-        "but",
-        "goals",
-        "goal",
-        "all",
-        "the",
-        "week",
-        "saison",
-        "season",
-        "26 27",
-        "27",
-        "2026",
-        "2027",
-    }
-
     words = normalized.split()
 
     if len(words) > 4:
         return True
 
     return all(
-        word in generic
+        word in GENERIC
         for word in words
     )
 
 
-def canonical_known_side(
-    side_text: str,
-) -> dict[str, Any] | None:
-    hits = find_known_clubs(
-        side_text
-    )
-
-    if not hits:
-        return None
-
-    hit = hits[0]
-
-    return {
-        "club_id": hit["id"],
-        "name": hit["name"],
-    }
-
-
 def infer_unknown_side(
-    side_text: str,
+    text: str,
 ) -> str:
     value = clean_side(
-        side_text
+        text
     )
 
     value = re.sub(
@@ -1293,38 +1314,14 @@ def infer_unknown_side(
     words = []
 
     for word in value.split():
-        normalized_word = normalize(
+        token = normalize(
             word
         )
 
-        if not normalized_word:
+        if not token:
             continue
 
-        if normalized_word in {
-            "qui",
-            "et",
-            "avec",
-            "pour",
-            "dans",
-            "sur",
-            "face",
-            "contre",
-            "héroïque",
-            "heroique",
-            "héroiques",
-            "heroique",
-            "brillant",
-            "brillante",
-            "incroyable",
-            "impressionnant",
-            "impressionnante",
-            "fou",
-            "folle",
-            "grâce",
-            "grace",
-            "grace a",
-            "a",
-        }:
+        if token in GENERIC:
             break
 
         if len(words) >= 3:
@@ -1345,7 +1342,6 @@ def infer_unknown_side(
     ):
         return ""
 
-    # A long natural-language sentence is not a club.
     if len(
         normalize(result).split()
     ) > 3:
@@ -1354,12 +1350,7 @@ def infer_unknown_side(
     return result
 
 
-# ---------------------------------------------------------------------------
-# Match side extraction
-# ---------------------------------------------------------------------------
-
-
-def explicit_sides(
+def explicit_match_sides(
     title: str,
 ) -> tuple[
     str,
@@ -1369,43 +1360,24 @@ def explicit_sides(
         title or ""
     )
 
-    # --------------------------------------------------------
-    # 1. Score-based titles
-    #
-    # Examples:
-    # Arsenal 2-1 Chelsea
-    # Chelsea 1 - 2 Arsenal
-    # --------------------------------------------------------
-
-    score_match = SCORE_RE.search(
+    # Score first.
+    score = SCORE_RE.search(
         text
     )
 
-    if score_match:
+    if score:
         left = text[
-            :score_match.start()
+            :score.start()
         ]
 
         right = text[
-            score_match.end():
+            score.end():
         ]
 
         right = re.split(
             r"\s*[|•·]",
             right,
             maxsplit=1,
-        )[0]
-
-        right = re.split(
-            r"\s+-\s+(?="
-            r"(?:premier|ligue|bundesliga|"
-            r"la\s+liga|champions|europa|"
-            r"conference|troph|coupe|club|"
-            r"league|highlights?|résumé|"
-            r"resume|goals?|buts?)\b)",
-            right,
-            maxsplit=1,
-            flags=re.I,
         )[0]
 
         if (
@@ -1417,10 +1389,8 @@ def explicit_sides(
                 right,
             )
 
-    # --------------------------------------------------------
-    # 2. Explicit separators
-    # --------------------------------------------------------
-
+    # "Arsenal / Chelsea"
+    # "PSG vs Monaco"
     matches = list(
         EXPLICIT_SEPARATOR_RE.finditer(
             text
@@ -1444,18 +1414,6 @@ def explicit_sides(
             maxsplit=1,
         )[0]
 
-        right = re.split(
-            r"\s+-\s+(?="
-            r"(?:premier|ligue|bundesliga|"
-            r"la\s+liga|champions|europa|"
-            r"conference|troph|coupe|club|"
-            r"league|highlights?|résumé|"
-            r"resume|goals?|buts?)\b)",
-            right,
-            maxsplit=1,
-            flags=re.I,
-        )[0]
-
         if (
             left.strip()
             and right.strip()
@@ -1465,13 +1423,7 @@ def explicit_sides(
                 right,
             )
 
-    # --------------------------------------------------------
-    # 3. Hyphen pair
-    #
-    # DAZN:
-    # Real Betis - Real Madrid | LALIGA...
-    # --------------------------------------------------------
-
+    # "Real Betis - Real Madrid"
     matches = list(
         HYPHEN_PAIR_RE.finditer(
             text
@@ -1495,18 +1447,6 @@ def explicit_sides(
             maxsplit=1,
         )[0]
 
-        # Do not treat "Real Madrid - LALIGA" as a match.
-        right = re.split(
-            r"\s*-\s*(?="
-            r"(?:premier|ligue|bundesliga|"
-            r"laliga|la\s+liga|champions|"
-            r"europa|conference|trophee|"
-            r"trophée|coupe|club)\b)",
-            right,
-            maxsplit=1,
-            flags=re.I,
-        )[0]
-
         if (
             left.strip()
             and right.strip()
@@ -1519,73 +1459,65 @@ def explicit_sides(
     return None
 
 
-def natural_language_sides(
+def natural_match_sides(
     title: str,
 ) -> tuple[
     str,
     str,
 ] | None:
-    text = html.unescape(
-        title or ""
-    )
-
     clubs = find_known_clubs(
-        text
+        title
     )
 
     if len(clubs) < 2:
         return None
 
-    # For natural-language headlines, first examine where
-    # the known clubs occur.
-    #
-    # Example:
-    # MAYENCE ... HAMBOURG ... double le BAYERN
-    #
-    # We intentionally take the first two club mentions when
-    # a context-only phrase occurs before the third one.
+    # For titles with explicit context phrases,
+    # first two clubs generally identify the actual match.
     normalized = normalize(
-        text
+        title
     )
 
-    context_positions = [
-        normalized.find(
-            normalize(
-                pattern
+    context_positions = []
+
+    for phrase in CONTEXT_PATTERNS:
+        needle = normalize(
+            phrase
+        )
+
+        position = normalized.find(
+            needle
+        )
+
+        if position >= 0:
+            context_positions.append(
+                position
             )
-        )
-        for pattern in CONTEXT_PATTERNS
-        if normalize(pattern)
-        in normalized
-    ]
 
-    first_context = (
-        min(
-            pos
-            for pos in context_positions
-            if pos >= 0
+    if context_positions:
+        context_position = min(
+            context_positions
         )
-        if context_positions
-        else None
-    )
 
-    if first_context is not None:
         before_context = [
             club
             for club in clubs
             if club["start"]
-            < first_context
+            < context_position
         ]
 
         if len(
             before_context
         ) >= 2:
             return (
-                before_context[0]["name"],
-                before_context[1]["name"],
+                before_context[0][
+                    "name"
+                ],
+                before_context[1][
+                    "name"
+                ],
             )
 
-    # Otherwise take first two known clubs.
     return (
         clubs[0]["name"],
         clubs[1]["name"],
@@ -1596,14 +1528,14 @@ def identify_match(
     title: str,
     teams: list[dict[str, Any]],
 ) -> dict[str, Any] | None:
-    explicit = explicit_sides(
+    explicit = explicit_match_sides(
         title
     )
 
-    candidate_pairs = []
+    candidates = []
 
     if explicit:
-        candidate_pairs.append(
+        candidates.append(
             (
                 explicit[0],
                 explicit[1],
@@ -1611,12 +1543,12 @@ def identify_match(
             )
         )
 
-    natural = natural_language_sides(
+    natural = natural_match_sides(
         title
     )
 
     if natural:
-        candidate_pairs.append(
+        candidates.append(
             (
                 natural[0],
                 natural[1],
@@ -1624,7 +1556,11 @@ def identify_match(
             )
         )
 
-    for left_raw, right_raw, confidence in candidate_pairs:
+    for (
+        left_raw,
+        right_raw,
+        confidence,
+    ) in candidates:
         left = clean_side(
             left_raw
         )
@@ -1636,10 +1572,6 @@ def identify_match(
         if not left or not right:
             continue
 
-        # IMPORTANT:
-        # Determine known clubs from each side separately.
-        # This prevents a third contextual team from
-        # contaminating the match.
         left_known = canonical_known_side(
             left
         )
@@ -1648,73 +1580,79 @@ def identify_match(
             right
         )
 
-        # At least one side must correspond to a followed team.
-        followed_left = None
-        followed_right = None
+        left_followed = None
+        right_followed = None
 
         for team in teams:
-            if team_match(
+            if team_matches(
                 left,
                 team,
             ):
-                followed_left = {
+                left_followed = {
                     "id": team["id"],
                     "name": team["name"],
                 }
 
-            if team_match(
+            if team_matches(
                 right,
                 team,
             ):
-                followed_right = {
+                right_followed = {
                     "id": team["id"],
                     "name": team["name"],
                 }
 
-        if (
-            not followed_left
-            and not followed_right
+        # At least one side is one of our teams.
+        if not (
+            left_followed
+            or right_followed
         ):
             continue
 
-        # Replace known aliases with canonical names.
+        # A side may be a known opponent.
         if left_known:
-            left_name = left_known["name"]
-            left_club_id = left_known[
-                "club_id"
+            left_name = left_known[
+                "name"
+            ]
+            left_id = left_known[
+                "id"
             ]
         else:
             left_name = infer_unknown_side(
                 left
             )
-            left_club_id = (
-                "opp:" + slug(left_name)
+            left_id = (
+                "opp:"
+                + slug(
+                    left_name
+                )
                 if left_name
                 else None
             )
 
         if right_known:
-            right_name = right_known["name"]
-            right_club_id = right_known[
-                "club_id"
+            right_name = right_known[
+                "name"
+            ]
+            right_id = right_known[
+                "id"
             ]
         else:
             right_name = infer_unknown_side(
                 right
             )
-            right_club_id = (
-                "opp:" + slug(right_name)
+            right_id = (
+                "opp:"
+                + slug(
+                    right_name
+                )
                 if right_name
                 else None
             )
 
-        if not left_name or not right_name:
-            continue
-
-        if side_is_generic(
-            left_name
-        ) or side_is_generic(
-            right_name
+        if (
+            not left_name
+            or not right_name
         ):
             continue
 
@@ -1726,26 +1664,26 @@ def identify_match(
 
         return {
             "home": {
-                "club_id": left_club_id,
+                "club_id": left_id,
                 "name": left_name,
                 "followed": bool(
-                    followed_left
+                    left_followed
                 ),
                 "followed_team_id": (
-                    followed_left["id"]
-                    if followed_left
+                    left_followed["id"]
+                    if left_followed
                     else None
                 ),
             },
             "away": {
-                "club_id": right_club_id,
+                "club_id": right_id,
                 "name": right_name,
                 "followed": bool(
-                    followed_right
+                    right_followed
                 ),
                 "followed_team_id": (
-                    followed_right["id"]
-                    if followed_right
+                    right_followed["id"]
+                    if right_followed
                     else None
                 ),
             },
@@ -1753,11 +1691,6 @@ def identify_match(
         }
 
     return None
-
-
-# ---------------------------------------------------------------------------
-# Video classification
-# ---------------------------------------------------------------------------
 
 
 def classify_video(
@@ -1782,32 +1715,13 @@ def classify_video(
     ):
         return None
 
-    followed_hits = followed_team_hits(
+    followed = followed_team_hits(
         title,
         teams,
     )
 
-    if not followed_hits:
+    if not followed:
         return None
-
-    # --------------------------------------------------------
-    # Strong exclusion:
-    # a single followed team + contextual language
-    # is not a match.
-    # --------------------------------------------------------
-
-    if (
-        len(followed_hits) == 1
-        and looks_contextual(
-            title
-        )
-    ):
-        explicit = explicit_sides(
-            title
-        )
-
-        if not explicit:
-            return None
 
     match = identify_match(
         title,
@@ -1817,33 +1731,32 @@ def classify_video(
     if not match:
         return None
 
+    # Contextual mention guard.
+    if (
+        len(followed) == 1
+        and is_contextual_mention(
+            title
+        )
+        and match["confidence"] != "high"
+    ):
+        return None
+
     home = match["home"]
     away = match["away"]
 
-    followed_ids = []
-
-    if home[
-        "followed_team_id"
-    ]:
-        followed_ids.append(
-            home[
-                "followed_team_id"
-            ]
-        )
-
-    if away[
-        "followed_team_id"
-    ]:
-        followed_ids.append(
-            away[
-                "followed_team_id"
-            ]
-        )
-
     followed_ids = sorted(
-        set(
-            followed_ids
-        )
+        {
+            value
+            for value in [
+                home[
+                    "followed_team_id"
+                ],
+                away[
+                    "followed_team_id"
+                ],
+            ]
+            if value
+        }
     )
 
     if not followed_ids:
@@ -1881,6 +1794,63 @@ def classify_video(
         or published_at
     )
 
+    # IMPORTANT:
+    # Score is not part of identity.
+    home_key = home[
+        "club_id"
+    ]
+
+    away_key = away[
+        "club_id"
+    ]
+
+    round_key = ""
+
+    round_match = re.search(
+        r"\b(?:J(\d+)|"
+        r"journ[eé]e\s*(\d+)|"
+        r"week\s*(\d+)|"
+        r"round\s*(\d+))\b",
+        normalize(title),
+        flags=re.I,
+    )
+
+    if round_match:
+        values = [
+            value
+            for value in round_match.groups()
+            if value
+        ]
+
+        if values:
+            round_key = (
+                "round:"
+                + values[0]
+            )
+
+    if not round_key:
+        round_key = (
+            "date:"
+            + normalize(
+                match_date
+            )[:10]
+            if match_date
+            else "date:unknown"
+        )
+
+    match_key = "|".join(
+        [
+            "match",
+            str(home_key),
+            str(away_key),
+            slug(
+                competition
+                or "football"
+            ),
+            round_key,
+        ]
+    )
+
     if score:
         match_title = (
             f"{home['name']} "
@@ -1893,93 +1863,14 @@ def classify_video(
             f"{away['name']}"
         )
 
-    # --------------------------------------------------------
-    # IMPORTANT:
-    # Do NOT include the score in match identity.
-    #
-    # CANAL+:
-    # Arsenal / Chelsea
-    #
-    # DAZN:
-    # Arsenal 2-1 Chelsea
-    #
-    # -> same match.
-    # --------------------------------------------------------
-
-    home_key = (
-        home["club_id"]
-        or "opp:" + slug(
-            home["name"]
-        )
-    )
-
-    away_key = (
-        away["club_id"]
-        or "opp:" + slug(
-            away["name"]
-        )
-    )
-
-    round_token = ""
-
-    round_match = re.search(
-        r"\b(?:J(\d+)|"
-        r"journ[eé]e\s*(\d+)|"
-        r"week\s*(\d+)|"
-        r"round\s*(\d+))\b",
-        normalize(title),
-        flags=re.I,
-    )
-
-    if round_match:
-        numbers = [
-            value
-            for value in round_match.groups()
-            if value
-        ]
-
-        if numbers:
-            round_token = (
-                "r"
-                + numbers[0]
-            )
-
-    # Home/away is preserved, which avoids merging
-    # two league meetings when both happen in the same season.
-    match_key = "|".join(
-        [
-            "match",
-            home_key,
-            away_key,
-            slug(
-                competition
-                or "football"
-            ),
-            round_token
-            or (
-                "date:"
-                + normalize(
-                    match_date
-                )[:10]
-                if match_date
-                else "date:unknown"
-            ),
-        ]
-    )
-
     return {
         "is_summary": True,
-
         "match_key": match_key,
-
         "match_title": match_title,
-
         "home_team": {
-            "id": (
-                home[
-                    "followed_team_id"
-                ]
-            ),
+            "id": home[
+                "followed_team_id"
+            ],
             "name": home[
                 "name"
             ],
@@ -1987,13 +1878,10 @@ def classify_video(
                 "followed"
             ],
         },
-
         "away_team": {
-            "id": (
-                away[
-                    "followed_team_id"
-                ]
-            ),
+            "id": away[
+                "followed_team_id"
+            ],
             "name": away[
                 "name"
             ],
@@ -2001,19 +1889,13 @@ def classify_video(
                 "followed"
             ],
         },
-
         "score": score,
-
         "competition": competition,
-
         "match_date": match_date,
-
         "team_ids": followed_ids,
-
         "match_confidence": match[
             "confidence"
         ],
-
         "summary_keywords": [
             keyword
             for keyword in (
@@ -2051,93 +1933,28 @@ def enrich_video(
 
     result["teams"] = [
         {
-            "id": metadata[side]["id"],
-            "name": metadata[side]["name"],
+            "id": metadata[
+                side
+            ]["id"],
+            "name": metadata[
+                side
+            ]["name"],
         }
         for side in (
             "home_team",
             "away_team",
         )
-        if metadata[side]["id"]
+        if metadata[
+            side
+        ]["id"]
     ]
 
     return result
 
 
-# ---------------------------------------------------------------------------
-# Dates
-# ---------------------------------------------------------------------------
-
-
-def parse_date(
-    value: Any,
-) -> str | None:
-    if value is None:
-        return None
-
-    value = str(value).strip()
-
-    if not value:
-        return None
-
-    try:
-        if re.fullmatch(
-            r"\d{8}",
-            value,
-        ):
-            return (
-                datetime.strptime(
-                    value,
-                    "%Y%m%d",
-                )
-                .replace(
-                    tzinfo=timezone.utc
-                )
-                .isoformat()
-            )
-
-        if re.fullmatch(
-            r"\d+(?:\.\d+)?",
-            value,
-        ):
-            timestamp = float(
-                value
-            )
-
-            if (
-                timestamp
-                >= 1_000_000_000
-            ):
-                return (
-                    datetime.fromtimestamp(
-                        timestamp,
-                        timezone.utc,
-                    ).isoformat()
-                )
-
-        dt = datetime.fromisoformat(
-            value.replace(
-                "Z",
-                "+00:00",
-            )
-        )
-
-        if dt.tzinfo is None:
-            dt = dt.replace(
-                tzinfo=timezone.utc
-            )
-
-        return dt.astimezone(
-            timezone.utc
-        ).isoformat()
-
-    except ValueError:
-        return None
-
-
-# ---------------------------------------------------------------------------
-# YouTube
-# ---------------------------------------------------------------------------
+# ============================================================
+# YOUTUBE
+# ============================================================
 
 
 def resolve_channel_id(
@@ -2167,13 +1984,13 @@ def resolve_channel_id(
     if not url:
         return ""
 
-    match = re.search(
+    channel_match = re.search(
         r"/channel/(UC[0-9A-Za-z_-]{20,})",
         url,
     )
 
-    if match:
-        return match.group(
+    if channel_match:
+        return channel_match.group(
             1
         )
 
@@ -2304,7 +2121,6 @@ def run_ytdlp_playlist(
         result.append(
             {
                 "id": video_id,
-
                 "title": html.unescape(
                     item.get(
                         "title",
@@ -2312,18 +2128,15 @@ def run_ytdlp_playlist(
                     )
                     or ""
                 ),
-
                 "url": (
                     item.get(
                         "webpage_url"
                     )
                     or (
                         "https://www.youtube.com/"
-                        "watch?v="
-                        f"{video_id}"
+                        f"watch?v={video_id}"
                     )
                 ),
-
                 "published_at": (
                     parse_date(
                         item.get(
@@ -2341,9 +2154,7 @@ def run_ytdlp_playlist(
                         )
                     )
                 ),
-
                 "updated_at": None,
-
                 "thumbnail": (
                     item.get(
                         "thumbnail"
@@ -2353,25 +2164,21 @@ def run_ytdlp_playlist(
                         f"{video_id}/hqdefault.jpg"
                     )
                 ),
-
                 "source_id": source[
                     "id"
                 ],
-
                 "source_name": source.get(
                     "name",
                     source[
                         "id"
                     ],
                 ),
-
                 "source_channel_id": (
                     item.get(
                         "channel_id"
                     )
                     or ""
                 ),
-
                 "description": (
                     item.get(
                         "description"
@@ -2390,10 +2197,8 @@ def fetch_atom(
 ) -> list[
     dict[str, Any]
 ]:
-    channel_id = (
-        resolve_channel_id(
-            source
-        )
+    channel_id = resolve_channel_id(
+        source
     )
 
     if not channel_id:
@@ -2450,35 +2255,19 @@ def fetch_atom(
             or ""
         ).strip()
 
-        alt_link = entry.find(
+        alternate = entry.find(
             "atom:link[@rel='alternate']",
             NS,
         )
 
         url_value = (
-            alt_link.get(
+            alternate.get(
                 "href"
             )
-            if alt_link is not None
+            if alternate is not None
             else (
                 "https://www.youtube.com/"
                 f"watch?v={video_id}"
-            )
-        )
-
-        published_at = parse_date(
-            entry.findtext(
-                "atom:published",
-                "",
-                NS,
-            )
-        )
-
-        updated_at = parse_date(
-            entry.findtext(
-                "atom:updated",
-                "",
-                NS,
             )
         )
 
@@ -2489,8 +2278,20 @@ def fetch_atom(
                     title
                 ),
                 "url": url_value,
-                "published_at": published_at,
-                "updated_at": updated_at,
+                "published_at": parse_date(
+                    entry.findtext(
+                        "atom:published",
+                        "",
+                        NS,
+                    )
+                ),
+                "updated_at": parse_date(
+                    entry.findtext(
+                        "atom:updated",
+                        "",
+                        NS,
+                    )
+                ),
                 "thumbnail": (
                     "https://i.ytimg.com/vi/"
                     f"{video_id}/hqdefault.jpg"
@@ -2512,7 +2313,7 @@ def fetch_atom(
     return result
 
 
-def fetch_details(
+def fetch_video_details(
     video_id: str,
 ) -> dict[str, Any]:
     url = (
@@ -2538,8 +2339,7 @@ def fetch_details(
     )
 
     if (
-        process.returncode
-        != 0
+        process.returncode != 0
         or not process.stdout.strip()
     ):
         return {}
@@ -2569,30 +2369,25 @@ def fetch_details(
                 )
             )
         ),
-
         "updated_at": None,
-
         "description": (
             payload.get(
                 "description"
             )
             or ""
         ),
-
         "thumbnail": (
             payload.get(
                 "thumbnail"
             )
             or ""
         ),
-
         "url": (
             payload.get(
                 "webpage_url"
             )
             or url
         ),
-
         "source_channel_id": (
             payload.get(
                 "channel_id"
@@ -2602,22 +2397,10 @@ def fetch_details(
     }
 
 
-# ---------------------------------------------------------------------------
-# Source limits
-# ---------------------------------------------------------------------------
-
-
 def source_limit(
     source: dict[str, Any],
-    configured_default: int,
+    default_limit: int,
 ) -> int:
-    source_id = source.get(
-        "id",
-        "",
-    )
-
-    # These sources publish large quantities of material.
-    # We need enough depth to recover older football summaries.
     overrides = {
         "bein-sports-france": 220,
         "canal-plus-sport": 160,
@@ -2626,17 +2409,19 @@ def source_limit(
     }
 
     return max(
-        configured_default,
+        default_limit,
         overrides.get(
-            source_id,
-            configured_default,
+            source.get(
+                "id"
+            ),
+            default_limit,
         ),
     )
 
 
-# ---------------------------------------------------------------------------
-# Data merging / grouping
-# ---------------------------------------------------------------------------
+# ============================================================
+# PERSISTANCE
+# ============================================================
 
 
 def load_existing() -> dict[str, Any]:
@@ -2777,7 +2562,7 @@ def build_matches(
 
         first = items[0]
 
-        sources_seen = {}
+        source_map = {}
 
         for item in items:
             source_id = item.get(
@@ -2787,9 +2572,9 @@ def build_matches(
             if (
                 source_id
                 and source_id
-                not in sources_seen
+                not in source_map
             ):
-                sources_seen[
+                source_map[
                     source_id
                 ] = {
                     "id": source_id,
@@ -2822,7 +2607,6 @@ def build_matches(
         matches.append(
             {
                 "match_key": key,
-
                 "title": (
                     first.get(
                         "match_title"
@@ -2832,15 +2616,12 @@ def build_matches(
                     )
                     or "Résumé"
                 ),
-
                 "home_team": first.get(
                     "home_team"
                 ),
-
                 "away_team": first.get(
                     "away_team"
                 ),
-
                 "score": next(
                     (
                         item.get(
@@ -2853,11 +2634,9 @@ def build_matches(
                     ),
                     None,
                 ),
-
                 "competition": first.get(
                     "competition"
                 ),
-
                 "match_date": (
                     min(
                         match_dates
@@ -2871,7 +2650,6 @@ def build_matches(
                         else None
                     )
                 ),
-
                 "published_at": (
                     max(
                         published_dates
@@ -2879,10 +2657,11 @@ def build_matches(
                     if published_dates
                     else None
                 ),
-
                 "team_ids": sorted(
                     {
-                        team["id"]
+                        team[
+                            "id"
+                        ]
                         for item in items
                         for team in (
                             item.get(
@@ -2895,10 +2674,11 @@ def build_matches(
                         )
                     }
                 ),
-
                 "team_names": sorted(
                     {
-                        team["name"]
+                        team[
+                            "name"
+                        ]
                         for item in items
                         for team in (
                             item.get(
@@ -2911,15 +2691,12 @@ def build_matches(
                         )
                     }
                 ),
-
                 "sources_count": len(
-                    sources_seen
+                    source_map
                 ),
-
                 "sources": list(
-                    sources_seen.values()
+                    source_map.values()
                 ),
-
                 "videos": items,
             }
         )
@@ -2940,9 +2717,9 @@ def build_matches(
     return matches
 
 
-# ---------------------------------------------------------------------------
-# Main
-# ---------------------------------------------------------------------------
+# ============================================================
+# MAIN
+# ============================================================
 
 
 def main() -> int:
@@ -2984,11 +2761,14 @@ def main() -> int:
 
     existing = load_existing()
 
-    configured_default = int(
-        app.get(
-            "max_videos_per_source",
-            60,
-        )
+    default_limit = max(
+        60,
+        int(
+            app.get(
+                "max_videos_per_source",
+                60,
+            )
+        ),
     )
 
     print(
@@ -3001,7 +2781,7 @@ def main() -> int:
     for source in sources:
         limit = source_limit(
             source,
-            configured_default,
+            default_limit,
         )
 
         status = {
@@ -3022,16 +2802,19 @@ def main() -> int:
 
         try:
             try:
-                videos = (
-                    run_ytdlp_playlist(
-                        source,
-                        limit,
-                    )
+                videos = run_ytdlp_playlist(
+                    source,
+                    limit,
                 )
-
                 method = "yt-dlp"
 
-            except Exception:
+            except Exception as exc:
+                print(
+                    f"{source.get('name')} "
+                    f"yt-dlp failed, falling back to Atom: "
+                    f"{exc}"
+                )
+
                 videos = fetch_atom(
                     source,
                     min(
@@ -3039,32 +2822,27 @@ def main() -> int:
                         15,
                     ),
                 )
-
                 method = "atom"
 
-            # Recover exact publication metadata only for
-            # likely football-summary candidates.
-            candidates = [
-                video
-                for video in videos
+            # Recover missing publication dates only for likely summaries.
+            for video in [
+                item
+                for item in videos
                 if (
-                    not video.get(
+                    not item.get(
                         "published_at"
                     )
                     and looks_like_summary(
-                        video.get(
+                        item.get(
                             "title",
                             "",
                         ),
                         app,
                     )
                 )
-            ]
-
-            # Avoid excessive YouTube requests.
-            for candidate in candidates[:60]:
-                details = fetch_details(
-                    candidate[
+            ][:60]:
+                details = fetch_video_details(
+                    video[
                         "id"
                     ]
                 )
@@ -3075,7 +2853,7 @@ def main() -> int:
                             None,
                             "",
                         ):
-                            candidate[
+                            video[
                                 key
                             ] = value
 
@@ -3087,19 +2865,11 @@ def main() -> int:
                 videos
             )
 
-            status[
-                "ok"
-            ] = True
-
-            status[
-                "count"
-            ] = len(
+            status["ok"] = True
+            status["count"] = len(
                 videos
             )
-
-            status[
-                "method"
-            ] = method
+            status["method"] = method
 
         except (
             HTTPError,
@@ -3110,16 +2880,12 @@ def main() -> int:
             ValueError,
             json.JSONDecodeError,
         ) as exc:
-            status[
-                "error"
-            ] = str(
+            status["error"] = str(
                 exc
             )[:1000]
 
         except Exception as exc:
-            status[
-                "error"
-            ] = (
+            status["error"] = (
                 f"{type(exc).__name__}: "
                 f"{exc}"
             )[:1000]
@@ -3138,8 +2904,8 @@ def main() -> int:
             0.4
         )
 
-    # Reclassify old records with the new engine.
-    # This is what removes previous false positives.
+    # Reclassify the old dataset AND the new videos.
+    # This removes previously stored false positives.
     retained = reclassify_records(
         existing.get(
             "videos",
@@ -3167,7 +2933,7 @@ def main() -> int:
     filtered = []
 
     for video in retained:
-        date_value = (
+        value = (
             video.get(
                 "published_at"
             )
@@ -3176,8 +2942,8 @@ def main() -> int:
             )
         )
 
-        if not date_value:
-            # Keep undated videos temporarily.
+        # Keep genuinely undated candidates temporarily.
+        if not value:
             filtered.append(
                 video
             )
@@ -3185,7 +2951,7 @@ def main() -> int:
 
         try:
             dt = datetime.fromisoformat(
-                date_value.replace(
+                value.replace(
                     "Z",
                     "+00:00",
                 )
@@ -3282,20 +3048,17 @@ def main() -> int:
         "=========================================="
     )
     print(
-        "Football Hub V5 collection complete"
+        "Football Hub collection complete"
     )
     print(
         "=========================================="
     )
-
     print(
         f"Videos retained : {len(filtered)}"
     )
-
     print(
         f"Matches grouped : {len(matches)}"
     )
-
     print()
 
     for match in matches[:30]:
