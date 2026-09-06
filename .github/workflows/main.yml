@@ -49,12 +49,26 @@ jobs:
         run: |
           yt-dlp --version
 
+      - name: Update repository before collection
+        run: |
+          set -e
+
+          git fetch origin main
+
+          git reset --hard origin/main
+
+          echo "Repository synchronized with origin/main."
+
       - name: Collect and classify football summaries
         run: |
+          set -e
+
           python collector/collect.py
 
       - name: Commit updated data
         run: |
+          set -e
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
@@ -65,7 +79,11 @@ jobs:
           else
             git commit -m "Update football videos"
 
-            git pull --rebase origin main
+            git fetch origin main
+
+            # On repart de la branche distante si une modification
+            # est arrivée pendant la collecte.
+            git rebase origin/main
 
             git push origin HEAD:main
           fi
@@ -75,6 +93,8 @@ jobs:
 
       - name: Prepare Pages site
         run: |
+          set -e
+
           mkdir -p site/data
           cp data/videos.json site/data/videos.json
 
