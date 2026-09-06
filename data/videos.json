@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-06T19:23:30.342794+00:00",
+  "generated_at": "2026-09-06T19:42:42.040069+00:00",
   "teams": [
     {
       "id": "psg",
@@ -76,7 +76,7 @@
       ],
       "excluded_keywords": [],
       "match_confidence": "high",
-      "match_reason": null,
+      "match_reason": "two-sided match detected",
       "score": null,
       "teams": [
         {
@@ -84,36 +84,21 @@
           "name": "Arsenal"
         }
       ],
-      "match_key": "arsenal|noscore|chelsea premier league 2026 27 j3",
-      "match_title": "Le résumé de Arsenal / Chelsea - Premier League 2026-27 (J3)",
-      "fetched_at": "2026-09-06T19:17:09.213641+00:00"
-    },
-    {
-      "id": "u-UlVLaebEA",
-      "title": "Résumé : MAYENCE humilie HAMBOURG avec une MANITA et double le BAYERN !",
-      "url": "https://www.youtube.com/watch?v=u-UlVLaebEA",
-      "published_at": "2026-09-06T15:56:16+00:00",
-      "updated_at": "2026-09-06T16:22:23+00:00",
-      "thumbnail": "https://i.ytimg.com/vi/u-UlVLaebEA/hqdefault.jpg",
-      "source_id": "bein-sports-france",
-      "source_name": "beIN SPORTS France",
-      "source_channel_id": "UCfj4kQ6_mYO5r4hzX5KloVw",
-      "description": "",
-      "is_summary": true,
-      "summary_keywords": [
-        "résumé",
-        "resume",
-        "resumé"
-      ],
-      "excluded_keywords": [],
-      "teams": [
-        {
-          "id": "bayern",
-          "name": "Bayern Munich"
-        }
-      ],
-      "match_key": "2026-09-06|bayern|noscore|mayencehumiliehambourgavecunemanitaetdoublelebayern",
-      "fetched_at": "2026-09-06T19:06:32.967975+00:00"
+      "match_key": "arsenal|chelsea|premier-league|noscore",
+      "match_title": "Arsenal vs Chelsea",
+      "fetched_at": "2026-09-06T19:17:09.213641+00:00",
+      "home_team": {
+        "id": "arsenal",
+        "name": "Arsenal",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "Chelsea",
+        "followed": false
+      },
+      "competition": "Premier League",
+      "match_date": null
     },
     {
       "id": "OOmde4Mp7jM",
@@ -133,8 +118,8 @@
         "resumé"
       ],
       "excluded_keywords": [],
-      "match_confidence": "medium",
-      "match_reason": null,
+      "match_confidence": "high",
+      "match_reason": "two-sided match detected",
       "score": null,
       "teams": [
         {
@@ -142,38 +127,21 @@
           "name": "Bayern Munich"
         }
       ],
-      "match_key": "bayern|noscore|schalke se casse dents",
-      "match_title": "Résumé : Le BAYERN se casse les dents sur un SCHALKE héroïque !",
-      "fetched_at": "2026-09-06T19:17:08.605486+00:00"
-    },
-    {
-      "id": "CziB5uFTP_M",
-      "title": "FERRAN TORRES reveals his GOALS with PSG!",
-      "url": "https://www.youtube.com/watch?v=CziB5uFTP_M",
-      "published_at": null,
-      "updated_at": null,
-      "thumbnail": "https://i.ytimg.com/vi/CziB5uFTP_M/hqdefault.jpg",
-      "source_id": "bein-sports-france",
-      "source_name": "beIN SPORTS France",
-      "source_channel_id": "",
-      "description": "",
-      "is_summary": true,
-      "summary_keywords": [
-        "goals"
-      ],
-      "excluded_keywords": [],
-      "match_confidence": "medium",
-      "match_reason": null,
-      "score": null,
-      "teams": [
-        {
-          "id": "psg",
-          "name": "PSG"
-        }
-      ],
-      "match_key": "psg|noscore|ferrantorresrevealshiswithpsg",
-      "match_title": "FERRAN TORRES reveals his GOALS with PSG!",
-      "fetched_at": "2026-09-06T19:23:19.754731+00:00"
+      "match_key": "bayern|schalke|football|noscore",
+      "match_title": "Bayern Munich vs Schalke",
+      "fetched_at": "2026-09-06T19:17:08.605486+00:00",
+      "home_team": {
+        "id": "bayern",
+        "name": "Bayern Munich",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "Schalke",
+        "followed": false
+      },
+      "competition": null,
+      "match_date": null
     },
     {
       "id": "R4hbyuFfHI8",
@@ -186,24 +154,37 @@
       "source_name": "Ligue 1 McDonald's",
       "source_channel_id": "",
       "description": "",
+      "duration": 219,
       "is_summary": true,
-      "summary_keywords": [
-        "highlights",
-        "match highlights"
-      ],
-      "excluded_keywords": [],
-      "match_confidence": "high",
-      "match_reason": null,
+      "match_key": "ol|toulouse|ligue-1|noscore",
+      "match_title": "Toulouse vs OL",
+      "home_team": {
+        "id": null,
+        "name": "Toulouse",
+        "followed": false
+      },
+      "away_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
       "score": null,
+      "competition": "Ligue 1",
+      "match_date": null,
       "teams": [
         {
           "id": "ol",
           "name": "OL"
         }
       ],
-      "match_key": "ol|noscore|ligue 1 mcdonald s 26 27 toulouse",
-      "match_title": "Match Highlights - Toulouse vs. Lyon - Ligue 1 McDonald's 26/27",
-      "fetched_at": "2026-09-06T19:23:29.915233+00:00"
+      "match_confidence": "high",
+      "match_reason": "two-sided match detected",
+      "summary_keywords": [
+        "highlights",
+        "match highlights"
+      ],
+      "excluded_keywords": [],
+      "fetched_at": "2026-09-06T19:42:41.523282+00:00"
     },
     {
       "id": "7G71SrjfI4k",
@@ -216,37 +197,182 @@
       "source_name": "Ligue 1 McDonald's",
       "source_channel_id": "",
       "description": "",
+      "duration": 460,
       "is_summary": true,
-      "summary_keywords": [
-        "highlights"
-      ],
-      "excluded_keywords": [],
-      "match_confidence": "medium",
-      "match_reason": null,
+      "match_key": "psg|rc-lens|trophee-des-champions|noscore",
+      "match_title": "Rc Lens vs PSG",
+      "home_team": {
+        "id": null,
+        "name": "Rc Lens",
+        "followed": false
+      },
+      "away_team": {
+        "id": "psg",
+        "name": "PSG",
+        "followed": true
+      },
       "score": null,
+      "competition": "Trophée Des Champions",
+      "match_date": null,
       "teams": [
         {
           "id": "psg",
           "name": "PSG"
         }
       ],
-      "match_key": "psg|noscore|rclensparissaintgermain2026tropheedeschampions",
-      "match_title": "RC LENS - PARIS SAINT-GERMAIN Highlights | 2026 TROPHEE DES CHAMPIONS",
-      "fetched_at": "2026-09-06T19:23:29.918232+00:00"
+      "match_confidence": "high",
+      "match_reason": "two-sided match detected",
+      "summary_keywords": [
+        "highlights"
+      ],
+      "excluded_keywords": [],
+      "fetched_at": "2026-09-06T19:42:41.526237+00:00"
+    },
+    {
+      "id": "o_Ved53ZuZA",
+      "title": "Mbappé fait le break pour le PSG - Ligue des Champions 2023-24 (8ème de finale retour)",
+      "url": "https://www.youtube.com/watch?v=o_Ved53ZuZA",
+      "published_at": null,
+      "updated_at": null,
+      "thumbnail": "https://i.ytimg.com/vi/o_Ved53ZuZA/hqdefault.jpg",
+      "source_id": "canal-plus-sport",
+      "source_name": "CANAL+ Sport",
+      "source_channel_id": "",
+      "description": "",
+      "duration": 88,
+      "is_summary": true,
+      "match_key": "ligue|psg|football|noscore",
+      "match_title": "PSG vs Ligue",
+      "home_team": {
+        "id": "psg",
+        "name": "PSG",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "Ligue",
+        "followed": false
+      },
+      "score": null,
+      "competition": null,
+      "match_date": null,
+      "teams": [
+        {
+          "id": "psg",
+          "name": "PSG"
+        }
+      ],
+      "match_confidence": "high",
+      "match_reason": "two-sided match detected",
+      "summary_keywords": [],
+      "excluded_keywords": [],
+      "fetched_at": "2026-09-06T19:41:36.769048+00:00"
+    },
+    {
+      "id": "3BpBv-IXGlQ",
+      "title": "Bradley Barcola en solitaire pour le 2-0 ! - PSG / Real Sociedad - Ligue des champions 2023-24",
+      "url": "https://www.youtube.com/watch?v=3BpBv-IXGlQ",
+      "published_at": null,
+      "updated_at": null,
+      "thumbnail": "https://i.ytimg.com/vi/3BpBv-IXGlQ/hqdefault.jpg",
+      "source_id": "canal-plus-sport",
+      "source_name": "CANAL+ Sport",
+      "source_channel_id": "",
+      "description": "",
+      "duration": 92,
+      "is_summary": true,
+      "match_key": "bradley-barcola-en-solitaire|psg|football|2-0",
+      "match_title": "Bradley Barcola en solitaire 2-0 PSG",
+      "home_team": {
+        "id": null,
+        "name": "Bradley Barcola en solitaire",
+        "followed": false
+      },
+      "away_team": {
+        "id": "psg",
+        "name": "PSG",
+        "followed": true
+      },
+      "score": "2-0",
+      "competition": null,
+      "match_date": null,
+      "teams": [
+        {
+          "id": "psg",
+          "name": "PSG"
+        }
+      ],
+      "match_confidence": "high",
+      "match_reason": "two-sided match detected",
+      "summary_keywords": [],
+      "excluded_keywords": [],
+      "fetched_at": "2026-09-06T19:41:36.775307+00:00"
+    },
+    {
+      "id": "QhXPbEhVBqk",
+      "title": "Kylian Mbappé délivre Paris ! - PSG /  Real Sociedad - Ligue des champions 2023-24",
+      "url": "https://www.youtube.com/watch?v=QhXPbEhVBqk",
+      "published_at": null,
+      "updated_at": null,
+      "thumbnail": "https://i.ytimg.com/vi/QhXPbEhVBqk/hqdefault.jpg",
+      "source_id": "canal-plus-sport",
+      "source_name": "CANAL+ Sport",
+      "source_channel_id": "",
+      "description": "",
+      "duration": 78,
+      "is_summary": true,
+      "match_key": "psg|real-sociedad|football|noscore",
+      "match_title": "PSG vs Real Sociedad",
+      "home_team": {
+        "id": "psg",
+        "name": "PSG",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "Real Sociedad",
+        "followed": false
+      },
+      "score": null,
+      "competition": null,
+      "match_date": null,
+      "teams": [
+        {
+          "id": "psg",
+          "name": "PSG"
+        }
+      ],
+      "match_confidence": "high",
+      "match_reason": "two-sided match detected",
+      "summary_keywords": [],
+      "excluded_keywords": [],
+      "fetched_at": "2026-09-06T19:41:36.778674+00:00"
     }
   ],
   "matches": [
     {
-      "match_key": "arsenal|noscore|chelsea premier league 2026 27 j3",
+      "match_key": "arsenal|chelsea|premier-league|noscore",
+      "title": "Arsenal vs Chelsea",
+      "home_team": {
+        "id": "arsenal",
+        "name": "Arsenal",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "Chelsea",
+        "followed": false
+      },
+      "score": null,
+      "competition": "Premier League",
+      "match_date": "2026-09-06T18:29:31+00:00",
+      "published_at": "2026-09-06T18:29:31+00:00",
       "team_ids": [
         "arsenal"
       ],
       "team_names": [
         "Arsenal"
       ],
-      "score": null,
-      "title": "Le résumé de Arsenal / Chelsea - Premier League 2026-27 (J3)",
-      "published_at": "2026-09-06T18:29:31+00:00",
       "sources_count": 1,
       "videos": [
         {
@@ -268,7 +394,7 @@
           ],
           "excluded_keywords": [],
           "match_confidence": "high",
-          "match_reason": null,
+          "match_reason": "two-sided match detected",
           "score": null,
           "teams": [
             {
@@ -276,65 +402,47 @@
               "name": "Arsenal"
             }
           ],
-          "match_key": "arsenal|noscore|chelsea premier league 2026 27 j3",
-          "match_title": "Le résumé de Arsenal / Chelsea - Premier League 2026-27 (J3)",
-          "fetched_at": "2026-09-06T19:17:09.213641+00:00"
+          "match_key": "arsenal|chelsea|premier-league|noscore",
+          "match_title": "Arsenal vs Chelsea",
+          "fetched_at": "2026-09-06T19:17:09.213641+00:00",
+          "home_team": {
+            "id": "arsenal",
+            "name": "Arsenal",
+            "followed": true
+          },
+          "away_team": {
+            "id": null,
+            "name": "Chelsea",
+            "followed": false
+          },
+          "competition": "Premier League",
+          "match_date": null
         }
       ]
     },
     {
-      "match_key": "2026-09-06|bayern|noscore|mayencehumiliehambourgavecunemanitaetdoublelebayern",
-      "team_ids": [
-        "bayern"
-      ],
-      "team_names": [
-        "Bayern Munich"
-      ],
+      "match_key": "bayern|schalke|football|noscore",
+      "title": "Bayern Munich vs Schalke",
+      "home_team": {
+        "id": "bayern",
+        "name": "Bayern Munich",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "Schalke",
+        "followed": false
+      },
       "score": null,
-      "title": "Résumé : MAYENCE humilie HAMBOURG avec une MANITA et double le BAYERN !",
-      "published_at": "2026-09-06T15:56:16+00:00",
-      "sources_count": 1,
-      "videos": [
-        {
-          "id": "u-UlVLaebEA",
-          "title": "Résumé : MAYENCE humilie HAMBOURG avec une MANITA et double le BAYERN !",
-          "url": "https://www.youtube.com/watch?v=u-UlVLaebEA",
-          "published_at": "2026-09-06T15:56:16+00:00",
-          "updated_at": "2026-09-06T16:22:23+00:00",
-          "thumbnail": "https://i.ytimg.com/vi/u-UlVLaebEA/hqdefault.jpg",
-          "source_id": "bein-sports-france",
-          "source_name": "beIN SPORTS France",
-          "source_channel_id": "UCfj4kQ6_mYO5r4hzX5KloVw",
-          "description": "",
-          "is_summary": true,
-          "summary_keywords": [
-            "résumé",
-            "resume",
-            "resumé"
-          ],
-          "excluded_keywords": [],
-          "teams": [
-            {
-              "id": "bayern",
-              "name": "Bayern Munich"
-            }
-          ],
-          "match_key": "2026-09-06|bayern|noscore|mayencehumiliehambourgavecunemanitaetdoublelebayern",
-          "fetched_at": "2026-09-06T19:06:32.967975+00:00"
-        }
-      ]
-    },
-    {
-      "match_key": "bayern|noscore|schalke se casse dents",
-      "team_ids": [
-        "bayern"
-      ],
-      "team_names": [
-        "Bayern Munich"
-      ],
-      "score": null,
-      "title": "Résumé : Le BAYERN se casse les dents sur un SCHALKE héroïque !",
+      "competition": null,
+      "match_date": "2026-09-05T18:35:56+00:00",
       "published_at": "2026-09-05T18:35:56+00:00",
+      "team_ids": [
+        "bayern"
+      ],
+      "team_names": [
+        "Bayern Munich"
+      ],
       "sources_count": 1,
       "videos": [
         {
@@ -355,8 +463,8 @@
             "resumé"
           ],
           "excluded_keywords": [],
-          "match_confidence": "medium",
-          "match_reason": null,
+          "match_confidence": "high",
+          "match_reason": "two-sided match detected",
           "score": null,
           "teams": [
             {
@@ -364,67 +472,47 @@
               "name": "Bayern Munich"
             }
           ],
-          "match_key": "bayern|noscore|schalke se casse dents",
-          "match_title": "Résumé : Le BAYERN se casse les dents sur un SCHALKE héroïque !",
-          "fetched_at": "2026-09-06T19:17:08.605486+00:00"
+          "match_key": "bayern|schalke|football|noscore",
+          "match_title": "Bayern Munich vs Schalke",
+          "fetched_at": "2026-09-06T19:17:08.605486+00:00",
+          "home_team": {
+            "id": "bayern",
+            "name": "Bayern Munich",
+            "followed": true
+          },
+          "away_team": {
+            "id": null,
+            "name": "Schalke",
+            "followed": false
+          },
+          "competition": null,
+          "match_date": null
         }
       ]
     },
     {
-      "match_key": "psg|noscore|ferrantorresrevealshiswithpsg",
-      "team_ids": [
-        "psg"
-      ],
-      "team_names": [
-        "PSG"
-      ],
+      "match_key": "ol|toulouse|ligue-1|noscore",
+      "title": "Toulouse vs OL",
+      "home_team": {
+        "id": null,
+        "name": "Toulouse",
+        "followed": false
+      },
+      "away_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
       "score": null,
-      "title": "FERRAN TORRES reveals his GOALS with PSG!",
+      "competition": "Ligue 1",
+      "match_date": null,
       "published_at": null,
-      "sources_count": 1,
-      "videos": [
-        {
-          "id": "CziB5uFTP_M",
-          "title": "FERRAN TORRES reveals his GOALS with PSG!",
-          "url": "https://www.youtube.com/watch?v=CziB5uFTP_M",
-          "published_at": null,
-          "updated_at": null,
-          "thumbnail": "https://i.ytimg.com/vi/CziB5uFTP_M/hqdefault.jpg",
-          "source_id": "bein-sports-france",
-          "source_name": "beIN SPORTS France",
-          "source_channel_id": "",
-          "description": "",
-          "is_summary": true,
-          "summary_keywords": [
-            "goals"
-          ],
-          "excluded_keywords": [],
-          "match_confidence": "medium",
-          "match_reason": null,
-          "score": null,
-          "teams": [
-            {
-              "id": "psg",
-              "name": "PSG"
-            }
-          ],
-          "match_key": "psg|noscore|ferrantorresrevealshiswithpsg",
-          "match_title": "FERRAN TORRES reveals his GOALS with PSG!",
-          "fetched_at": "2026-09-06T19:23:19.754731+00:00"
-        }
-      ]
-    },
-    {
-      "match_key": "ol|noscore|ligue 1 mcdonald s 26 27 toulouse",
       "team_ids": [
         "ol"
       ],
       "team_names": [
         "OL"
       ],
-      "score": null,
-      "title": "Match Highlights - Toulouse vs. Lyon - Ligue 1 McDonald's 26/27",
-      "published_at": null,
       "sources_count": 1,
       "videos": [
         {
@@ -438,38 +526,63 @@
           "source_name": "Ligue 1 McDonald's",
           "source_channel_id": "",
           "description": "",
+          "duration": 219,
           "is_summary": true,
-          "summary_keywords": [
-            "highlights",
-            "match highlights"
-          ],
-          "excluded_keywords": [],
-          "match_confidence": "high",
-          "match_reason": null,
+          "match_key": "ol|toulouse|ligue-1|noscore",
+          "match_title": "Toulouse vs OL",
+          "home_team": {
+            "id": null,
+            "name": "Toulouse",
+            "followed": false
+          },
+          "away_team": {
+            "id": "ol",
+            "name": "OL",
+            "followed": true
+          },
           "score": null,
+          "competition": "Ligue 1",
+          "match_date": null,
           "teams": [
             {
               "id": "ol",
               "name": "OL"
             }
           ],
-          "match_key": "ol|noscore|ligue 1 mcdonald s 26 27 toulouse",
-          "match_title": "Match Highlights - Toulouse vs. Lyon - Ligue 1 McDonald's 26/27",
-          "fetched_at": "2026-09-06T19:23:29.915233+00:00"
+          "match_confidence": "high",
+          "match_reason": "two-sided match detected",
+          "summary_keywords": [
+            "highlights",
+            "match highlights"
+          ],
+          "excluded_keywords": [],
+          "fetched_at": "2026-09-06T19:42:41.523282+00:00"
         }
       ]
     },
     {
-      "match_key": "psg|noscore|rclensparissaintgermain2026tropheedeschampions",
+      "match_key": "psg|rc-lens|trophee-des-champions|noscore",
+      "title": "Rc Lens vs PSG",
+      "home_team": {
+        "id": null,
+        "name": "Rc Lens",
+        "followed": false
+      },
+      "away_team": {
+        "id": "psg",
+        "name": "PSG",
+        "followed": true
+      },
+      "score": null,
+      "competition": "Trophée Des Champions",
+      "match_date": null,
+      "published_at": null,
       "team_ids": [
         "psg"
       ],
       "team_names": [
         "PSG"
       ],
-      "score": null,
-      "title": "RC LENS - PARIS SAINT-GERMAIN Highlights | 2026 TROPHEE DES CHAMPIONS",
-      "published_at": null,
       "sources_count": 1,
       "videos": [
         {
@@ -483,30 +596,244 @@
           "source_name": "Ligue 1 McDonald's",
           "source_channel_id": "",
           "description": "",
+          "duration": 460,
           "is_summary": true,
-          "summary_keywords": [
-            "highlights"
-          ],
-          "excluded_keywords": [],
-          "match_confidence": "medium",
-          "match_reason": null,
+          "match_key": "psg|rc-lens|trophee-des-champions|noscore",
+          "match_title": "Rc Lens vs PSG",
+          "home_team": {
+            "id": null,
+            "name": "Rc Lens",
+            "followed": false
+          },
+          "away_team": {
+            "id": "psg",
+            "name": "PSG",
+            "followed": true
+          },
           "score": null,
+          "competition": "Trophée Des Champions",
+          "match_date": null,
           "teams": [
             {
               "id": "psg",
               "name": "PSG"
             }
           ],
-          "match_key": "psg|noscore|rclensparissaintgermain2026tropheedeschampions",
-          "match_title": "RC LENS - PARIS SAINT-GERMAIN Highlights | 2026 TROPHEE DES CHAMPIONS",
-          "fetched_at": "2026-09-06T19:23:29.918232+00:00"
+          "match_confidence": "high",
+          "match_reason": "two-sided match detected",
+          "summary_keywords": [
+            "highlights"
+          ],
+          "excluded_keywords": [],
+          "fetched_at": "2026-09-06T19:42:41.526237+00:00"
+        }
+      ]
+    },
+    {
+      "match_key": "ligue|psg|football|noscore",
+      "title": "PSG vs Ligue",
+      "home_team": {
+        "id": "psg",
+        "name": "PSG",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "Ligue",
+        "followed": false
+      },
+      "score": null,
+      "competition": null,
+      "match_date": null,
+      "published_at": null,
+      "team_ids": [
+        "psg"
+      ],
+      "team_names": [
+        "PSG"
+      ],
+      "sources_count": 1,
+      "videos": [
+        {
+          "id": "o_Ved53ZuZA",
+          "title": "Mbappé fait le break pour le PSG - Ligue des Champions 2023-24 (8ème de finale retour)",
+          "url": "https://www.youtube.com/watch?v=o_Ved53ZuZA",
+          "published_at": null,
+          "updated_at": null,
+          "thumbnail": "https://i.ytimg.com/vi/o_Ved53ZuZA/hqdefault.jpg",
+          "source_id": "canal-plus-sport",
+          "source_name": "CANAL+ Sport",
+          "source_channel_id": "",
+          "description": "",
+          "duration": 88,
+          "is_summary": true,
+          "match_key": "ligue|psg|football|noscore",
+          "match_title": "PSG vs Ligue",
+          "home_team": {
+            "id": "psg",
+            "name": "PSG",
+            "followed": true
+          },
+          "away_team": {
+            "id": null,
+            "name": "Ligue",
+            "followed": false
+          },
+          "score": null,
+          "competition": null,
+          "match_date": null,
+          "teams": [
+            {
+              "id": "psg",
+              "name": "PSG"
+            }
+          ],
+          "match_confidence": "high",
+          "match_reason": "two-sided match detected",
+          "summary_keywords": [],
+          "excluded_keywords": [],
+          "fetched_at": "2026-09-06T19:41:36.769048+00:00"
+        }
+      ]
+    },
+    {
+      "match_key": "bradley-barcola-en-solitaire|psg|football|2-0",
+      "title": "Bradley Barcola en solitaire 2-0 PSG",
+      "home_team": {
+        "id": null,
+        "name": "Bradley Barcola en solitaire",
+        "followed": false
+      },
+      "away_team": {
+        "id": "psg",
+        "name": "PSG",
+        "followed": true
+      },
+      "score": "2-0",
+      "competition": null,
+      "match_date": null,
+      "published_at": null,
+      "team_ids": [
+        "psg"
+      ],
+      "team_names": [
+        "PSG"
+      ],
+      "sources_count": 1,
+      "videos": [
+        {
+          "id": "3BpBv-IXGlQ",
+          "title": "Bradley Barcola en solitaire pour le 2-0 ! - PSG / Real Sociedad - Ligue des champions 2023-24",
+          "url": "https://www.youtube.com/watch?v=3BpBv-IXGlQ",
+          "published_at": null,
+          "updated_at": null,
+          "thumbnail": "https://i.ytimg.com/vi/3BpBv-IXGlQ/hqdefault.jpg",
+          "source_id": "canal-plus-sport",
+          "source_name": "CANAL+ Sport",
+          "source_channel_id": "",
+          "description": "",
+          "duration": 92,
+          "is_summary": true,
+          "match_key": "bradley-barcola-en-solitaire|psg|football|2-0",
+          "match_title": "Bradley Barcola en solitaire 2-0 PSG",
+          "home_team": {
+            "id": null,
+            "name": "Bradley Barcola en solitaire",
+            "followed": false
+          },
+          "away_team": {
+            "id": "psg",
+            "name": "PSG",
+            "followed": true
+          },
+          "score": "2-0",
+          "competition": null,
+          "match_date": null,
+          "teams": [
+            {
+              "id": "psg",
+              "name": "PSG"
+            }
+          ],
+          "match_confidence": "high",
+          "match_reason": "two-sided match detected",
+          "summary_keywords": [],
+          "excluded_keywords": [],
+          "fetched_at": "2026-09-06T19:41:36.775307+00:00"
+        }
+      ]
+    },
+    {
+      "match_key": "psg|real-sociedad|football|noscore",
+      "title": "PSG vs Real Sociedad",
+      "home_team": {
+        "id": "psg",
+        "name": "PSG",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "Real Sociedad",
+        "followed": false
+      },
+      "score": null,
+      "competition": null,
+      "match_date": null,
+      "published_at": null,
+      "team_ids": [
+        "psg"
+      ],
+      "team_names": [
+        "PSG"
+      ],
+      "sources_count": 1,
+      "videos": [
+        {
+          "id": "QhXPbEhVBqk",
+          "title": "Kylian Mbappé délivre Paris ! - PSG /  Real Sociedad - Ligue des champions 2023-24",
+          "url": "https://www.youtube.com/watch?v=QhXPbEhVBqk",
+          "published_at": null,
+          "updated_at": null,
+          "thumbnail": "https://i.ytimg.com/vi/QhXPbEhVBqk/hqdefault.jpg",
+          "source_id": "canal-plus-sport",
+          "source_name": "CANAL+ Sport",
+          "source_channel_id": "",
+          "description": "",
+          "duration": 78,
+          "is_summary": true,
+          "match_key": "psg|real-sociedad|football|noscore",
+          "match_title": "PSG vs Real Sociedad",
+          "home_team": {
+            "id": "psg",
+            "name": "PSG",
+            "followed": true
+          },
+          "away_team": {
+            "id": null,
+            "name": "Real Sociedad",
+            "followed": false
+          },
+          "score": null,
+          "competition": null,
+          "match_date": null,
+          "teams": [
+            {
+              "id": "psg",
+              "name": "PSG"
+            }
+          ],
+          "match_confidence": "high",
+          "match_reason": "two-sided match detected",
+          "summary_keywords": [],
+          "excluded_keywords": [],
+          "fetched_at": "2026-09-06T19:41:36.778674+00:00"
         }
       ]
     }
   ],
   "stats": {
-    "videos": 6,
-    "matches": 6,
+    "videos": 7,
+    "matches": 7,
     "teams": 5,
     "sources": 4
   }
