@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-07T16:37:30.893166+00:00",
+  "generated_at": "2026-09-07T17:34:50.471021+00:00",
   "teams": [
     {
       "id": "psg",
@@ -75,7 +75,7 @@
         "resumé"
       ],
       "excluded_keywords": [],
-      "match_confidence": "high",
+      "match_confidence": "reference",
       "match_reason": "two-sided match detected",
       "score": null,
       "teams": [
@@ -137,7 +137,7 @@
           "name": "PSG"
         }
       ],
-      "match_confidence": "high",
+      "match_confidence": "reference",
       "match_reason": "two-sided match detected",
       "summary_keywords": [
         "highlights"
@@ -178,7 +178,7 @@
       "team_ids": [
         "ol"
       ],
-      "match_confidence": "medium",
+      "match_confidence": "reference",
       "summary_keywords": [
         "highlights",
         "match highlights"
@@ -241,7 +241,7 @@
             "resumé"
           ],
           "excluded_keywords": [],
-          "match_confidence": "high",
+          "match_confidence": "reference",
           "match_reason": "two-sided match detected",
           "score": null,
           "teams": [
@@ -336,7 +336,7 @@
               "name": "PSG"
             }
           ],
-          "match_confidence": "high",
+          "match_confidence": "reference",
           "match_reason": "two-sided match detected",
           "summary_keywords": [
             "highlights"
@@ -410,7 +410,7 @@
           "team_ids": [
             "ol"
           ],
-          "match_confidence": "medium",
+          "match_confidence": "reference",
           "summary_keywords": [
             "highlights",
             "match highlights"
