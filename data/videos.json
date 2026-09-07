@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-07T17:34:50.471021+00:00",
+  "generated_at": "2026-09-07T17:45:02.282731+00:00",
   "teams": [
     {
       "id": "psg",
@@ -75,7 +75,7 @@
         "resumé"
       ],
       "excluded_keywords": [],
-      "match_confidence": "reference",
+      "match_confidence": "title-pair",
       "match_reason": "two-sided match detected",
       "score": null,
       "teams": [
@@ -137,7 +137,7 @@
           "name": "PSG"
         }
       ],
-      "match_confidence": "reference",
+      "match_confidence": "title-pair",
       "match_reason": "two-sided match detected",
       "summary_keywords": [
         "highlights"
@@ -178,11 +178,523 @@
       "team_ids": [
         "ol"
       ],
-      "match_confidence": "reference",
+      "match_confidence": "title-pair",
       "summary_keywords": [
         "highlights",
         "match highlights"
       ],
+      "teams": [
+        {
+          "id": "ol",
+          "name": "OL"
+        }
+      ]
+    },
+    {
+      "id": "iVYHfuTdj-M",
+      "title": "OLYMPIQUE LYONNAIS - AJ AUXERRE (3-1) | Week 3 - Ligue 1 McDonald's 26/27",
+      "url": "https://www.youtube.com/watch?v=iVYHfuTdj-M",
+      "published_at": null,
+      "updated_at": null,
+      "thumbnail": "https://i.ytimg.com/vi/iVYHfuTdj-M/hqdefault.jpg",
+      "source_id": "ligue-1",
+      "source_name": "Ligue 1 McDonald's",
+      "source_channel_id": "",
+      "description": "",
+      "is_summary": true,
+      "match_key": "match|ol|auxerre|ligue-1|round:3",
+      "match_title": "OL 3-1 Auxerre",
+      "home_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "Auxerre",
+        "followed": false
+      },
+      "score": "3-1",
+      "competition": "Ligue 1",
+      "match_date": null,
+      "team_ids": [
+        "ol"
+      ],
+      "match_confidence": "title-pair",
+      "summary_keywords": [],
+      "teams": [
+        {
+          "id": "ol",
+          "name": "OL"
+        }
+      ]
+    },
+    {
+      "id": "0TydyD5hm7U",
+      "title": "PARIS SAINT-GERMAIN - AS MONACO (1-2) | Week 3 - Ligue 1 McDonald's 26/27",
+      "url": "https://www.youtube.com/watch?v=0TydyD5hm7U",
+      "published_at": null,
+      "updated_at": null,
+      "thumbnail": "https://i.ytimg.com/vi/0TydyD5hm7U/hqdefault.jpg",
+      "source_id": "ligue-1",
+      "source_name": "Ligue 1 McDonald's",
+      "source_channel_id": "",
+      "description": "",
+      "is_summary": true,
+      "match_key": "match|psg|monaco|ligue-1|round:3",
+      "match_title": "PSG 1-2 Monaco",
+      "home_team": {
+        "id": "psg",
+        "name": "PSG",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "Monaco",
+        "followed": false
+      },
+      "score": "1-2",
+      "competition": "Ligue 1",
+      "match_date": null,
+      "team_ids": [
+        "psg"
+      ],
+      "match_confidence": "title-pair",
+      "summary_keywords": [],
+      "teams": [
+        {
+          "id": "psg",
+          "name": "PSG"
+        }
+      ]
+    },
+    {
+      "id": "qU29QjNFcMU",
+      "title": "LOSC LILLE - PARIS SAINT-GERMAIN (2-2) | Week 2 - Ligue 1 McDonald's 26/27",
+      "url": "https://www.youtube.com/watch?v=qU29QjNFcMU",
+      "published_at": null,
+      "updated_at": null,
+      "thumbnail": "https://i.ytimg.com/vi/qU29QjNFcMU/hqdefault.jpg",
+      "source_id": "ligue-1",
+      "source_name": "Ligue 1 McDonald's",
+      "source_channel_id": "",
+      "description": "",
+      "is_summary": true,
+      "match_key": "match|lille|psg|ligue-1|round:2",
+      "match_title": "Lille 2-2 PSG",
+      "home_team": {
+        "id": null,
+        "name": "Lille",
+        "followed": false
+      },
+      "away_team": {
+        "id": "psg",
+        "name": "PSG",
+        "followed": true
+      },
+      "score": "2-2",
+      "competition": "Ligue 1",
+      "match_date": null,
+      "team_ids": [
+        "psg"
+      ],
+      "match_confidence": "title-pair",
+      "summary_keywords": [],
+      "teams": [
+        {
+          "id": "psg",
+          "name": "PSG"
+        }
+      ]
+    },
+    {
+      "id": "bxCvHu9RbMQ",
+      "title": "OLYMPIQUE LYONNAIS - HAVRE AC (1-1) | Week 2 - Ligue 1 McDonald's 26/27",
+      "url": "https://www.youtube.com/watch?v=bxCvHu9RbMQ",
+      "published_at": null,
+      "updated_at": null,
+      "thumbnail": "https://i.ytimg.com/vi/bxCvHu9RbMQ/hqdefault.jpg",
+      "source_id": "ligue-1",
+      "source_name": "Ligue 1 McDonald's",
+      "source_channel_id": "",
+      "description": "",
+      "is_summary": true,
+      "match_key": "match|ol|le-havre|ligue-1|round:2",
+      "match_title": "OL 1-1 Le Havre",
+      "home_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "Le Havre",
+        "followed": false
+      },
+      "score": "1-1",
+      "competition": "Ligue 1",
+      "match_date": null,
+      "team_ids": [
+        "ol"
+      ],
+      "match_confidence": "title-pair",
+      "summary_keywords": [],
+      "teams": [
+        {
+          "id": "ol",
+          "name": "OL"
+        }
+      ]
+    },
+    {
+      "id": "C58QLA9K7Ys",
+      "title": "STADE RENNAIS - PARIS SAINT-GERMAIN (2-2) | Week 1 - Ligue 1 McDonald's 26/27",
+      "url": "https://www.youtube.com/watch?v=C58QLA9K7Ys",
+      "published_at": null,
+      "updated_at": null,
+      "thumbnail": "https://i.ytimg.com/vi/C58QLA9K7Ys/hqdefault.jpg",
+      "source_id": "ligue-1",
+      "source_name": "Ligue 1 McDonald's",
+      "source_channel_id": "",
+      "description": "",
+      "is_summary": true,
+      "match_key": "match|rennes|psg|ligue-1|round:1",
+      "match_title": "Rennes 2-2 PSG",
+      "home_team": {
+        "id": null,
+        "name": "Rennes",
+        "followed": false
+      },
+      "away_team": {
+        "id": "psg",
+        "name": "PSG",
+        "followed": true
+      },
+      "score": "2-2",
+      "competition": "Ligue 1",
+      "match_date": null,
+      "team_ids": [
+        "psg"
+      ],
+      "match_confidence": "title-pair",
+      "summary_keywords": [],
+      "teams": [
+        {
+          "id": "psg",
+          "name": "PSG"
+        }
+      ]
+    },
+    {
+      "id": "gfQUAxmh8Y8",
+      "title": "OLYMPIQUE LYONNAIS - RC LENS (0-4) | Week 34 - Ligue 1 McDonald's 25/26",
+      "url": "https://www.youtube.com/watch?v=gfQUAxmh8Y8",
+      "published_at": null,
+      "updated_at": null,
+      "thumbnail": "https://i.ytimg.com/vi/gfQUAxmh8Y8/hqdefault.jpg",
+      "source_id": "ligue-1",
+      "source_name": "Ligue 1 McDonald's",
+      "source_channel_id": "",
+      "description": "",
+      "is_summary": true,
+      "match_key": "match|ol|lens|ligue-1|round:34",
+      "match_title": "OL 0-4 RC Lens",
+      "home_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "RC Lens",
+        "followed": false
+      },
+      "score": "0-4",
+      "competition": "Ligue 1",
+      "match_date": null,
+      "team_ids": [
+        "ol"
+      ],
+      "match_confidence": "title-pair",
+      "summary_keywords": [],
+      "teams": [
+        {
+          "id": "ol",
+          "name": "OL"
+        }
+      ]
+    },
+    {
+      "id": "k3AkOR49kVo",
+      "title": "RC LENS - PARIS SAINT-GERMAIN (0-2) | Week 29 - Ligue 1 McDonald's 25/26",
+      "url": "https://www.youtube.com/watch?v=k3AkOR49kVo",
+      "published_at": null,
+      "updated_at": null,
+      "thumbnail": "https://i.ytimg.com/vi/k3AkOR49kVo/hqdefault.jpg",
+      "source_id": "ligue-1",
+      "source_name": "Ligue 1 McDonald's",
+      "source_channel_id": "",
+      "description": "",
+      "is_summary": true,
+      "match_key": "match|lens|psg|ligue-1|round:29",
+      "match_title": "RC Lens 0-2 PSG",
+      "home_team": {
+        "id": null,
+        "name": "RC Lens",
+        "followed": false
+      },
+      "away_team": {
+        "id": "psg",
+        "name": "PSG",
+        "followed": true
+      },
+      "score": "0-2",
+      "competition": "Ligue 1",
+      "match_date": null,
+      "team_ids": [
+        "psg"
+      ],
+      "match_confidence": "title-pair",
+      "summary_keywords": [],
+      "teams": [
+        {
+          "id": "psg",
+          "name": "PSG"
+        }
+      ]
+    },
+    {
+      "id": "8zz85z0uoDY",
+      "title": "PARIS SAINT-GERMAIN - STADE BRESTOIS 29 (1-0) | Week 33 - Ligue 1 McDonald's 25/26",
+      "url": "https://www.youtube.com/watch?v=8zz85z0uoDY",
+      "published_at": null,
+      "updated_at": null,
+      "thumbnail": "https://i.ytimg.com/vi/8zz85z0uoDY/hqdefault.jpg",
+      "source_id": "ligue-1",
+      "source_name": "Ligue 1 McDonald's",
+      "source_channel_id": "",
+      "description": "",
+      "is_summary": true,
+      "match_key": "match|psg|brest|ligue-1|round:33",
+      "match_title": "PSG 1-0 Brest",
+      "home_team": {
+        "id": "psg",
+        "name": "PSG",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "Brest",
+        "followed": false
+      },
+      "score": "1-0",
+      "competition": "Ligue 1",
+      "match_date": null,
+      "team_ids": [
+        "psg"
+      ],
+      "match_confidence": "title-pair",
+      "summary_keywords": [],
+      "teams": [
+        {
+          "id": "psg",
+          "name": "PSG"
+        }
+      ]
+    },
+    {
+      "id": "8sfHluk6bVE",
+      "title": "TOULOUSE FC - OLYMPIQUE LYONNAIS (2-1) | Week 33 - Ligue 1 McDonald's 25/26",
+      "url": "https://www.youtube.com/watch?v=8sfHluk6bVE",
+      "published_at": null,
+      "updated_at": null,
+      "thumbnail": "https://i.ytimg.com/vi/8sfHluk6bVE/hqdefault.jpg",
+      "source_id": "ligue-1",
+      "source_name": "Ligue 1 McDonald's",
+      "source_channel_id": "",
+      "description": "",
+      "is_summary": true,
+      "match_key": "match|toulouse|ol|ligue-1|round:33",
+      "match_title": "Toulouse 2-1 OL",
+      "home_team": {
+        "id": null,
+        "name": "Toulouse",
+        "followed": false
+      },
+      "away_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
+      "score": "2-1",
+      "competition": "Ligue 1",
+      "match_date": null,
+      "team_ids": [
+        "ol"
+      ],
+      "match_confidence": "title-pair",
+      "summary_keywords": [],
+      "teams": [
+        {
+          "id": "ol",
+          "name": "OL"
+        }
+      ]
+    },
+    {
+      "id": "xySY2wnFQck",
+      "title": "OLYMPIQUE LYONNAIS - STADE RENNAIS (4-2) | Week 32 - Ligue 1 McDonald's 25/26",
+      "url": "https://www.youtube.com/watch?v=xySY2wnFQck",
+      "published_at": null,
+      "updated_at": null,
+      "thumbnail": "https://i.ytimg.com/vi/xySY2wnFQck/hqdefault.jpg",
+      "source_id": "ligue-1",
+      "source_name": "Ligue 1 McDonald's",
+      "source_channel_id": "",
+      "description": "",
+      "is_summary": true,
+      "match_key": "match|ol|rennes|ligue-1|round:32",
+      "match_title": "OL 4-2 Rennes",
+      "home_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "Rennes",
+        "followed": false
+      },
+      "score": "4-2",
+      "competition": "Ligue 1",
+      "match_date": null,
+      "team_ids": [
+        "ol"
+      ],
+      "match_confidence": "title-pair",
+      "summary_keywords": [],
+      "teams": [
+        {
+          "id": "ol",
+          "name": "OL"
+        }
+      ]
+    },
+    {
+      "id": "cNz4DfTVN3Y",
+      "title": "OLYMPIQUE LYONNAIS - AJ AUXERRE (3-2) | Week 31 - Ligue 1 McDonald's 25/26",
+      "url": "https://www.youtube.com/watch?v=cNz4DfTVN3Y",
+      "published_at": null,
+      "updated_at": null,
+      "thumbnail": "https://i.ytimg.com/vi/cNz4DfTVN3Y/hqdefault.jpg",
+      "source_id": "ligue-1",
+      "source_name": "Ligue 1 McDonald's",
+      "source_channel_id": "",
+      "description": "",
+      "is_summary": true,
+      "match_key": "match|ol|auxerre|ligue-1|round:31",
+      "match_title": "OL 3-2 Auxerre",
+      "home_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "Auxerre",
+        "followed": false
+      },
+      "score": "3-2",
+      "competition": "Ligue 1",
+      "match_date": null,
+      "team_ids": [
+        "ol"
+      ],
+      "match_confidence": "title-pair",
+      "summary_keywords": [],
+      "teams": [
+        {
+          "id": "ol",
+          "name": "OL"
+        }
+      ]
+    },
+    {
+      "id": "Vizwg2s-VbQ",
+      "title": "PARIS SAINT-GERMAIN - OLYMPIQUE LYONNAIS (1-2) | Week 30 - Ligue 1 McDonald's 25/26",
+      "url": "https://www.youtube.com/watch?v=Vizwg2s-VbQ",
+      "published_at": null,
+      "updated_at": null,
+      "thumbnail": "https://i.ytimg.com/vi/Vizwg2s-VbQ/hqdefault.jpg",
+      "source_id": "ligue-1",
+      "source_name": "Ligue 1 McDonald's",
+      "source_channel_id": "",
+      "description": "",
+      "is_summary": true,
+      "match_key": "match|psg|ol|ligue-1|round:30",
+      "match_title": "PSG 1-2 OL",
+      "home_team": {
+        "id": "psg",
+        "name": "PSG",
+        "followed": true
+      },
+      "away_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
+      "score": "1-2",
+      "competition": "Ligue 1",
+      "match_date": null,
+      "team_ids": [
+        "ol",
+        "psg"
+      ],
+      "match_confidence": "title-pair",
+      "summary_keywords": [],
+      "teams": [
+        {
+          "id": "psg",
+          "name": "PSG"
+        },
+        {
+          "id": "ol",
+          "name": "OL"
+        }
+      ]
+    },
+    {
+      "id": "G0E8mphTYqw",
+      "title": "OLYMPIQUE LYONNAIS - FC LORIENT (2-0) | Week 29 - Ligue 1 McDonald's 25/26",
+      "url": "https://www.youtube.com/watch?v=G0E8mphTYqw",
+      "published_at": null,
+      "updated_at": null,
+      "thumbnail": "https://i.ytimg.com/vi/G0E8mphTYqw/hqdefault.jpg",
+      "source_id": "ligue-1",
+      "source_name": "Ligue 1 McDonald's",
+      "source_channel_id": "",
+      "description": "",
+      "is_summary": true,
+      "match_key": "match|ol|lorient|ligue-1|round:29",
+      "match_title": "OL 2-0 Lorient",
+      "home_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "Lorient",
+        "followed": false
+      },
+      "score": "2-0",
+      "competition": "Ligue 1",
+      "match_date": null,
+      "team_ids": [
+        "ol"
+      ],
+      "match_confidence": "title-pair",
+      "summary_keywords": [],
       "teams": [
         {
           "id": "ol",
@@ -241,7 +753,7 @@
             "resumé"
           ],
           "excluded_keywords": [],
-          "match_confidence": "reference",
+          "match_confidence": "title-pair",
           "match_reason": "two-sided match detected",
           "score": null,
           "teams": [
@@ -336,7 +848,7 @@
               "name": "PSG"
             }
           ],
-          "match_confidence": "reference",
+          "match_confidence": "title-pair",
           "match_reason": "two-sided match detected",
           "summary_keywords": [
             "highlights"
@@ -410,7 +922,7 @@
           "team_ids": [
             "ol"
           ],
-          "match_confidence": "reference",
+          "match_confidence": "title-pair",
           "summary_keywords": [
             "highlights",
             "match highlights"
@@ -423,11 +935,954 @@
           ]
         }
       ]
+    },
+    {
+      "match_key": "match|ol|auxerre|ligue-1|round:3",
+      "title": "OL 3-1 Auxerre",
+      "home_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "Auxerre",
+        "followed": false
+      },
+      "score": "3-1",
+      "competition": "Ligue 1",
+      "match_date": null,
+      "published_at": null,
+      "team_ids": [
+        "ol"
+      ],
+      "team_names": [
+        "OL"
+      ],
+      "sources_count": 1,
+      "sources": [
+        {
+          "id": "ligue-1",
+          "name": "Ligue 1 McDonald's"
+        }
+      ],
+      "videos": [
+        {
+          "id": "iVYHfuTdj-M",
+          "title": "OLYMPIQUE LYONNAIS - AJ AUXERRE (3-1) | Week 3 - Ligue 1 McDonald's 26/27",
+          "url": "https://www.youtube.com/watch?v=iVYHfuTdj-M",
+          "published_at": null,
+          "updated_at": null,
+          "thumbnail": "https://i.ytimg.com/vi/iVYHfuTdj-M/hqdefault.jpg",
+          "source_id": "ligue-1",
+          "source_name": "Ligue 1 McDonald's",
+          "source_channel_id": "",
+          "description": "",
+          "is_summary": true,
+          "match_key": "match|ol|auxerre|ligue-1|round:3",
+          "match_title": "OL 3-1 Auxerre",
+          "home_team": {
+            "id": "ol",
+            "name": "OL",
+            "followed": true
+          },
+          "away_team": {
+            "id": null,
+            "name": "Auxerre",
+            "followed": false
+          },
+          "score": "3-1",
+          "competition": "Ligue 1",
+          "match_date": null,
+          "team_ids": [
+            "ol"
+          ],
+          "match_confidence": "title-pair",
+          "summary_keywords": [],
+          "teams": [
+            {
+              "id": "ol",
+              "name": "OL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "match_key": "match|psg|monaco|ligue-1|round:3",
+      "title": "PSG 1-2 Monaco",
+      "home_team": {
+        "id": "psg",
+        "name": "PSG",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "Monaco",
+        "followed": false
+      },
+      "score": "1-2",
+      "competition": "Ligue 1",
+      "match_date": null,
+      "published_at": null,
+      "team_ids": [
+        "psg"
+      ],
+      "team_names": [
+        "PSG"
+      ],
+      "sources_count": 1,
+      "sources": [
+        {
+          "id": "ligue-1",
+          "name": "Ligue 1 McDonald's"
+        }
+      ],
+      "videos": [
+        {
+          "id": "0TydyD5hm7U",
+          "title": "PARIS SAINT-GERMAIN - AS MONACO (1-2) | Week 3 - Ligue 1 McDonald's 26/27",
+          "url": "https://www.youtube.com/watch?v=0TydyD5hm7U",
+          "published_at": null,
+          "updated_at": null,
+          "thumbnail": "https://i.ytimg.com/vi/0TydyD5hm7U/hqdefault.jpg",
+          "source_id": "ligue-1",
+          "source_name": "Ligue 1 McDonald's",
+          "source_channel_id": "",
+          "description": "",
+          "is_summary": true,
+          "match_key": "match|psg|monaco|ligue-1|round:3",
+          "match_title": "PSG 1-2 Monaco",
+          "home_team": {
+            "id": "psg",
+            "name": "PSG",
+            "followed": true
+          },
+          "away_team": {
+            "id": null,
+            "name": "Monaco",
+            "followed": false
+          },
+          "score": "1-2",
+          "competition": "Ligue 1",
+          "match_date": null,
+          "team_ids": [
+            "psg"
+          ],
+          "match_confidence": "title-pair",
+          "summary_keywords": [],
+          "teams": [
+            {
+              "id": "psg",
+              "name": "PSG"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "match_key": "match|lille|psg|ligue-1|round:2",
+      "title": "Lille 2-2 PSG",
+      "home_team": {
+        "id": null,
+        "name": "Lille",
+        "followed": false
+      },
+      "away_team": {
+        "id": "psg",
+        "name": "PSG",
+        "followed": true
+      },
+      "score": "2-2",
+      "competition": "Ligue 1",
+      "match_date": null,
+      "published_at": null,
+      "team_ids": [
+        "psg"
+      ],
+      "team_names": [
+        "PSG"
+      ],
+      "sources_count": 1,
+      "sources": [
+        {
+          "id": "ligue-1",
+          "name": "Ligue 1 McDonald's"
+        }
+      ],
+      "videos": [
+        {
+          "id": "qU29QjNFcMU",
+          "title": "LOSC LILLE - PARIS SAINT-GERMAIN (2-2) | Week 2 - Ligue 1 McDonald's 26/27",
+          "url": "https://www.youtube.com/watch?v=qU29QjNFcMU",
+          "published_at": null,
+          "updated_at": null,
+          "thumbnail": "https://i.ytimg.com/vi/qU29QjNFcMU/hqdefault.jpg",
+          "source_id": "ligue-1",
+          "source_name": "Ligue 1 McDonald's",
+          "source_channel_id": "",
+          "description": "",
+          "is_summary": true,
+          "match_key": "match|lille|psg|ligue-1|round:2",
+          "match_title": "Lille 2-2 PSG",
+          "home_team": {
+            "id": null,
+            "name": "Lille",
+            "followed": false
+          },
+          "away_team": {
+            "id": "psg",
+            "name": "PSG",
+            "followed": true
+          },
+          "score": "2-2",
+          "competition": "Ligue 1",
+          "match_date": null,
+          "team_ids": [
+            "psg"
+          ],
+          "match_confidence": "title-pair",
+          "summary_keywords": [],
+          "teams": [
+            {
+              "id": "psg",
+              "name": "PSG"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "match_key": "match|ol|le-havre|ligue-1|round:2",
+      "title": "OL 1-1 Le Havre",
+      "home_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "Le Havre",
+        "followed": false
+      },
+      "score": "1-1",
+      "competition": "Ligue 1",
+      "match_date": null,
+      "published_at": null,
+      "team_ids": [
+        "ol"
+      ],
+      "team_names": [
+        "OL"
+      ],
+      "sources_count": 1,
+      "sources": [
+        {
+          "id": "ligue-1",
+          "name": "Ligue 1 McDonald's"
+        }
+      ],
+      "videos": [
+        {
+          "id": "bxCvHu9RbMQ",
+          "title": "OLYMPIQUE LYONNAIS - HAVRE AC (1-1) | Week 2 - Ligue 1 McDonald's 26/27",
+          "url": "https://www.youtube.com/watch?v=bxCvHu9RbMQ",
+          "published_at": null,
+          "updated_at": null,
+          "thumbnail": "https://i.ytimg.com/vi/bxCvHu9RbMQ/hqdefault.jpg",
+          "source_id": "ligue-1",
+          "source_name": "Ligue 1 McDonald's",
+          "source_channel_id": "",
+          "description": "",
+          "is_summary": true,
+          "match_key": "match|ol|le-havre|ligue-1|round:2",
+          "match_title": "OL 1-1 Le Havre",
+          "home_team": {
+            "id": "ol",
+            "name": "OL",
+            "followed": true
+          },
+          "away_team": {
+            "id": null,
+            "name": "Le Havre",
+            "followed": false
+          },
+          "score": "1-1",
+          "competition": "Ligue 1",
+          "match_date": null,
+          "team_ids": [
+            "ol"
+          ],
+          "match_confidence": "title-pair",
+          "summary_keywords": [],
+          "teams": [
+            {
+              "id": "ol",
+              "name": "OL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "match_key": "match|rennes|psg|ligue-1|round:1",
+      "title": "Rennes 2-2 PSG",
+      "home_team": {
+        "id": null,
+        "name": "Rennes",
+        "followed": false
+      },
+      "away_team": {
+        "id": "psg",
+        "name": "PSG",
+        "followed": true
+      },
+      "score": "2-2",
+      "competition": "Ligue 1",
+      "match_date": null,
+      "published_at": null,
+      "team_ids": [
+        "psg"
+      ],
+      "team_names": [
+        "PSG"
+      ],
+      "sources_count": 1,
+      "sources": [
+        {
+          "id": "ligue-1",
+          "name": "Ligue 1 McDonald's"
+        }
+      ],
+      "videos": [
+        {
+          "id": "C58QLA9K7Ys",
+          "title": "STADE RENNAIS - PARIS SAINT-GERMAIN (2-2) | Week 1 - Ligue 1 McDonald's 26/27",
+          "url": "https://www.youtube.com/watch?v=C58QLA9K7Ys",
+          "published_at": null,
+          "updated_at": null,
+          "thumbnail": "https://i.ytimg.com/vi/C58QLA9K7Ys/hqdefault.jpg",
+          "source_id": "ligue-1",
+          "source_name": "Ligue 1 McDonald's",
+          "source_channel_id": "",
+          "description": "",
+          "is_summary": true,
+          "match_key": "match|rennes|psg|ligue-1|round:1",
+          "match_title": "Rennes 2-2 PSG",
+          "home_team": {
+            "id": null,
+            "name": "Rennes",
+            "followed": false
+          },
+          "away_team": {
+            "id": "psg",
+            "name": "PSG",
+            "followed": true
+          },
+          "score": "2-2",
+          "competition": "Ligue 1",
+          "match_date": null,
+          "team_ids": [
+            "psg"
+          ],
+          "match_confidence": "title-pair",
+          "summary_keywords": [],
+          "teams": [
+            {
+              "id": "psg",
+              "name": "PSG"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "match_key": "match|ol|lens|ligue-1|round:34",
+      "title": "OL 0-4 RC Lens",
+      "home_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "RC Lens",
+        "followed": false
+      },
+      "score": "0-4",
+      "competition": "Ligue 1",
+      "match_date": null,
+      "published_at": null,
+      "team_ids": [
+        "ol"
+      ],
+      "team_names": [
+        "OL"
+      ],
+      "sources_count": 1,
+      "sources": [
+        {
+          "id": "ligue-1",
+          "name": "Ligue 1 McDonald's"
+        }
+      ],
+      "videos": [
+        {
+          "id": "gfQUAxmh8Y8",
+          "title": "OLYMPIQUE LYONNAIS - RC LENS (0-4) | Week 34 - Ligue 1 McDonald's 25/26",
+          "url": "https://www.youtube.com/watch?v=gfQUAxmh8Y8",
+          "published_at": null,
+          "updated_at": null,
+          "thumbnail": "https://i.ytimg.com/vi/gfQUAxmh8Y8/hqdefault.jpg",
+          "source_id": "ligue-1",
+          "source_name": "Ligue 1 McDonald's",
+          "source_channel_id": "",
+          "description": "",
+          "is_summary": true,
+          "match_key": "match|ol|lens|ligue-1|round:34",
+          "match_title": "OL 0-4 RC Lens",
+          "home_team": {
+            "id": "ol",
+            "name": "OL",
+            "followed": true
+          },
+          "away_team": {
+            "id": null,
+            "name": "RC Lens",
+            "followed": false
+          },
+          "score": "0-4",
+          "competition": "Ligue 1",
+          "match_date": null,
+          "team_ids": [
+            "ol"
+          ],
+          "match_confidence": "title-pair",
+          "summary_keywords": [],
+          "teams": [
+            {
+              "id": "ol",
+              "name": "OL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "match_key": "match|lens|psg|ligue-1|round:29",
+      "title": "RC Lens 0-2 PSG",
+      "home_team": {
+        "id": null,
+        "name": "RC Lens",
+        "followed": false
+      },
+      "away_team": {
+        "id": "psg",
+        "name": "PSG",
+        "followed": true
+      },
+      "score": "0-2",
+      "competition": "Ligue 1",
+      "match_date": null,
+      "published_at": null,
+      "team_ids": [
+        "psg"
+      ],
+      "team_names": [
+        "PSG"
+      ],
+      "sources_count": 1,
+      "sources": [
+        {
+          "id": "ligue-1",
+          "name": "Ligue 1 McDonald's"
+        }
+      ],
+      "videos": [
+        {
+          "id": "k3AkOR49kVo",
+          "title": "RC LENS - PARIS SAINT-GERMAIN (0-2) | Week 29 - Ligue 1 McDonald's 25/26",
+          "url": "https://www.youtube.com/watch?v=k3AkOR49kVo",
+          "published_at": null,
+          "updated_at": null,
+          "thumbnail": "https://i.ytimg.com/vi/k3AkOR49kVo/hqdefault.jpg",
+          "source_id": "ligue-1",
+          "source_name": "Ligue 1 McDonald's",
+          "source_channel_id": "",
+          "description": "",
+          "is_summary": true,
+          "match_key": "match|lens|psg|ligue-1|round:29",
+          "match_title": "RC Lens 0-2 PSG",
+          "home_team": {
+            "id": null,
+            "name": "RC Lens",
+            "followed": false
+          },
+          "away_team": {
+            "id": "psg",
+            "name": "PSG",
+            "followed": true
+          },
+          "score": "0-2",
+          "competition": "Ligue 1",
+          "match_date": null,
+          "team_ids": [
+            "psg"
+          ],
+          "match_confidence": "title-pair",
+          "summary_keywords": [],
+          "teams": [
+            {
+              "id": "psg",
+              "name": "PSG"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "match_key": "match|psg|brest|ligue-1|round:33",
+      "title": "PSG 1-0 Brest",
+      "home_team": {
+        "id": "psg",
+        "name": "PSG",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "Brest",
+        "followed": false
+      },
+      "score": "1-0",
+      "competition": "Ligue 1",
+      "match_date": null,
+      "published_at": null,
+      "team_ids": [
+        "psg"
+      ],
+      "team_names": [
+        "PSG"
+      ],
+      "sources_count": 1,
+      "sources": [
+        {
+          "id": "ligue-1",
+          "name": "Ligue 1 McDonald's"
+        }
+      ],
+      "videos": [
+        {
+          "id": "8zz85z0uoDY",
+          "title": "PARIS SAINT-GERMAIN - STADE BRESTOIS 29 (1-0) | Week 33 - Ligue 1 McDonald's 25/26",
+          "url": "https://www.youtube.com/watch?v=8zz85z0uoDY",
+          "published_at": null,
+          "updated_at": null,
+          "thumbnail": "https://i.ytimg.com/vi/8zz85z0uoDY/hqdefault.jpg",
+          "source_id": "ligue-1",
+          "source_name": "Ligue 1 McDonald's",
+          "source_channel_id": "",
+          "description": "",
+          "is_summary": true,
+          "match_key": "match|psg|brest|ligue-1|round:33",
+          "match_title": "PSG 1-0 Brest",
+          "home_team": {
+            "id": "psg",
+            "name": "PSG",
+            "followed": true
+          },
+          "away_team": {
+            "id": null,
+            "name": "Brest",
+            "followed": false
+          },
+          "score": "1-0",
+          "competition": "Ligue 1",
+          "match_date": null,
+          "team_ids": [
+            "psg"
+          ],
+          "match_confidence": "title-pair",
+          "summary_keywords": [],
+          "teams": [
+            {
+              "id": "psg",
+              "name": "PSG"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "match_key": "match|toulouse|ol|ligue-1|round:33",
+      "title": "Toulouse 2-1 OL",
+      "home_team": {
+        "id": null,
+        "name": "Toulouse",
+        "followed": false
+      },
+      "away_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
+      "score": "2-1",
+      "competition": "Ligue 1",
+      "match_date": null,
+      "published_at": null,
+      "team_ids": [
+        "ol"
+      ],
+      "team_names": [
+        "OL"
+      ],
+      "sources_count": 1,
+      "sources": [
+        {
+          "id": "ligue-1",
+          "name": "Ligue 1 McDonald's"
+        }
+      ],
+      "videos": [
+        {
+          "id": "8sfHluk6bVE",
+          "title": "TOULOUSE FC - OLYMPIQUE LYONNAIS (2-1) | Week 33 - Ligue 1 McDonald's 25/26",
+          "url": "https://www.youtube.com/watch?v=8sfHluk6bVE",
+          "published_at": null,
+          "updated_at": null,
+          "thumbnail": "https://i.ytimg.com/vi/8sfHluk6bVE/hqdefault.jpg",
+          "source_id": "ligue-1",
+          "source_name": "Ligue 1 McDonald's",
+          "source_channel_id": "",
+          "description": "",
+          "is_summary": true,
+          "match_key": "match|toulouse|ol|ligue-1|round:33",
+          "match_title": "Toulouse 2-1 OL",
+          "home_team": {
+            "id": null,
+            "name": "Toulouse",
+            "followed": false
+          },
+          "away_team": {
+            "id": "ol",
+            "name": "OL",
+            "followed": true
+          },
+          "score": "2-1",
+          "competition": "Ligue 1",
+          "match_date": null,
+          "team_ids": [
+            "ol"
+          ],
+          "match_confidence": "title-pair",
+          "summary_keywords": [],
+          "teams": [
+            {
+              "id": "ol",
+              "name": "OL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "match_key": "match|ol|rennes|ligue-1|round:32",
+      "title": "OL 4-2 Rennes",
+      "home_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "Rennes",
+        "followed": false
+      },
+      "score": "4-2",
+      "competition": "Ligue 1",
+      "match_date": null,
+      "published_at": null,
+      "team_ids": [
+        "ol"
+      ],
+      "team_names": [
+        "OL"
+      ],
+      "sources_count": 1,
+      "sources": [
+        {
+          "id": "ligue-1",
+          "name": "Ligue 1 McDonald's"
+        }
+      ],
+      "videos": [
+        {
+          "id": "xySY2wnFQck",
+          "title": "OLYMPIQUE LYONNAIS - STADE RENNAIS (4-2) | Week 32 - Ligue 1 McDonald's 25/26",
+          "url": "https://www.youtube.com/watch?v=xySY2wnFQck",
+          "published_at": null,
+          "updated_at": null,
+          "thumbnail": "https://i.ytimg.com/vi/xySY2wnFQck/hqdefault.jpg",
+          "source_id": "ligue-1",
+          "source_name": "Ligue 1 McDonald's",
+          "source_channel_id": "",
+          "description": "",
+          "is_summary": true,
+          "match_key": "match|ol|rennes|ligue-1|round:32",
+          "match_title": "OL 4-2 Rennes",
+          "home_team": {
+            "id": "ol",
+            "name": "OL",
+            "followed": true
+          },
+          "away_team": {
+            "id": null,
+            "name": "Rennes",
+            "followed": false
+          },
+          "score": "4-2",
+          "competition": "Ligue 1",
+          "match_date": null,
+          "team_ids": [
+            "ol"
+          ],
+          "match_confidence": "title-pair",
+          "summary_keywords": [],
+          "teams": [
+            {
+              "id": "ol",
+              "name": "OL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "match_key": "match|ol|auxerre|ligue-1|round:31",
+      "title": "OL 3-2 Auxerre",
+      "home_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "Auxerre",
+        "followed": false
+      },
+      "score": "3-2",
+      "competition": "Ligue 1",
+      "match_date": null,
+      "published_at": null,
+      "team_ids": [
+        "ol"
+      ],
+      "team_names": [
+        "OL"
+      ],
+      "sources_count": 1,
+      "sources": [
+        {
+          "id": "ligue-1",
+          "name": "Ligue 1 McDonald's"
+        }
+      ],
+      "videos": [
+        {
+          "id": "cNz4DfTVN3Y",
+          "title": "OLYMPIQUE LYONNAIS - AJ AUXERRE (3-2) | Week 31 - Ligue 1 McDonald's 25/26",
+          "url": "https://www.youtube.com/watch?v=cNz4DfTVN3Y",
+          "published_at": null,
+          "updated_at": null,
+          "thumbnail": "https://i.ytimg.com/vi/cNz4DfTVN3Y/hqdefault.jpg",
+          "source_id": "ligue-1",
+          "source_name": "Ligue 1 McDonald's",
+          "source_channel_id": "",
+          "description": "",
+          "is_summary": true,
+          "match_key": "match|ol|auxerre|ligue-1|round:31",
+          "match_title": "OL 3-2 Auxerre",
+          "home_team": {
+            "id": "ol",
+            "name": "OL",
+            "followed": true
+          },
+          "away_team": {
+            "id": null,
+            "name": "Auxerre",
+            "followed": false
+          },
+          "score": "3-2",
+          "competition": "Ligue 1",
+          "match_date": null,
+          "team_ids": [
+            "ol"
+          ],
+          "match_confidence": "title-pair",
+          "summary_keywords": [],
+          "teams": [
+            {
+              "id": "ol",
+              "name": "OL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "match_key": "match|psg|ol|ligue-1|round:30",
+      "title": "PSG 1-2 OL",
+      "home_team": {
+        "id": "psg",
+        "name": "PSG",
+        "followed": true
+      },
+      "away_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
+      "score": "1-2",
+      "competition": "Ligue 1",
+      "match_date": null,
+      "published_at": null,
+      "team_ids": [
+        "ol",
+        "psg"
+      ],
+      "team_names": [
+        "OL",
+        "PSG"
+      ],
+      "sources_count": 1,
+      "sources": [
+        {
+          "id": "ligue-1",
+          "name": "Ligue 1 McDonald's"
+        }
+      ],
+      "videos": [
+        {
+          "id": "Vizwg2s-VbQ",
+          "title": "PARIS SAINT-GERMAIN - OLYMPIQUE LYONNAIS (1-2) | Week 30 - Ligue 1 McDonald's 25/26",
+          "url": "https://www.youtube.com/watch?v=Vizwg2s-VbQ",
+          "published_at": null,
+          "updated_at": null,
+          "thumbnail": "https://i.ytimg.com/vi/Vizwg2s-VbQ/hqdefault.jpg",
+          "source_id": "ligue-1",
+          "source_name": "Ligue 1 McDonald's",
+          "source_channel_id": "",
+          "description": "",
+          "is_summary": true,
+          "match_key": "match|psg|ol|ligue-1|round:30",
+          "match_title": "PSG 1-2 OL",
+          "home_team": {
+            "id": "psg",
+            "name": "PSG",
+            "followed": true
+          },
+          "away_team": {
+            "id": "ol",
+            "name": "OL",
+            "followed": true
+          },
+          "score": "1-2",
+          "competition": "Ligue 1",
+          "match_date": null,
+          "team_ids": [
+            "ol",
+            "psg"
+          ],
+          "match_confidence": "title-pair",
+          "summary_keywords": [],
+          "teams": [
+            {
+              "id": "psg",
+              "name": "PSG"
+            },
+            {
+              "id": "ol",
+              "name": "OL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "match_key": "match|ol|lorient|ligue-1|round:29",
+      "title": "OL 2-0 Lorient",
+      "home_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
+      "away_team": {
+        "id": null,
+        "name": "Lorient",
+        "followed": false
+      },
+      "score": "2-0",
+      "competition": "Ligue 1",
+      "match_date": null,
+      "published_at": null,
+      "team_ids": [
+        "ol"
+      ],
+      "team_names": [
+        "OL"
+      ],
+      "sources_count": 1,
+      "sources": [
+        {
+          "id": "ligue-1",
+          "name": "Ligue 1 McDonald's"
+        }
+      ],
+      "videos": [
+        {
+          "id": "G0E8mphTYqw",
+          "title": "OLYMPIQUE LYONNAIS - FC LORIENT (2-0) | Week 29 - Ligue 1 McDonald's 25/26",
+          "url": "https://www.youtube.com/watch?v=G0E8mphTYqw",
+          "published_at": null,
+          "updated_at": null,
+          "thumbnail": "https://i.ytimg.com/vi/G0E8mphTYqw/hqdefault.jpg",
+          "source_id": "ligue-1",
+          "source_name": "Ligue 1 McDonald's",
+          "source_channel_id": "",
+          "description": "",
+          "is_summary": true,
+          "match_key": "match|ol|lorient|ligue-1|round:29",
+          "match_title": "OL 2-0 Lorient",
+          "home_team": {
+            "id": "ol",
+            "name": "OL",
+            "followed": true
+          },
+          "away_team": {
+            "id": null,
+            "name": "Lorient",
+            "followed": false
+          },
+          "score": "2-0",
+          "competition": "Ligue 1",
+          "match_date": null,
+          "team_ids": [
+            "ol"
+          ],
+          "match_confidence": "title-pair",
+          "summary_keywords": [],
+          "teams": [
+            {
+              "id": "ol",
+              "name": "OL"
+            }
+          ]
+        }
+      ]
     }
   ],
   "stats": {
-    "videos": 3,
-    "matches": 3,
+    "videos": 16,
+    "matches": 16,
     "teams": 5,
     "sources": 4
   }
