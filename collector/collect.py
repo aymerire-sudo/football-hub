@@ -882,6 +882,111 @@ KNOWN_CLUBS: dict[str, list[str]] = {
     "lecce": [
         "Lecce",
     ],
+    "saint-gall": [
+        "Saint-Gall",
+        "St. Gallen",
+        "St Gallen",
+    ],
+    "servette": [
+        "Servette",
+        "Servette FC",
+    ],
+    "macon": [
+        "Macon",
+        "Mâcon",
+    ],
+    "sparta-prague": [
+        "Sparta Prague",
+        "Sparta Praha",
+        "Sparta",
+    ],
+    "wiesbaden": [
+        "Wiesbaden",
+    ],
+    "rottach-egern": [
+        "Rottach-Egern",
+        "Rottach Egern",
+    ],
+    "jeju-united": [
+        "Jeju Utd",
+        "Jeju United",
+        "Jeju",
+    ],
+    "heidenheim": [
+        "Heidenheim",
+        "1. FC Heidenheim",
+    ],
+    "leipzig": [
+        "Leipzig",
+        "RB Leipzig",
+    ],
+    "girona": [
+        "Gérone",
+        "Girona",
+    ],
+    "côme": [
+        "Côme",
+        "Como",
+        "Como 1907",
+    ],
+    "coventry": [
+        "Coventry",
+        "Coventry City",
+    ],
+    "sunderland": [
+        "Sunderland",
+        "Sunderland AFC",
+    ],
+    "leeds-united": [
+        "Leeds United",
+        "Leeds",
+    ],
+    "nottingham-forest": [
+        "Not. Forest",
+        "Nottingham Forest",
+        "Forest",
+    ],
+    "union-berlin": [
+        "Union Berlin",
+        "1. FC Union Berlin",
+    ],
+    "troyes": [
+        "Troyes",
+        "ESTAC",
+    ],
+    "elche": [
+        "Elche",
+    ],
+    "villarreal": [
+        "Villarreal",
+        "Villareal",
+    ],
+    "sevilla": [
+        "Séville",
+        "Sevilla",
+    ],
+    "alcorcon": [
+        "Alcorcón",
+        "Alcorcon",
+    ],
+    "leganes": [
+        "Leganes",
+        "Leganés",
+    ],
+    "ferencvaros": [
+        "Ferencvaros",
+        "Ferencváros",
+    ],
+    "a-coruna": [
+        "A Coruña",
+        "Deportivo La Corogne",
+        "Deportivo La Coruña",
+    ],
+    "mallorca": [
+        "Majorque",
+        "Mallorca",
+        "RCD Mallorca",
+    ],
 }
 
 
@@ -1637,173 +1742,336 @@ def natural_match_sides(
     )
 
 
+
+# ============================================================
+# VALIDATION DES AFFICHES SUIVIES
+# ============================================================
+
+# Affiches tirées de la liste fournie pour les 5 équipes suivies.
+# Sans API : une vidéo doit correspondre à une vraie affiche de cette
+# liste pour être transformée en match.
+REFERENCE_MATCH_PAIRS = {
+    frozenset(pair)
+    for pair in {
+        # OL
+        ("ol", "macon"), ("ol", "saint-gall"), ("ol", "servette"),
+        ("ol", "sparta-prague"), ("ol", "fenerbahce"),
+        ("ol", "toulouse"), ("ol", "le-havre"), ("ol", "auxerre"),
+        ("ol", "paris-fc"), ("ol", "rennes"), ("ol", "lens"),
+        ("ol", "nice"), ("ol", "psg"), ("ol", "angers"),
+        ("ol", "brest"), ("ol", "lille"), ("ol", "monaco"),
+        ("ol", "troyes"), ("ol", "marseille"), ("ol", "le-mans"),
+        ("ol", "lorient"), ("ol", "strasbourg"),
+
+        # Bayern
+        ("bayern", "wiesbaden"), ("bayern", "rottach-egern"),
+        ("bayern", "jeju-united"), ("bayern", "aston-villa"),
+        ("bayern", "leipzig"), ("bayern", "heidenheim"),
+        ("bayern", "dortmund"), ("bayern", "stuttgart"),
+        ("bayern", "schalke"), ("bayern", "elversberg"),
+        ("bayern", "union-berlin"), ("bayern", "augsburg"),
+        ("bayern", "freiburg"),
+
+        # Arsenal
+        ("arsenal", "girona"), ("arsenal", "real-betis"),
+        ("arsenal", "côme"), ("arsenal", "dortmund"),
+        ("arsenal", "man-city"), ("arsenal", "coventry"),
+        ("arsenal", "aston-villa"), ("arsenal", "chelsea"),
+        ("arsenal", "sunderland"), ("arsenal", "brighton"),
+        ("arsenal", "leeds-united"), ("arsenal", "nottingham-forest"),
+        ("arsenal", "everton"), ("arsenal", "liverpool"),
+        ("arsenal", "hull-city"), ("arsenal", "newcastle"),
+
+        # PSG
+        ("psg", "mallorca"), ("psg", "man-united"),
+        ("psg", "aston-villa"), ("psg", "lens"),
+        ("psg", "rennes"), ("psg", "lille"), ("psg", "monaco"),
+        ("psg", "brest"), ("psg", "marseille"), ("psg", "le-mans"),
+        ("psg", "strasbourg"), ("psg", "ol"),
+
+        # Real Madrid
+        ("real-madrid", "alcorcon"), ("real-madrid", "leganes"),
+        ("real-madrid", "fiorentina"), ("real-madrid", "ferencvaros"),
+        ("real-madrid", "a-coruna"), ("real-madrid", "schalke"),
+        ("real-madrid", "espanyol"), ("real-madrid", "real-sociedad"),
+        ("real-madrid", "malaga"), ("real-madrid", "real-betis"),
+        ("real-madrid", "rayo-vallecano"), ("real-madrid", "elche"),
+        ("real-madrid", "atletico-madrid"), ("real-madrid", "villarreal"),
+        ("real-madrid", "sevilla"), ("real-madrid", "barcelona"),
+        ("real-madrid", "racing-santander"),
+    }
+}
+
+FOLLOWED_REFERENCE_IDS = {
+    "psg",
+    "arsenal",
+    "bayern",
+    "real-madrid",
+    "ol",
+}
+
+CONTEXTUAL_NEGATIVE_PATTERNS = (
+    "apres",
+    "après",
+    "avant",
+    "depuis",
+    "mercato",
+    "interview",
+    "interviewe",
+    "interviewé",
+    "reaction",
+    "réaction",
+    "reactions",
+    "réactions",
+    "presse",
+    "conférence",
+    "conference",
+    "best of",
+    "top buts",
+    "top skills",
+    "stories",
+    "inside",
+)
+
+
+def followed_mention_is_contextual(
+    title: str,
+    club: dict[str, Any],
+) -> bool:
+    """
+    Vérifie si la mention du club suivi sert seulement de contexte
+    ("après l'OL", "avant Lyon", "mercato du PSG", etc.).
+    """
+    normalized = normalize(title)
+    club_name = normalize(club["name"])
+    position = normalized.find(club_name)
+
+    if position < 0:
+        return False
+
+    prefix = normalized[
+        max(0, position - 45):position
+    ]
+
+    contextual_prefixes = (
+        "apres ",
+        "après ",
+        "avant ",
+        "mercato du ",
+        "mercato de ",
+        "depuis ",
+        "retour de ",
+        "apres l",
+    )
+
+    return any(
+        prefix.rstrip().endswith(
+            value
+        )
+        for value in contextual_prefixes
+    )
+
+
+def reference_match_from_title(
+    title: str,
+    teams: list[dict[str, Any]],
+) -> dict[str, Any] | None:
+    """
+    Valide une vidéo uniquement lorsqu'elle correspond à une vraie
+    affiche de notre liste de matchs.
+
+    On utilise tous les clubs connus présents dans le titre puis on
+    cherche une paire autorisée contenant une équipe suivie.
+    """
+    clubs = find_known_clubs(title)
+
+    if len(clubs) < 2:
+        return None
+
+    normalized_title = normalize(title)
+
+    # Préserver l'ordre et une seule occurrence par club.
+    unique = {}
+    for club in clubs:
+        unique.setdefault(
+            club["id"],
+            club,
+        )
+
+    ids = list(unique.keys())
+    candidates = []
+
+    for i, left_id in enumerate(ids):
+        for right_id in ids[i + 1:]:
+            pair = frozenset({
+                left_id,
+                right_id,
+            })
+
+            if pair not in REFERENCE_MATCH_PAIRS:
+                continue
+
+            if not (
+                left_id in FOLLOWED_REFERENCE_IDS
+                or right_id in FOLLOWED_REFERENCE_IDS
+            ):
+                continue
+
+            left = unique[left_id]
+            right = unique[right_id]
+
+            first, second = sorted(
+                (left, right),
+                key=lambda club: club["start"],
+            )
+
+            between = normalized_title[
+                first["start"]:second["start"]
+            ]
+
+            score = 0
+
+            # Formes explicites : Arsenal / Chelsea, Real Betis - Real Madrid
+            if re.search(
+                r"(?:/|vs|contre|face a|face à)",
+                between,
+                flags=re.I,
+            ):
+                score += 100
+
+            # Deux clubs proches dans le titre.
+            distance = abs(
+                right["start"] -
+                left["start"]
+            )
+
+            if distance <= 45:
+                score += 60
+            elif distance <= 90:
+                score += 35
+            elif distance <= 160:
+                score += 15
+
+            # Exactement deux clubs détectés = excellent signal.
+            if len(ids) == 2:
+                score += 60
+
+            # Les mentions contextuelles pénalisent fortement les titres
+            # avec plusieurs clubs.
+            negative = any(
+                normalize(pattern) in normalized_title
+                for pattern in CONTEXTUAL_NEGATIVE_PATTERNS
+            )
+
+            # Lorsqu'un titre contient plusieurs clubs et un marqueur
+            # contextuel ("après l'OL", "avant Lyon", "mercato PSG", etc.),
+            # on refuse complètement la paire potentiellement contextuelle.
+            if negative and len(ids) > 2:
+                continue
+
+            candidates.append(
+                (
+                    score,
+                    first,
+                    second,
+                )
+            )
+
+    if not candidates:
+        return None
+
+    candidates.sort(
+        key=lambda item: item[0],
+        reverse=True,
+    )
+
+    score, first, second = candidates[0]
+
+    if score < 60:
+        return None
+
+    left_followed = None
+    right_followed = None
+
+    for team in teams:
+        if team_matches(
+            first["name"],
+            team,
+        ):
+            left_followed = {
+                "id": team["id"],
+                "name": team["name"],
+            }
+
+        if team_matches(
+            second["name"],
+            team,
+        ):
+            right_followed = {
+                "id": team["id"],
+                "name": team["name"],
+            }
+
+    if not (
+        left_followed or
+        right_followed
+    ):
+        return None
+
+    # Une équipe suivie citée uniquement comme contexte ne constitue
+    # pas le match recherché. Exemple :
+    # "Après l'OL, ... Fenerbahçe battent Samsunspor".
+    if left_followed and followed_mention_is_contextual(
+        title,
+        first,
+    ):
+        return None
+
+    if right_followed and followed_mention_is_contextual(
+        title,
+        second,
+    ):
+        return None
+
+    return {
+        "home": {
+            "club_id": first["id"],
+            "name": CANONICAL_NAMES.get(
+                first["id"],
+                first["name"],
+            ),
+            "followed": bool(left_followed),
+            "followed_team_id": (
+                left_followed["id"]
+                if left_followed
+                else None
+            ),
+        },
+        "away": {
+            "club_id": second["id"],
+            "name": CANONICAL_NAMES.get(
+                second["id"],
+                second["name"],
+            ),
+            "followed": bool(right_followed),
+            "followed_team_id": (
+                right_followed["id"]
+                if right_followed
+                else None
+            ),
+        },
+        "confidence": "reference",
+    }
+
+
 def identify_match(
     title: str,
     teams: list[dict[str, Any]],
 ) -> dict[str, Any] | None:
-    explicit = explicit_match_sides(
-        title
+    return reference_match_from_title(
+        title,
+        teams,
     )
-
-    candidates = []
-
-    if explicit:
-        candidates.append(
-            (
-                explicit[0],
-                explicit[1],
-                "high",
-            )
-        )
-
-    natural = natural_match_sides(
-        title
-    )
-
-    if natural:
-        candidates.append(
-            (
-                natural[0],
-                natural[1],
-                "medium",
-            )
-        )
-
-    for (
-        left_raw,
-        right_raw,
-        confidence,
-    ) in candidates:
-        left = clean_side(
-            left_raw
-        )
-
-        right = clean_side(
-            right_raw
-        )
-
-        if not left or not right:
-            continue
-
-        left_known = canonical_known_side(
-            left
-        )
-
-        right_known = canonical_known_side(
-            right
-        )
-
-        left_followed = None
-        right_followed = None
-
-        for team in teams:
-            if team_matches(
-                left,
-                team,
-            ):
-                left_followed = {
-                    "id": team["id"],
-                    "name": team["name"],
-                }
-
-            if team_matches(
-                right,
-                team,
-            ):
-                right_followed = {
-                    "id": team["id"],
-                    "name": team["name"],
-                }
-
-        # At least one side is one of our teams.
-        if not (
-            left_followed
-            or right_followed
-        ):
-            continue
-
-        # A side may be a known opponent.
-        if left_known:
-            left_name = left_known[
-                "name"
-            ]
-            left_id = left_known[
-                "id"
-            ]
-        else:
-            left_name = infer_unknown_side(
-                left
-            )
-            left_id = (
-                "opp:"
-                + slug(
-                    left_name
-                )
-                if left_name
-                else None
-            )
-
-        if right_known:
-            right_name = right_known[
-                "name"
-            ]
-            right_id = right_known[
-                "id"
-            ]
-        else:
-            right_name = infer_unknown_side(
-                right
-            )
-            right_id = (
-                "opp:"
-                + slug(
-                    right_name
-                )
-                if right_name
-                else None
-            )
-
-        if (
-            not left_name
-            or not right_name
-        ):
-            continue
-
-        if (
-            normalize(left_name)
-            == normalize(right_name)
-        ):
-            continue
-
-        return {
-            "home": {
-                "club_id": left_id,
-                "name": left_name,
-                "followed": bool(
-                    left_followed
-                ),
-                "followed_team_id": (
-                    left_followed["id"]
-                    if left_followed
-                    else None
-                ),
-            },
-            "away": {
-                "club_id": right_id,
-                "name": right_name,
-                "followed": bool(
-                    right_followed
-                ),
-                "followed_team_id": (
-                    right_followed["id"]
-                    if right_followed
-                    else None
-                ),
-            },
-            "confidence": confidence,
-        }
-
-    return None
 
 
 def classify_video(
@@ -1857,7 +2125,7 @@ def classify_video(
         and is_contextual_mention(
             title
         )
-        and match["confidence"] != "high"
+        and match["confidence"] not in {"high", "reference"}
     ):
         return None
 
