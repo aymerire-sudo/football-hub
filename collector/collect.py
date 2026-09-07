@@ -1774,7 +1774,7 @@ REFERENCE_MATCH_PAIRS = {
 
         # Arsenal
         ("arsenal", "girona"), ("arsenal", "real-betis"),
-        ("arsenal", "côme"), ("arsenal", "dortmund"),
+        ("arsenal", "como"), ("arsenal", "dortmund"),
         ("arsenal", "man-city"), ("arsenal", "coventry"),
         ("arsenal", "aston-villa"), ("arsenal", "chelsea"),
         ("arsenal", "sunderland"), ("arsenal", "brighton"),
@@ -1877,11 +1877,20 @@ def reference_match_from_title(
     teams: list[dict[str, Any]],
 ) -> dict[str, Any] | None:
     """
-    Valide une vidéo uniquement lorsqu'elle correspond à une vraie
-    affiche de notre liste de matchs.
+    Détecte une affiche directement depuis le titre YouTube, sans API.
 
-    On utilise tous les clubs connus présents dans le titre puis on
-    cherche une paire autorisée contenant une équipe suivie.
+    Règle volontairement simple :
+    - il faut au moins 2 clubs connus dans le titre ;
+    - au moins un des deux doit être une équipe suivie ;
+    - on privilégie les formats explicites "A / B", "A - B", "A vs B",
+      "A contre B", etc. ;
+    - une équipe suivie citée comme simple contexte ("après l'OL", "mercato
+      du PSG", ...) est refusée.
+
+    La liste des matchs fournie par l'utilisateur sert de référence :
+    l'affiche détectée doit appartenir à cette liste pour être conservée.
+    Cela évite qu'une simple mention d'une équipe dans un autre sujet soit
+    interprétée comme un résumé de match.
     """
     clubs = find_known_clubs(title)
 
@@ -1890,90 +1899,118 @@ def reference_match_from_title(
 
     normalized_title = normalize(title)
 
-    # Préserver l'ordre et une seule occurrence par club.
-    unique = {}
+    # Déduplication en conservant la première occurrence de chaque club.
+    unique: dict[str, dict[str, Any]] = {}
     for club in clubs:
-        unique.setdefault(
-            club["id"],
-            club,
-        )
+        unique.setdefault(club["id"], club)
 
-    ids = list(unique.keys())
+    ordered = sorted(
+        unique.values(),
+        key=lambda club: club["start"],
+    )
+
+    followed_clubs = []
+    for club in ordered:
+        if club["id"] in FOLLOWED_REFERENCE_IDS:
+            followed_clubs.append(club)
+
+    if not followed_clubs:
+        return None
+
     candidates = []
 
-    for i, left_id in enumerate(ids):
-        for right_id in ids[i + 1:]:
-            pair = frozenset({
-                left_id,
-                right_id,
-            })
+    for i, left in enumerate(ordered):
+        for right in ordered[i + 1:]:
+            left_followed = left["id"] in FOLLOWED_REFERENCE_IDS
+            right_followed = right["id"] in FOLLOWED_REFERENCE_IDS
 
-            if pair not in REFERENCE_MATCH_PAIRS:
+            if not (left_followed or right_followed):
                 continue
 
-            if not (
-                left_id in FOLLOWED_REFERENCE_IDS
-                or right_id in FOLLOWED_REFERENCE_IDS
-            ):
+            # Une équipe suivie citée comme contexte n'est pas l'affiche.
+            contextual_followed = False
+            if left_followed:
+                contextual_followed = contextual_followed or followed_mention_is_contextual(
+                    title,
+                    left,
+                )
+            if right_followed:
+                contextual_followed = contextual_followed or followed_mention_is_contextual(
+                    title,
+                    right,
+                )
+            if contextual_followed:
                 continue
 
-            left = unique[left_id]
-            right = unique[right_id]
-
-            first, second = sorted(
-                (left, right),
-                key=lambda club: club["start"],
-            )
+            # L'affiche doit faire partie des confrontations connues de la
+            # saison fournie dans la configuration de ce collecteur.
+            pair_ids = frozenset({left["id"], right["id"]})
+            if pair_ids not in REFERENCE_MATCH_PAIRS:
+                continue
 
             between = normalized_title[
-                first["start"]:second["start"]
+                left["end"]:right["start"]
             ]
 
+            explicit_separator = bool(
+                re.search(
+                    r"(?:^|\s)(?:/|vs|v|contre|face a|face à)(?:\s|$)",
+                    between,
+                    flags=re.I,
+                )
+                or re.search(r"[-–—:]", between)
+            )
+
+            # Distance textuelle entre les noms de clubs.
+            distance = right["start"] - left["end"]
+
             score = 0
-
-            # Formes explicites : Arsenal / Chelsea, Real Betis - Real Madrid
-            if re.search(
-                r"(?:/|vs|contre|face a|face à)",
-                between,
-                flags=re.I,
-            ):
+            if explicit_separator:
                 score += 100
+            if distance <= 12:
+                score += 55
+            elif distance <= 35:
+                score += 40
+            elif distance <= 70:
+                score += 20
 
-            # Deux clubs proches dans le titre.
-            distance = abs(
-                right["start"] -
-                left["start"]
-            )
-
-            if distance <= 45:
-                score += 60
-            elif distance <= 90:
-                score += 35
-            elif distance <= 160:
-                score += 15
-
-            # Exactement deux clubs détectés = excellent signal.
-            if len(ids) == 2:
+            if len(ordered) == 2:
                 score += 60
 
-            # Les mentions contextuelles pénalisent fortement les titres
-            # avec plusieurs clubs.
-            negative = any(
-                normalize(pattern) in normalized_title
-                for pattern in CONTEXTUAL_NEGATIVE_PATTERNS
-            )
+            # Les titres avec plusieurs clubs doivent avoir un lien très
+            # explicite entre les deux clubs sélectionnés, sinon on risque
+            # d'interpréter un contexte comme une affiche.
+            if len(ordered) >= 3 and not explicit_separator:
+                continue
 
-            # Lorsqu'un titre contient plusieurs clubs et un marqueur
-            # contextuel ("après l'OL", "avant Lyon", "mercato PSG", etc.),
-            # on refuse complètement la paire potentiellement contextuelle.
-            if negative and len(ids) > 2:
+            # Renforce les titres football de type résumé / highlights,
+            # sans en faire une condition d'identification globale.
+            if any(
+                token in normalized_title
+                for token in (
+                    "resume",
+                    "highlights",
+                    "highlight",
+                    "match recap",
+                    "recap",
+                    "buts",
+                    "goals",
+                )
+            ):
+                score += 20
+
+            # Avec exactement deux clubs connus, le titre peut être une
+            # formulation éditoriale sans séparateur (« ... le PSG à Rennes »).
+            # Dans ce cas, la présence des deux clubs suffit comme signal fort.
+            minimum_score = 60 if len(ordered) == 2 else 80
+            if score < minimum_score:
                 continue
 
             candidates.append(
                 (
                     score,
-                    first,
-                    second,
+                    left,
+                    right,
                 )
             )
 
@@ -1985,52 +2022,24 @@ def reference_match_from_title(
         reverse=True,
     )
 
-    score, first, second = candidates[0]
-
-    if score < 60:
-        return None
+    _, first, second = candidates[0]
 
     left_followed = None
     right_followed = None
 
     for team in teams:
-        if team_matches(
-            first["name"],
-            team,
-        ):
+        if team_matches(first["name"], team):
             left_followed = {
                 "id": team["id"],
                 "name": team["name"],
             }
-
-        if team_matches(
-            second["name"],
-            team,
-        ):
+        if team_matches(second["name"], team):
             right_followed = {
                 "id": team["id"],
                 "name": team["name"],
             }
 
-    if not (
-        left_followed or
-        right_followed
-    ):
-        return None
-
-    # Une équipe suivie citée uniquement comme contexte ne constitue
-    # pas le match recherché. Exemple :
-    # "Après l'OL, ... Fenerbahçe battent Samsunspor".
-    if left_followed and followed_mention_is_contextual(
-        title,
-        first,
-    ):
-        return None
-
-    if right_followed and followed_mention_is_contextual(
-        title,
-        second,
-    ):
+    if not (left_followed or right_followed):
         return None
 
     return {
@@ -2042,9 +2051,7 @@ def reference_match_from_title(
             ),
             "followed": bool(left_followed),
             "followed_team_id": (
-                left_followed["id"]
-                if left_followed
-                else None
+                left_followed["id"] if left_followed else None
             ),
         },
         "away": {
@@ -2055,14 +2062,11 @@ def reference_match_from_title(
             ),
             "followed": bool(right_followed),
             "followed_team_id": (
-                right_followed["id"]
-                if right_followed
-                else None
+                right_followed["id"] if right_followed else None
             ),
         },
-        "confidence": "reference",
+        "confidence": "title-pair",
     }
-
 
 def identify_match(
     title: str,
@@ -2097,19 +2101,10 @@ def classify_video(
     if not title:
         return None
 
-    if not looks_like_summary(
+    summary_like = looks_like_summary(
         title,
         app,
-    ):
-        return None
-
-    followed = followed_team_hits(
-        title,
-        teams,
     )
-
-    if not followed:
-        return None
 
     match = identify_match(
         title,
@@ -2119,15 +2114,14 @@ def classify_video(
     if not match:
         return None
 
-    # Contextual mention guard.
-    if (
-        len(followed) == 1
-        and is_contextual_mention(
-            title
-        )
-        and match["confidence"] not in {"high", "reference"}
-    ):
+    # La chaîne officielle Ligue 1 publie aussi des résumés avec un titre
+    # éditorial (« Nuamah régale... », « Openda sauve... ») sans le mot
+    # « résumé ». Une affiche valide suffit donc pour cette source.
+    if not summary_like and video.get("source_id") != "ligue-1":
         return None
+
+    # Les mentions contextuelles de l'équipe suivie sont déjà filtrées
+    # dans reference_match_from_title() (ex. « après l'OL »).
 
     home = match["home"]
     away = match["away"]
