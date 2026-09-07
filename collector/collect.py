@@ -209,6 +209,20 @@ GENERIC = {
 }
 
 
+CURRENT_SEASON = "2026/27"
+OLD_SEASON_PATTERNS = (
+    r"\b25[\s/-]?26\b",
+    r"\b2025[\s/-]?26\b",
+    r"\b2025[\s/-]?2026\b",
+    r"saison\s+2025[\s/-]?2026",
+)
+
+
+def is_old_season_title(title: str) -> bool:
+    normalized = normalize(title)
+    return any(re.search(pattern, normalized) for pattern in OLD_SEASON_PATTERNS)
+
+
 COMPETITIONS = (
     "uefa champions league",
     "champions league",
@@ -2091,6 +2105,12 @@ def classify_video(
         or ""
     )
 
+    # Le projet cible actuellement la saison 2026/27. Les anciennes
+    # vidéos 2025/26 peuvent opposer les mêmes équipes et passer la liste
+    # des affiches, mais elles ne doivent surtout pas revenir dans le site.
+    if is_old_season_title(title):
+        return None
+
     if not is_football_title_for_source(
         title,
         video.get("source_id"),
@@ -2733,7 +2753,7 @@ def fetch_video_details(
     except json.JSONDecodeError:
         return {}
 
-    return {
+    details = {
         "published_at": (
             parse_date(
                 payload.get(
@@ -2778,6 +2798,337 @@ def fetch_video_details(
         ),
     }
 
+    if not details.get(
+        "published_at"
+    ):
+        html_details = fetch_youtube_html_metadata(
+            video_id
+        )
+
+        if html_details:
+            details.update(
+                {
+                    key: value
+                    for key, value in html_details.items()
+                    if value not in (None, "")
+                }
+            )
+
+    return details
+
+
+
+def fetch_youtube_html_metadata(
+    video_id: str,
+) -> dict[str, Any]:
+    """
+    Récupère les dates directement depuis la page YouTube.
+    C'est le fallback principal quand yt-dlp ne remonte pas la date.
+    """
+    url = (
+        "https://www.youtube.com/watch?v="
+        f"{video_id}&hl=fr&gl=FR"
+    )
+
+    request = Request(
+        url,
+        headers={
+            "User-Agent": USER_AGENT,
+            "Accept-Language": "fr-FR,fr;q=0.9,en;q=0.7",
+        },
+    )
+
+    try:
+        with urlopen(
+            request,
+            timeout=20,
+        ) as response:
+            body = response.read().decode(
+                "utf-8",
+                errors="ignore",
+            )
+    except Exception:
+        return {}
+
+    patterns = (
+        r'<meta[^>]+itemprop=["\']datePublished["\'][^>]+content=["\']([^"\']+)',
+        r'<meta[^>]+itemprop=["\']uploadDate["\'][^>]+content=["\']([^"\']+)',
+        r'"datePublished"\s*:\s*"([^"]+)"',
+        r'"uploadDate"\s*:\s*"([^"]+)"',
+        r'"publishDate"\s*:\s*"([^"]+)"',
+    )
+
+    dates = []
+
+    for pattern in patterns:
+        for found in re.findall(
+            pattern,
+            body,
+            flags=re.I,
+        ):
+            parsed = parse_date(found)
+            if parsed:
+                dates.append(parsed)
+
+    if not dates:
+        return {}
+
+    # datePublished est préférable à uploadDate.
+    dates_sorted = sorted(dates)
+    return {
+        "published_at": dates_sorted[0],
+    }
+
+
+def fetch_youtube_oembed(
+    video_id: str,
+) -> tuple[bool | None, str | None]:
+    """
+    Vérifie si YouTube autorise l'intégration du contenu.
+    oEmbed n'est pas un test géographique : il sert seulement à
+    éliminer les vidéos dont l'embed est explicitement désactivé.
+    """
+    video_url = (
+        "https://www.youtube.com/watch?v="
+        f"{video_id}"
+    )
+    url = (
+        "https://www.youtube.com/oembed?url="
+        + video_url
+        + "&format=json"
+    )
+
+    request = Request(
+        url,
+        headers={
+            "User-Agent": USER_AGENT,
+            "Accept-Language": "fr-FR,fr;q=0.9,en;q=0.7",
+        },
+    )
+
+    try:
+        with urlopen(
+            request,
+            timeout=15,
+        ) as response:
+            response.read()
+        return True, None
+
+    except HTTPError as exc:
+        if exc.code in (401, 403, 404):
+            return False, f"oembed-http-{exc.code}"
+        return None, f"oembed-http-{exc.code}"
+
+    except Exception as exc:
+        return None, f"oembed-{type(exc).__name__}"
+
+
+def probe_youtube_fr(
+    video_id: str,
+) -> tuple[bool | None, str | None]:
+    """
+    Best effort de disponibilité pour la France.
+
+    yt-dlp permet de demander un contexte géographique FR via
+    --geo-bypass-country FR. Ce n'est PAS une preuve absolue équivalente
+    à une requête réellement émise depuis une IP française.
+    """
+    url = (
+        "https://www.youtube.com/watch?v="
+        f"{video_id}"
+    )
+
+    command = [
+        "yt-dlp",
+        "--simulate",
+        "--skip-download",
+        "--no-playlist",
+        "--no-warnings",
+        "--geo-bypass-country",
+        "FR",
+        "--dump-single-json",
+        url,
+    ]
+
+    try:
+        process = subprocess.run(
+            command,
+            capture_output=True,
+            text=True,
+            timeout=45,
+        )
+    except Exception as exc:
+        return None, f"probe-{type(exc).__name__}"
+
+    if process.returncode == 0 and process.stdout.strip():
+        return True, None
+
+    combined = (
+        (process.stderr or "")
+        + "\n"
+        + (process.stdout or "")
+    ).lower()
+
+    geo_phrases = (
+        "not available in your country",
+        "not available in your region",
+        "not available in this country",
+        "not available in this region",
+        "geo-restricted",
+        "geo restricted",
+        "blocked in your country",
+        "blocked in your region",
+    )
+
+    if any(
+        phrase in combined
+        for phrase in geo_phrases
+    ):
+        return False, "youtube-geo-fr"
+
+    unavailable_phrases = (
+        "video unavailable",
+        "this video is unavailable",
+        "private video",
+        "video is private",
+        "has been removed",
+        "this video has been removed",
+        "sign in to confirm",
+    )
+
+    if any(
+        phrase in combined
+        for phrase in unavailable_phrases
+    ):
+        return False, "youtube-unavailable"
+
+    return None, "youtube-probe-unknown"
+
+
+def verify_video_availability(
+    video: dict[str, Any],
+    max_age_hours: int = 12,
+) -> dict[str, Any]:
+    """
+    Ajoute trois états :
+      availability_fr = True / False / None
+      embed_allowed = True / False / None
+      availability_reason = texte court
+    """
+    checked_at = parse_date(
+        video.get(
+            "availability_checked_at"
+        )
+    )
+
+    if checked_at:
+        try:
+            checked_dt = datetime.fromisoformat(
+                checked_at.replace(
+                    "Z",
+                    "+00:00",
+                )
+            )
+            if checked_dt.tzinfo is None:
+                checked_dt = checked_dt.replace(
+                    tzinfo=timezone.utc
+                )
+
+            age = (
+                datetime.now(
+                    timezone.utc
+                )
+                - checked_dt.astimezone(
+                    timezone.utc
+                )
+            )
+
+            if age < timedelta(
+                hours=max_age_hours
+            ):
+                return video
+        except ValueError:
+            pass
+
+    video_id = str(
+        video.get(
+            "id",
+            "",
+        )
+        or ""
+    ).strip()
+
+    if not video_id:
+        return video
+
+    embed_allowed, embed_reason = fetch_youtube_oembed(
+        video_id
+    )
+
+    fr_available, fr_reason = probe_youtube_fr(
+        video_id
+    )
+
+    reason = fr_reason or embed_reason
+
+    if embed_allowed is False:
+        availability = False
+    elif fr_available is False:
+        availability = False
+    elif embed_allowed is True and fr_available is True:
+        availability = True
+    else:
+        availability = None
+
+    video["embed_allowed"] = embed_allowed
+    video["availability_fr"] = availability
+    video["availability_reason"] = reason
+    video["availability_checked_at"] = datetime.now(
+        timezone.utc
+    ).isoformat()
+
+    return video
+
+
+def verify_displayed_videos(
+    videos: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    """
+    Vérifie uniquement les vidéos qui ont déjà passé le filtre football/match.
+    Les vidéos explicitement indisponibles ou non-embeddables sont retirées.
+    Un test inconclusif n'éjecte pas la vidéo.
+    """
+    result = []
+
+    for index, video in enumerate(
+        videos,
+        start=1,
+    ):
+        verified = verify_video_availability(
+            video
+        )
+
+        if verified.get(
+            "availability_fr"
+        ) is False:
+            print(
+                "[availability] REJECT "
+                f"{verified.get('id')} "
+                f"| {verified.get('availability_reason')}"
+            )
+            continue
+
+        result.append(
+            verified
+        )
+
+        # Petite pause entre les sondages YouTube.
+        if index < len(videos):
+            time.sleep(
+                0.20
+            )
+
+    return result
 
 def source_limit(
     source: dict[str, Any],
@@ -3296,6 +3647,12 @@ def main() -> int:
         all_new_videos,
         app,
         teams,
+    )
+
+    # Vérifie uniquement les vidéos réellement retenues par le filtre.
+    # Cela élimine les embeds désactivés et les restrictions FR détectées.
+    retained = verify_displayed_videos(
+        retained
     )
 
     cutoff = (
