@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-14T19:57:09.162982+00:00",
+  "generated_at": "2026-09-14T22:56:58.578273+00:00",
   "teams": [
     {
       "id": "psg",
@@ -58,49 +58,6 @@
   ],
   "videos": [
     {
-      "id": "sYbFyfiemyY",
-      "title": "PARIS FC - OLYMPIQUE LYONNAIS (0-0) | Week 4 - Ligue 1 McDonald's 26/27",
-      "url": "https://www.youtube.com/watch?v=sYbFyfiemyY",
-      "published_at": null,
-      "updated_at": null,
-      "thumbnail": "https://i.ytimg.com/vi/sYbFyfiemyY/hqdefault.jpg",
-      "source_id": "ligue-1",
-      "source_name": "Ligue 1 McDonald's",
-      "source_channel_id": "",
-      "description": "",
-      "is_summary": true,
-      "match_key": "match|paris-fc|ol|ligue-1|round:4",
-      "match_title": "Paris FC 0-0 OL",
-      "home_team": {
-        "id": null,
-        "name": "Paris FC",
-        "followed": false
-      },
-      "away_team": {
-        "id": "ol",
-        "name": "OL",
-        "followed": true
-      },
-      "score": "0-0",
-      "competition": "Ligue 1",
-      "match_date": null,
-      "team_ids": [
-        "ol"
-      ],
-      "match_confidence": "title-pair",
-      "summary_keywords": [],
-      "teams": [
-        {
-          "id": "ol",
-          "name": "OL"
-        }
-      ],
-      "embed_allowed": true,
-      "availability_fr": true,
-      "availability_reason": null,
-      "availability_checked_at": "2026-09-14T08:26:55.811231+00:00"
-    },
-    {
       "id": "7G71SrjfI4k",
       "title": "RC LENS - PARIS SAINT-GERMAIN Highlights | 2026 TROPHEE DES CHAMPIONS",
       "url": "https://www.youtube.com/watch?v=7G71SrjfI4k",
@@ -147,82 +104,6 @@
     }
   ],
   "matches": [
-    {
-      "match_key": "match|paris-fc|ol|ligue-1|round:4",
-      "title": "Paris FC 0-0 OL",
-      "home_team": {
-        "id": null,
-        "name": "Paris FC",
-        "followed": false
-      },
-      "away_team": {
-        "id": "ol",
-        "name": "OL",
-        "followed": true
-      },
-      "score": "0-0",
-      "competition": "Ligue 1",
-      "match_date": null,
-      "published_at": null,
-      "team_ids": [
-        "ol"
-      ],
-      "team_names": [
-        "OL"
-      ],
-      "sources_count": 1,
-      "sources": [
-        {
-          "id": "ligue-1",
-          "name": "Ligue 1 McDonald's"
-        }
-      ],
-      "videos": [
-        {
-          "id": "sYbFyfiemyY",
-          "title": "PARIS FC - OLYMPIQUE LYONNAIS (0-0) | Week 4 - Ligue 1 McDonald's 26/27",
-          "url": "https://www.youtube.com/watch?v=sYbFyfiemyY",
-          "published_at": null,
-          "updated_at": null,
-          "thumbnail": "https://i.ytimg.com/vi/sYbFyfiemyY/hqdefault.jpg",
-          "source_id": "ligue-1",
-          "source_name": "Ligue 1 McDonald's",
-          "source_channel_id": "",
-          "description": "",
-          "is_summary": true,
-          "match_key": "match|paris-fc|ol|ligue-1|round:4",
-          "match_title": "Paris FC 0-0 OL",
-          "home_team": {
-            "id": null,
-            "name": "Paris FC",
-            "followed": false
-          },
-          "away_team": {
-            "id": "ol",
-            "name": "OL",
-            "followed": true
-          },
-          "score": "0-0",
-          "competition": "Ligue 1",
-          "match_date": null,
-          "team_ids": [
-            "ol"
-          ],
-          "match_confidence": "title-pair",
-          "summary_keywords": [],
-          "teams": [
-            {
-              "id": "ol",
-              "name": "OL"
-            }
-          ],
-          "embed_allowed": true,
-          "availability_fr": true,
-          "availability_reason": null,
-          "availability_checked_at": "2026-09-14T08:26:55.811231+00:00"
-        }
-      ]
-    },
     {
       "match_key": "match|lens|psg|trophee-des-champions|date:unknown",
       "title": "RC Lens vs PSG",
@@ -303,8 +184,8 @@
     }
   ],
   "stats": {
-    "videos": 2,
-    "matches": 2,
+    "videos": 1,
+    "matches": 1,
     "teams": 5,
     "sources": 4
   }
