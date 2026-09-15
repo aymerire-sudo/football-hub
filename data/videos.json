@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-15T06:24:25.366287+00:00",
+  "generated_at": "2026-09-15T12:01:06.827493+00:00",
   "teams": [
     {
       "id": "psg",
@@ -56,136 +56,11 @@
       "error": null
     }
   ],
-  "videos": [
-    {
-      "id": "7G71SrjfI4k",
-      "title": "RC LENS - PARIS SAINT-GERMAIN Highlights | 2026 TROPHEE DES CHAMPIONS",
-      "url": "https://www.youtube.com/watch?v=7G71SrjfI4k",
-      "published_at": null,
-      "updated_at": null,
-      "thumbnail": "https://i.ytimg.com/vi/7G71SrjfI4k/hqdefault.jpg",
-      "source_id": "ligue-1",
-      "source_name": "Ligue 1 McDonald's",
-      "source_channel_id": "",
-      "description": "",
-      "is_summary": true,
-      "match_key": "match|lens|psg|trophee-des-champions|date:unknown",
-      "match_title": "RC Lens vs PSG",
-      "home_team": {
-        "id": null,
-        "name": "RC Lens",
-        "followed": false
-      },
-      "away_team": {
-        "id": "psg",
-        "name": "PSG",
-        "followed": true
-      },
-      "score": null,
-      "competition": "Trophée Des Champions",
-      "match_date": null,
-      "team_ids": [
-        "psg"
-      ],
-      "match_confidence": "title-pair",
-      "summary_keywords": [
-        "highlights"
-      ],
-      "teams": [
-        {
-          "id": "psg",
-          "name": "PSG"
-        }
-      ],
-      "embed_allowed": true,
-      "availability_fr": true,
-      "availability_reason": null,
-      "availability_checked_at": "2026-09-14T19:57:09.162884+00:00"
-    }
-  ],
-  "matches": [
-    {
-      "match_key": "match|lens|psg|trophee-des-champions|date:unknown",
-      "title": "RC Lens vs PSG",
-      "home_team": {
-        "id": null,
-        "name": "RC Lens",
-        "followed": false
-      },
-      "away_team": {
-        "id": "psg",
-        "name": "PSG",
-        "followed": true
-      },
-      "score": null,
-      "competition": "Trophée Des Champions",
-      "match_date": null,
-      "published_at": null,
-      "team_ids": [
-        "psg"
-      ],
-      "team_names": [
-        "PSG"
-      ],
-      "sources_count": 1,
-      "sources": [
-        {
-          "id": "ligue-1",
-          "name": "Ligue 1 McDonald's"
-        }
-      ],
-      "videos": [
-        {
-          "id": "7G71SrjfI4k",
-          "title": "RC LENS - PARIS SAINT-GERMAIN Highlights | 2026 TROPHEE DES CHAMPIONS",
-          "url": "https://www.youtube.com/watch?v=7G71SrjfI4k",
-          "published_at": null,
-          "updated_at": null,
-          "thumbnail": "https://i.ytimg.com/vi/7G71SrjfI4k/hqdefault.jpg",
-          "source_id": "ligue-1",
-          "source_name": "Ligue 1 McDonald's",
-          "source_channel_id": "",
-          "description": "",
-          "is_summary": true,
-          "match_key": "match|lens|psg|trophee-des-champions|date:unknown",
-          "match_title": "RC Lens vs PSG",
-          "home_team": {
-            "id": null,
-            "name": "RC Lens",
-            "followed": false
-          },
-          "away_team": {
-            "id": "psg",
-            "name": "PSG",
-            "followed": true
-          },
-          "score": null,
-          "competition": "Trophée Des Champions",
-          "match_date": null,
-          "team_ids": [
-            "psg"
-          ],
-          "match_confidence": "title-pair",
-          "summary_keywords": [
-            "highlights"
-          ],
-          "teams": [
-            {
-              "id": "psg",
-              "name": "PSG"
-            }
-          ],
-          "embed_allowed": true,
-          "availability_fr": true,
-          "availability_reason": null,
-          "availability_checked_at": "2026-09-14T19:57:09.162884+00:00"
-        }
-      ]
-    }
-  ],
+  "videos": [],
+  "matches": [],
   "stats": {
-    "videos": 1,
-    "matches": 1,
+    "videos": 0,
+    "matches": 0,
     "teams": 5,
     "sources": 4
   }
