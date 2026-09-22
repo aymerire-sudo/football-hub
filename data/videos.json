@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-21T23:30:17.668788+00:00",
+  "generated_at": "2026-09-22T01:46:00.566712+00:00",
   "teams": [
     {
       "id": "psg",
@@ -56,11 +56,138 @@
       "error": null
     }
   ],
-  "videos": [],
-  "matches": [],
+  "videos": [
+    {
+      "id": "R4hbyuFfHI8",
+      "title": "Match Highlights - Toulouse vs. Lyon - Ligue 1 McDonald's 26/27",
+      "url": "https://www.youtube.com/watch?v=R4hbyuFfHI8",
+      "published_at": null,
+      "updated_at": null,
+      "thumbnail": "https://i.ytimg.com/vi/R4hbyuFfHI8/hqdefault.jpg",
+      "source_id": "ligue-1",
+      "source_name": "Ligue 1 McDonald's",
+      "source_channel_id": "",
+      "description": "",
+      "is_summary": true,
+      "match_key": "match|toulouse|ol|ligue-1|date:unknown",
+      "match_title": "Toulouse vs OL",
+      "home_team": {
+        "id": null,
+        "name": "Toulouse",
+        "followed": false
+      },
+      "away_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
+      "score": null,
+      "competition": "Ligue 1",
+      "match_date": null,
+      "team_ids": [
+        "ol"
+      ],
+      "match_confidence": "title-pair",
+      "summary_keywords": [
+        "highlights",
+        "match highlights"
+      ],
+      "teams": [
+        {
+          "id": "ol",
+          "name": "OL"
+        }
+      ],
+      "embed_allowed": true,
+      "availability_fr": true,
+      "availability_reason": null,
+      "availability_checked_at": "2026-09-22T01:45:59.254468+00:00"
+    }
+  ],
+  "matches": [
+    {
+      "match_key": "match|toulouse|ol|ligue-1|date:unknown",
+      "title": "Toulouse vs OL",
+      "home_team": {
+        "id": null,
+        "name": "Toulouse",
+        "followed": false
+      },
+      "away_team": {
+        "id": "ol",
+        "name": "OL",
+        "followed": true
+      },
+      "score": null,
+      "competition": "Ligue 1",
+      "match_date": null,
+      "published_at": null,
+      "team_ids": [
+        "ol"
+      ],
+      "team_names": [
+        "OL"
+      ],
+      "sources_count": 1,
+      "sources": [
+        {
+          "id": "ligue-1",
+          "name": "Ligue 1 McDonald's"
+        }
+      ],
+      "videos": [
+        {
+          "id": "R4hbyuFfHI8",
+          "title": "Match Highlights - Toulouse vs. Lyon - Ligue 1 McDonald's 26/27",
+          "url": "https://www.youtube.com/watch?v=R4hbyuFfHI8",
+          "published_at": null,
+          "updated_at": null,
+          "thumbnail": "https://i.ytimg.com/vi/R4hbyuFfHI8/hqdefault.jpg",
+          "source_id": "ligue-1",
+          "source_name": "Ligue 1 McDonald's",
+          "source_channel_id": "",
+          "description": "",
+          "is_summary": true,
+          "match_key": "match|toulouse|ol|ligue-1|date:unknown",
+          "match_title": "Toulouse vs OL",
+          "home_team": {
+            "id": null,
+            "name": "Toulouse",
+            "followed": false
+          },
+          "away_team": {
+            "id": "ol",
+            "name": "OL",
+            "followed": true
+          },
+          "score": null,
+          "competition": "Ligue 1",
+          "match_date": null,
+          "team_ids": [
+            "ol"
+          ],
+          "match_confidence": "title-pair",
+          "summary_keywords": [
+            "highlights",
+            "match highlights"
+          ],
+          "teams": [
+            {
+              "id": "ol",
+              "name": "OL"
+            }
+          ],
+          "embed_allowed": true,
+          "availability_fr": true,
+          "availability_reason": null,
+          "availability_checked_at": "2026-09-22T01:45:59.254468+00:00"
+        }
+      ]
+    }
+  ],
   "stats": {
-    "videos": 0,
-    "matches": 0,
+    "videos": 1,
+    "matches": 1,
     "teams": 5,
     "sources": 4
   }
