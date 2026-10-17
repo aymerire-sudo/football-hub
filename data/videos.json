@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-17T19:01:08.518243+00:00",
+  "generated_at": "2026-10-17T21:17:08.599660+00:00",
   "teams": [
     {
       "id": "psg",
@@ -27,7 +27,7 @@
       "source_id": "bein-sports-france",
       "source_name": "beIN SPORTS France",
       "ok": true,
-      "count": 220,
+      "count": 8,
       "method": "yt-dlp",
       "error": null
     },
@@ -35,7 +35,7 @@
       "source_id": "canal-plus-sport",
       "source_name": "CANAL+ Sport",
       "ok": true,
-      "count": 160,
+      "count": 4,
       "method": "yt-dlp",
       "error": null
     },
@@ -43,7 +43,7 @@
       "source_id": "dazn-france",
       "source_name": "DAZN France",
       "ok": true,
-      "count": 160,
+      "count": 2,
       "method": "yt-dlp",
       "error": null
     },
@@ -51,7 +51,7 @@
       "source_id": "ligue-1",
       "source_name": "Ligue 1 McDonald's",
       "ok": true,
-      "count": 180,
+      "count": 40,
       "method": "yt-dlp",
       "error": null
     }
