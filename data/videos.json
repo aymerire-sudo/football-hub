@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-06T11:18:19.035183+00:00",
+  "generated_at": "2026-11-06T18:13:27.317846+00:00",
   "teams": [
     {
       "id": "psg",
@@ -35,7 +35,7 @@
       "source_id": "canal-plus-sport",
       "source_name": "CANAL+ Sport",
       "ok": true,
-      "count": 160,
+      "count": 126,
       "method": "yt-dlp",
       "error": null
     },
