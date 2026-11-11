@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-11T08:44:29.589644+00:00",
+  "generated_at": "2026-11-11T16:51:15.326965+00:00",
   "teams": [
     {
       "id": "psg",
@@ -57,221 +57,6 @@
     }
   ],
   "videos": [
-    {
-      "id": "qU29QjNFcMU",
-      "title": "LOSC LILLE - PARIS SAINT-GERMAIN (2-2) | Week 2 - Ligue 1 McDonald's 26/27",
-      "url": "https://www.youtube.com/watch?v=qU29QjNFcMU",
-      "published_at": null,
-      "updated_at": null,
-      "thumbnail": "https://i.ytimg.com/vi/qU29QjNFcMU/hqdefault.jpg",
-      "source_id": "ligue-1",
-      "source_name": "Ligue 1 McDonald's",
-      "source_channel_id": "",
-      "description": "",
-      "is_summary": true,
-      "match_key": "match|lille|psg|ligue-1|round:2",
-      "match_title": "Lille 2-2 PSG",
-      "home_team": {
-        "id": null,
-        "name": "Lille",
-        "followed": false
-      },
-      "away_team": {
-        "id": "psg",
-        "name": "PSG",
-        "followed": true
-      },
-      "score": "2-2",
-      "competition": "Ligue 1",
-      "match_date": null,
-      "team_ids": [
-        "psg"
-      ],
-      "match_confidence": "title-pair",
-      "summary_keywords": [],
-      "teams": [
-        {
-          "id": "psg",
-          "name": "PSG"
-        }
-      ],
-      "embed_allowed": true,
-      "availability_fr": true,
-      "availability_reason": null,
-      "availability_checked_at": "2026-11-10T21:45:26.233584+00:00"
-    },
-    {
-      "id": "lCzYvdGDFF0",
-      "title": "OLYMPIQUE LYONNAIS - ANGERS SCO (2-0) | Week 9 - Ligue 1 McDonald's 26/27",
-      "url": "https://www.youtube.com/watch?v=lCzYvdGDFF0",
-      "published_at": null,
-      "updated_at": null,
-      "thumbnail": "https://i.ytimg.com/vi/lCzYvdGDFF0/hqdefault.jpg",
-      "source_id": "ligue-1",
-      "source_name": "Ligue 1 McDonald's",
-      "source_channel_id": "",
-      "description": "",
-      "is_summary": true,
-      "match_key": "match|ol|angers|ligue-1|round:9",
-      "match_title": "OL 2-0 Angers",
-      "home_team": {
-        "id": "ol",
-        "name": "OL",
-        "followed": true
-      },
-      "away_team": {
-        "id": null,
-        "name": "Angers",
-        "followed": false
-      },
-      "score": "2-0",
-      "competition": "Ligue 1",
-      "match_date": null,
-      "team_ids": [
-        "ol"
-      ],
-      "match_confidence": "title-pair",
-      "summary_keywords": [],
-      "teams": [
-        {
-          "id": "ol",
-          "name": "OL"
-        }
-      ],
-      "embed_allowed": true,
-      "availability_fr": true,
-      "availability_reason": null,
-      "availability_checked_at": "2026-11-11T01:40:36.974146+00:00"
-    },
-    {
-      "id": "Xd_qKvnCJso",
-      "title": "RC STRASBOURG ALSACE - PARIS SAINT-GERMAIN (1-3) | Week 7 - Ligue 1 McDonald's 26/27",
-      "url": "https://www.youtube.com/watch?v=Xd_qKvnCJso",
-      "published_at": null,
-      "updated_at": null,
-      "thumbnail": "https://i.ytimg.com/vi/Xd_qKvnCJso/hqdefault.jpg",
-      "source_id": "ligue-1",
-      "source_name": "Ligue 1 McDonald's",
-      "source_channel_id": "",
-      "description": "",
-      "is_summary": true,
-      "match_key": "match|strasbourg|psg|ligue-1|round:7",
-      "match_title": "Strasbourg 1-3 PSG",
-      "home_team": {
-        "id": null,
-        "name": "Strasbourg",
-        "followed": false
-      },
-      "away_team": {
-        "id": "psg",
-        "name": "PSG",
-        "followed": true
-      },
-      "score": "1-3",
-      "competition": "Ligue 1",
-      "match_date": null,
-      "team_ids": [
-        "psg"
-      ],
-      "match_confidence": "title-pair",
-      "summary_keywords": [],
-      "teams": [
-        {
-          "id": "psg",
-          "name": "PSG"
-        }
-      ],
-      "embed_allowed": true,
-      "availability_fr": true,
-      "availability_reason": null,
-      "availability_checked_at": "2026-11-11T01:40:43.106675+00:00"
-    },
-    {
-      "id": "M3s0KayuZK8",
-      "title": "PARIS SAINT-GERMAIN - LE MANS FC (3-1) | Week 6 - Ligue 1 McDonald's 26/27",
-      "url": "https://www.youtube.com/watch?v=M3s0KayuZK8",
-      "published_at": null,
-      "updated_at": null,
-      "thumbnail": "https://i.ytimg.com/vi/M3s0KayuZK8/hqdefault.jpg",
-      "source_id": "ligue-1",
-      "source_name": "Ligue 1 McDonald's",
-      "source_channel_id": "",
-      "description": "",
-      "is_summary": true,
-      "match_key": "match|psg|le-mans|ligue-1|round:6",
-      "match_title": "PSG 3-1 Le Mans",
-      "home_team": {
-        "id": "psg",
-        "name": "PSG",
-        "followed": true
-      },
-      "away_team": {
-        "id": null,
-        "name": "Le Mans",
-        "followed": false
-      },
-      "score": "3-1",
-      "competition": "Ligue 1",
-      "match_date": null,
-      "team_ids": [
-        "psg"
-      ],
-      "match_confidence": "title-pair",
-      "summary_keywords": [],
-      "teams": [
-        {
-          "id": "psg",
-          "name": "PSG"
-        }
-      ],
-      "embed_allowed": true,
-      "availability_fr": true,
-      "availability_reason": null,
-      "availability_checked_at": "2026-11-11T01:40:46.870846+00:00"
-    },
-    {
-      "id": "Aklyrytz5_U",
-      "title": "OLYMPIQUE LYONNAIS - STADE RENNAIS (4-0) | Week 5 - Ligue 1 McDonald's 26/27",
-      "url": "https://www.youtube.com/watch?v=Aklyrytz5_U",
-      "published_at": null,
-      "updated_at": null,
-      "thumbnail": "https://i.ytimg.com/vi/Aklyrytz5_U/hqdefault.jpg",
-      "source_id": "ligue-1",
-      "source_name": "Ligue 1 McDonald's",
-      "source_channel_id": "",
-      "description": "",
-      "is_summary": true,
-      "match_key": "match|ol|rennes|ligue-1|round:5",
-      "match_title": "OL 4-0 Rennes",
-      "home_team": {
-        "id": "ol",
-        "name": "OL",
-        "followed": true
-      },
-      "away_team": {
-        "id": null,
-        "name": "Rennes",
-        "followed": false
-      },
-      "score": "4-0",
-      "competition": "Ligue 1",
-      "match_date": null,
-      "team_ids": [
-        "ol"
-      ],
-      "match_confidence": "title-pair",
-      "summary_keywords": [],
-      "teams": [
-        {
-          "id": "ol",
-          "name": "OL"
-        }
-      ],
-      "embed_allowed": true,
-      "availability_fr": true,
-      "availability_reason": null,
-      "availability_checked_at": "2026-11-11T01:40:54.083535+00:00"
-    },
     {
       "id": "sYbFyfiemyY",
       "title": "PARIS FC - OLYMPIQUE LYONNAIS (0-0) | Week 4 - Ligue 1 McDonald's 26/27",
@@ -357,389 +142,52 @@
       "availability_fr": true,
       "availability_reason": null,
       "availability_checked_at": "2026-11-11T08:44:28.269894+00:00"
+    },
+    {
+      "id": "GbWwnqVgDXU",
+      "title": "OM-PSG: \"APPEARANCES\" | FROM ALL ANGLES, THE LIGUE 1+ IMMERSIVE FORMAT",
+      "url": "https://www.youtube.com/watch?v=GbWwnqVgDXU",
+      "published_at": null,
+      "updated_at": null,
+      "thumbnail": "https://i.ytimg.com/vi/GbWwnqVgDXU/hqdefault.jpg",
+      "source_id": "ligue-1",
+      "source_name": "Ligue 1 McDonald's",
+      "source_channel_id": "",
+      "description": "",
+      "is_summary": true,
+      "match_key": "match|marseille|psg|ligue-1|date:unknown",
+      "match_title": "Marseille vs PSG",
+      "home_team": {
+        "id": null,
+        "name": "Marseille",
+        "followed": false
+      },
+      "away_team": {
+        "id": "psg",
+        "name": "PSG",
+        "followed": true
+      },
+      "score": null,
+      "competition": "Ligue 1",
+      "match_date": null,
+      "team_ids": [
+        "psg"
+      ],
+      "match_confidence": "title-pair",
+      "summary_keywords": [],
+      "teams": [
+        {
+          "id": "psg",
+          "name": "PSG"
+        }
+      ],
+      "embed_allowed": true,
+      "availability_fr": true,
+      "availability_reason": null,
+      "availability_checked_at": "2026-11-11T16:51:10.374172+00:00"
     }
   ],
   "matches": [
-    {
-      "match_key": "match|lille|psg|ligue-1|round:2",
-      "title": "Lille 2-2 PSG",
-      "home_team": {
-        "id": null,
-        "name": "Lille",
-        "followed": false
-      },
-      "away_team": {
-        "id": "psg",
-        "name": "PSG",
-        "followed": true
-      },
-      "score": "2-2",
-      "competition": "Ligue 1",
-      "match_date": null,
-      "published_at": null,
-      "team_ids": [
-        "psg"
-      ],
-      "team_names": [
-        "PSG"
-      ],
-      "sources_count": 1,
-      "sources": [
-        {
-          "id": "ligue-1",
-          "name": "Ligue 1 McDonald's"
-        }
-      ],
-      "videos": [
-        {
-          "id": "qU29QjNFcMU",
-          "title": "LOSC LILLE - PARIS SAINT-GERMAIN (2-2) | Week 2 - Ligue 1 McDonald's 26/27",
-          "url": "https://www.youtube.com/watch?v=qU29QjNFcMU",
-          "published_at": null,
-          "updated_at": null,
-          "thumbnail": "https://i.ytimg.com/vi/qU29QjNFcMU/hqdefault.jpg",
-          "source_id": "ligue-1",
-          "source_name": "Ligue 1 McDonald's",
-          "source_channel_id": "",
-          "description": "",
-          "is_summary": true,
-          "match_key": "match|lille|psg|ligue-1|round:2",
-          "match_title": "Lille 2-2 PSG",
-          "home_team": {
-            "id": null,
-            "name": "Lille",
-            "followed": false
-          },
-          "away_team": {
-            "id": "psg",
-            "name": "PSG",
-            "followed": true
-          },
-          "score": "2-2",
-          "competition": "Ligue 1",
-          "match_date": null,
-          "team_ids": [
-            "psg"
-          ],
-          "match_confidence": "title-pair",
-          "summary_keywords": [],
-          "teams": [
-            {
-              "id": "psg",
-              "name": "PSG"
-            }
-          ],
-          "embed_allowed": true,
-          "availability_fr": true,
-          "availability_reason": null,
-          "availability_checked_at": "2026-11-10T21:45:26.233584+00:00"
-        }
-      ]
-    },
-    {
-      "match_key": "match|ol|angers|ligue-1|round:9",
-      "title": "OL 2-0 Angers",
-      "home_team": {
-        "id": "ol",
-        "name": "OL",
-        "followed": true
-      },
-      "away_team": {
-        "id": null,
-        "name": "Angers",
-        "followed": false
-      },
-      "score": "2-0",
-      "competition": "Ligue 1",
-      "match_date": null,
-      "published_at": null,
-      "team_ids": [
-        "ol"
-      ],
-      "team_names": [
-        "OL"
-      ],
-      "sources_count": 1,
-      "sources": [
-        {
-          "id": "ligue-1",
-          "name": "Ligue 1 McDonald's"
-        }
-      ],
-      "videos": [
-        {
-          "id": "lCzYvdGDFF0",
-          "title": "OLYMPIQUE LYONNAIS - ANGERS SCO (2-0) | Week 9 - Ligue 1 McDonald's 26/27",
-          "url": "https://www.youtube.com/watch?v=lCzYvdGDFF0",
-          "published_at": null,
-          "updated_at": null,
-          "thumbnail": "https://i.ytimg.com/vi/lCzYvdGDFF0/hqdefault.jpg",
-          "source_id": "ligue-1",
-          "source_name": "Ligue 1 McDonald's",
-          "source_channel_id": "",
-          "description": "",
-          "is_summary": true,
-          "match_key": "match|ol|angers|ligue-1|round:9",
-          "match_title": "OL 2-0 Angers",
-          "home_team": {
-            "id": "ol",
-            "name": "OL",
-            "followed": true
-          },
-          "away_team": {
-            "id": null,
-            "name": "Angers",
-            "followed": false
-          },
-          "score": "2-0",
-          "competition": "Ligue 1",
-          "match_date": null,
-          "team_ids": [
-            "ol"
-          ],
-          "match_confidence": "title-pair",
-          "summary_keywords": [],
-          "teams": [
-            {
-              "id": "ol",
-              "name": "OL"
-            }
-          ],
-          "embed_allowed": true,
-          "availability_fr": true,
-          "availability_reason": null,
-          "availability_checked_at": "2026-11-11T01:40:36.974146+00:00"
-        }
-      ]
-    },
-    {
-      "match_key": "match|strasbourg|psg|ligue-1|round:7",
-      "title": "Strasbourg 1-3 PSG",
-      "home_team": {
-        "id": null,
-        "name": "Strasbourg",
-        "followed": false
-      },
-      "away_team": {
-        "id": "psg",
-        "name": "PSG",
-        "followed": true
-      },
-      "score": "1-3",
-      "competition": "Ligue 1",
-      "match_date": null,
-      "published_at": null,
-      "team_ids": [
-        "psg"
-      ],
-      "team_names": [
-        "PSG"
-      ],
-      "sources_count": 1,
-      "sources": [
-        {
-          "id": "ligue-1",
-          "name": "Ligue 1 McDonald's"
-        }
-      ],
-      "videos": [
-        {
-          "id": "Xd_qKvnCJso",
-          "title": "RC STRASBOURG ALSACE - PARIS SAINT-GERMAIN (1-3) | Week 7 - Ligue 1 McDonald's 26/27",
-          "url": "https://www.youtube.com/watch?v=Xd_qKvnCJso",
-          "published_at": null,
-          "updated_at": null,
-          "thumbnail": "https://i.ytimg.com/vi/Xd_qKvnCJso/hqdefault.jpg",
-          "source_id": "ligue-1",
-          "source_name": "Ligue 1 McDonald's",
-          "source_channel_id": "",
-          "description": "",
-          "is_summary": true,
-          "match_key": "match|strasbourg|psg|ligue-1|round:7",
-          "match_title": "Strasbourg 1-3 PSG",
-          "home_team": {
-            "id": null,
-            "name": "Strasbourg",
-            "followed": false
-          },
-          "away_team": {
-            "id": "psg",
-            "name": "PSG",
-            "followed": true
-          },
-          "score": "1-3",
-          "competition": "Ligue 1",
-          "match_date": null,
-          "team_ids": [
-            "psg"
-          ],
-          "match_confidence": "title-pair",
-          "summary_keywords": [],
-          "teams": [
-            {
-              "id": "psg",
-              "name": "PSG"
-            }
-          ],
-          "embed_allowed": true,
-          "availability_fr": true,
-          "availability_reason": null,
-          "availability_checked_at": "2026-11-11T01:40:43.106675+00:00"
-        }
-      ]
-    },
-    {
-      "match_key": "match|psg|le-mans|ligue-1|round:6",
-      "title": "PSG 3-1 Le Mans",
-      "home_team": {
-        "id": "psg",
-        "name": "PSG",
-        "followed": true
-      },
-      "away_team": {
-        "id": null,
-        "name": "Le Mans",
-        "followed": false
-      },
-      "score": "3-1",
-      "competition": "Ligue 1",
-      "match_date": null,
-      "published_at": null,
-      "team_ids": [
-        "psg"
-      ],
-      "team_names": [
-        "PSG"
-      ],
-      "sources_count": 1,
-      "sources": [
-        {
-          "id": "ligue-1",
-          "name": "Ligue 1 McDonald's"
-        }
-      ],
-      "videos": [
-        {
-          "id": "M3s0KayuZK8",
-          "title": "PARIS SAINT-GERMAIN - LE MANS FC (3-1) | Week 6 - Ligue 1 McDonald's 26/27",
-          "url": "https://www.youtube.com/watch?v=M3s0KayuZK8",
-          "published_at": null,
-          "updated_at": null,
-          "thumbnail": "https://i.ytimg.com/vi/M3s0KayuZK8/hqdefault.jpg",
-          "source_id": "ligue-1",
-          "source_name": "Ligue 1 McDonald's",
-          "source_channel_id": "",
-          "description": "",
-          "is_summary": true,
-          "match_key": "match|psg|le-mans|ligue-1|round:6",
-          "match_title": "PSG 3-1 Le Mans",
-          "home_team": {
-            "id": "psg",
-            "name": "PSG",
-            "followed": true
-          },
-          "away_team": {
-            "id": null,
-            "name": "Le Mans",
-            "followed": false
-          },
-          "score": "3-1",
-          "competition": "Ligue 1",
-          "match_date": null,
-          "team_ids": [
-            "psg"
-          ],
-          "match_confidence": "title-pair",
-          "summary_keywords": [],
-          "teams": [
-            {
-              "id": "psg",
-              "name": "PSG"
-            }
-          ],
-          "embed_allowed": true,
-          "availability_fr": true,
-          "availability_reason": null,
-          "availability_checked_at": "2026-11-11T01:40:46.870846+00:00"
-        }
-      ]
-    },
-    {
-      "match_key": "match|ol|rennes|ligue-1|round:5",
-      "title": "OL 4-0 Rennes",
-      "home_team": {
-        "id": "ol",
-        "name": "OL",
-        "followed": true
-      },
-      "away_team": {
-        "id": null,
-        "name": "Rennes",
-        "followed": false
-      },
-      "score": "4-0",
-      "competition": "Ligue 1",
-      "match_date": null,
-      "published_at": null,
-      "team_ids": [
-        "ol"
-      ],
-      "team_names": [
-        "OL"
-      ],
-      "sources_count": 1,
-      "sources": [
-        {
-          "id": "ligue-1",
-          "name": "Ligue 1 McDonald's"
-        }
-      ],
-      "videos": [
-        {
-          "id": "Aklyrytz5_U",
-          "title": "OLYMPIQUE LYONNAIS - STADE RENNAIS (4-0) | Week 5 - Ligue 1 McDonald's 26/27",
-          "url": "https://www.youtube.com/watch?v=Aklyrytz5_U",
-          "published_at": null,
-          "updated_at": null,
-          "thumbnail": "https://i.ytimg.com/vi/Aklyrytz5_U/hqdefault.jpg",
-          "source_id": "ligue-1",
-          "source_name": "Ligue 1 McDonald's",
-          "source_channel_id": "",
-          "description": "",
-          "is_summary": true,
-          "match_key": "match|ol|rennes|ligue-1|round:5",
-          "match_title": "OL 4-0 Rennes",
-          "home_team": {
-            "id": "ol",
-            "name": "OL",
-            "followed": true
-          },
-          "away_team": {
-            "id": null,
-            "name": "Rennes",
-            "followed": false
-          },
-          "score": "4-0",
-          "competition": "Ligue 1",
-          "match_date": null,
-          "team_ids": [
-            "ol"
-          ],
-          "match_confidence": "title-pair",
-          "summary_keywords": [],
-          "teams": [
-            {
-              "id": "ol",
-              "name": "OL"
-            }
-          ],
-          "embed_allowed": true,
-          "availability_fr": true,
-          "availability_reason": null,
-          "availability_checked_at": "2026-11-11T01:40:54.083535+00:00"
-        }
-      ]
-    },
     {
       "match_key": "match|paris-fc|ol|ligue-1|round:4",
       "title": "Paris FC 0-0 OL",
@@ -891,11 +339,87 @@
           "availability_checked_at": "2026-11-11T08:44:28.269894+00:00"
         }
       ]
+    },
+    {
+      "match_key": "match|marseille|psg|ligue-1|date:unknown",
+      "title": "Marseille vs PSG",
+      "home_team": {
+        "id": null,
+        "name": "Marseille",
+        "followed": false
+      },
+      "away_team": {
+        "id": "psg",
+        "name": "PSG",
+        "followed": true
+      },
+      "score": null,
+      "competition": "Ligue 1",
+      "match_date": null,
+      "published_at": null,
+      "team_ids": [
+        "psg"
+      ],
+      "team_names": [
+        "PSG"
+      ],
+      "sources_count": 1,
+      "sources": [
+        {
+          "id": "ligue-1",
+          "name": "Ligue 1 McDonald's"
+        }
+      ],
+      "videos": [
+        {
+          "id": "GbWwnqVgDXU",
+          "title": "OM-PSG: \"APPEARANCES\" | FROM ALL ANGLES, THE LIGUE 1+ IMMERSIVE FORMAT",
+          "url": "https://www.youtube.com/watch?v=GbWwnqVgDXU",
+          "published_at": null,
+          "updated_at": null,
+          "thumbnail": "https://i.ytimg.com/vi/GbWwnqVgDXU/hqdefault.jpg",
+          "source_id": "ligue-1",
+          "source_name": "Ligue 1 McDonald's",
+          "source_channel_id": "",
+          "description": "",
+          "is_summary": true,
+          "match_key": "match|marseille|psg|ligue-1|date:unknown",
+          "match_title": "Marseille vs PSG",
+          "home_team": {
+            "id": null,
+            "name": "Marseille",
+            "followed": false
+          },
+          "away_team": {
+            "id": "psg",
+            "name": "PSG",
+            "followed": true
+          },
+          "score": null,
+          "competition": "Ligue 1",
+          "match_date": null,
+          "team_ids": [
+            "psg"
+          ],
+          "match_confidence": "title-pair",
+          "summary_keywords": [],
+          "teams": [
+            {
+              "id": "psg",
+              "name": "PSG"
+            }
+          ],
+          "embed_allowed": true,
+          "availability_fr": true,
+          "availability_reason": null,
+          "availability_checked_at": "2026-11-11T16:51:10.374172+00:00"
+        }
+      ]
     }
   ],
   "stats": {
-    "videos": 7,
-    "matches": 7,
+    "videos": 3,
+    "matches": 3,
     "teams": 5,
     "sources": 4
   }
